@@ -1,6 +1,6 @@
 export function SkipLink() {
   return (
-    <a href="#main">
+    <a className="skip-link" href="#main">
       Skip to content
     </a>
   );

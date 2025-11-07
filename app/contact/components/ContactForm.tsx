@@ -1,9 +1,12 @@
 export function ContactForm() {
   return (
-    <form aria-labelledby="contact-form-heading">
+    <form className="stack-md" aria-labelledby="contact-form-heading">
       <h1 id="contact-form-heading">Contact Behind the Beat</h1>
-      <fieldset>
-        <legend>ContactForm component placeholder.</legend>
+      <p className="tile-meta">
+        Labels only for now. Inputs and handling will arrive with Step 3.
+      </p>
+      <fieldset className="postcard stack-sm">
+        <legend>Reach out</legend>
         <label htmlFor="full-name">Full Name</label>
         <label htmlFor="email">Email</label>
         <label htmlFor="reason">Reason for contacting</label>

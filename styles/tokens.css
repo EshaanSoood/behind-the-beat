@@ -1,2 +1,74 @@
+:root {
+  /* Authoritative palette (no greys) */
+  --magazine-white: #FFFFFF;
+  --brand-pink-100: #FFD3E8;
+  --brand-pink-300: #FFB0DA;
+  --brand-pink-500: #FF8CCB;
+  --brand-purple-600: #7A3A8C;
+  --brand-purple-800: #6D2B79;
+  
+  /* Surface & backgrounds */
+  --surface: var(--magazine-white);
+  --bg: var(--magazine-white);
+  --bg-elevated: var(--magazine-white);
+  --offwhite: var(--magazine-white);
+  
+  /* Text colors */
+  --text: var(--brand-purple-800);
+  --text-strong: var(--brand-purple-800);
+  --text-muted: var(--brand-purple-600);
+  
+  /* Brand aliases */
+  --brand-pink: var(--brand-pink-500);
+  --brand-purple: var(--brand-purple-800);
+  --brand-dark-pink: var(--brand-pink-500);
+  
+  /* Borders & shadows (pink/purple-tinted, no greys) */
+  --border: color-mix(in oklab, var(--brand-pink-300) 60%, transparent);
+  --border-strong: 1.5px;
+  --shadow-soft: 0 4px 14px color-mix(in oklab, var(--brand-purple-800) 8%, transparent);
+  --shadow-card: 0 6px 16px color-mix(in oklab, var(--brand-purple-800) 10%, transparent);
+  
+  /* Paper grain opacity (for SVG) */
+  --paper-grain-opacity: 0.12;
 
+  /* Typography */
+  --font-display: "GrobeDeutschmeister", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; /* Optional: pair Georgia later */
+  --text-h1: clamp(2rem, 2vw + 1.2rem, 2.75rem);
+  --text-h2: clamp(1.5rem, 1.4vw + 1rem, 2rem);
+  --text-h3: clamp(1.25rem, 1vw + 0.9rem, 1.5rem);
+  --text-body-lg: 1.125rem;
+  --text-body: 1rem;
+  --text-caption: 0.875rem;
+  --lh-tight: 1.2;
+  --lh-snug: 1.3;
+  --lh-normal: 1.5;
+  --measure: 70ch;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* Shape & effects */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 20px;
+  --ch: 14px; /* chamfer size */
+  --nav-stripe: 12px; /* width of angled nav divider */
+  
+  /* Slant angles */
+  --slant-base: -18deg; /* default divider angle */
+  --slant-1: -14deg;
+  --slant-2: -18deg;
+  --slant-3: -22deg;
+  --divider-thickness: 8px; /* hairline thickness for slanted rules */
+}
 

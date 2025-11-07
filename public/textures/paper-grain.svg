@@ -1,0 +1,28 @@
+<!-- /public/textures/paper-grain.svg -->
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <!-- Pink-tinted, seamless noise: luminance → alpha, then flood with pink -->
+    <filter id="pinkGrain" x="0" y="0" width="100%" height="100%">
+      <!-- Seamless noise -->
+      <feTurbulence type="fractalNoise"
+                    baseFrequency="1.20"
+                    numOctaves="2"
+                    seed="17"
+                    stitchTiles="stitch"
+                    result="noise"/>
+      <!-- Convert to alpha from luminance -->
+      <feColorMatrix in="noise" type="luminanceToAlpha" result="alpha"/>
+      <!-- Tweak density/contrast of specks (subtle): amplitude ~.80; exponent ~1.05 -->
+      <feComponentTransfer in="alpha" result="alphaAdj">
+        <feFuncA type="gamma" amplitude=".80" exponent="1.05" offset="0"/>
+      </feComponentTransfer>
+      <!-- Pink flood; opacity controls overall grain strength -->
+      <feFlood flood-color="#FFB0DA" flood-opacity="0.07" result="pink"/>
+      <!-- Mask pink by alpha (the noise pattern) -->
+      <feComposite in="pink" in2="alphaAdj" operator="in" result="tinted"/>
+    </filter>
+  </defs>
+  <!-- Transparent rect that draws the tinted noise with alpha -->
+  <rect width="100%" height="100%" fill="none" filter="url(#pinkGrain)"/>
+</svg>
+

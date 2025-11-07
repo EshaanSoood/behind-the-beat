@@ -1,8 +1,10 @@
+import { getAllReviews, getAllEpisodes } from "../../../lib/content";
+import { HomeTilesClient } from "./HomeTilesClient";
+
 export function HomeTiles() {
-  return (
-    <div>
-      <p>HomeTiles component placeholder.</p>
-    </div>
-  );
+  const reviews = getAllReviews();
+  const episodes = getAllEpisodes();
+
+  return <HomeTilesClient reviews={reviews} episodes={episodes} />;
 }
 

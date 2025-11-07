@@ -1,11 +1,21 @@
 import { Section } from "../../components/Section";
+import { generateMetadata as genMeta } from "../../lib/seo";
+import { allReviewsSorted } from "../../lib/content";
 
 import { ReviewList } from "./components/ReviewList";
 
+export const metadata = genMeta({
+  title: "Reviews",
+  description: "Deep-dive album reviews with tracklists, streaming links, and pull quotes.",
+  path: "/reviews",
+});
+
 export default function ReviewsPage() {
+  const reviews = allReviewsSorted();
+
   return (
-    <Section>
-      <ReviewList />
+    <Section className="stack-lg">
+      <ReviewList initialReviews={reviews} />
     </Section>
   );
 }
