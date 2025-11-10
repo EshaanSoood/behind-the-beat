@@ -68,7 +68,7 @@ export default function ReviewEntryPage({ params }: ReviewEntryPageProps) {
         />
         <ReviewHeader review={review} />
         {review.cover && (
-          <div className="review-cover surface-chamfer ch-14">
+          <div className="review-cover chamfered chamfered-border ch-14">
             <Image
               src={review.cover}
               alt={review.alt}

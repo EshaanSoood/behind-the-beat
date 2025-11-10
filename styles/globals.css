@@ -1,5 +1,5 @@
-@import "./tokens.css";
 @import "tailwindcss";
+@import "./tokens.css";
 
 @font-face {
   font-family: "GrobeDeutschmeister";
@@ -157,55 +157,82 @@ article li,
 
 /* Blockquote default */
 blockquote {
-  border-left: 3px solid var(--brand-pink-300);
+  border-left: 3px solid var(--border-accent-strong);
   padding-left: var(--space-4);
   margin: var(--space-6) 0;
   font-style: normal;
   color: var(--text);
 }
 
-/* Chamfer utility */
 .surface-chamfer {
-  --surface-chamfer-size: var(--surface-chamfer-size, var(--ch));
+  --chamfer-size: var(--ch);
+}
+
+:where(.chamfered, .surface-chamfer, .home-card, .home-card-media, .home-card-media-overlay) {
+  --chamfer-amount: var(--chamfer-size, var(--ch));
   border-radius: 0;
   -webkit-clip-path: polygon(
-    var(--surface-chamfer-size) 0,
-    calc(100% - var(--surface-chamfer-size)) 0,
-    100% var(--surface-chamfer-size),
-    100% calc(100% - var(--surface-chamfer-size)),
-    calc(100% - var(--surface-chamfer-size)) 100%,
-    var(--surface-chamfer-size) 100%,
-    0 calc(100% - var(--surface-chamfer-size)),
-    0 var(--surface-chamfer-size)
+    var(--chamfer-amount) 0,
+    calc(100% - var(--chamfer-amount)) 0,
+    100% var(--chamfer-amount),
+    100% calc(100% - var(--chamfer-amount)),
+    calc(100% - var(--chamfer-amount)) 100%,
+    var(--chamfer-amount) 100%,
+    0 calc(100% - var(--chamfer-amount)),
+    0 var(--chamfer-amount)
   );
   clip-path: polygon(
-    var(--surface-chamfer-size) 0,
-    calc(100% - var(--surface-chamfer-size)) 0,
-    100% var(--surface-chamfer-size),
-    100% calc(100% - var(--surface-chamfer-size)),
-    calc(100% - var(--surface-chamfer-size)) 100%,
-    var(--surface-chamfer-size) 100%,
-    0 calc(100% - var(--surface-chamfer-size)),
-    0 var(--surface-chamfer-size)
+    var(--chamfer-amount) 0,
+    calc(100% - var(--chamfer-amount)) 0,
+    100% var(--chamfer-amount),
+    100% calc(100% - var(--chamfer-amount)),
+    calc(100% - var(--chamfer-amount)) 100%,
+    var(--chamfer-amount) 100%,
+    0 calc(100% - var(--chamfer-amount)),
+    0 var(--chamfer-amount)
   );
   background-clip: padding-box;
+  -webkit-background-clip: padding-box;
   overflow: hidden;
 }
 
-.ch-14 {
-  --surface-chamfer-size: var(--ch);
+:where(
+  .home-card img,
+  .home-card picture,
+  .home-card video,
+  .home-card iframe,
+  .home-card button
+) {
+  border-radius: 0;
 }
 
-/* Fallback for very old browsers: rounded corners roughly equivalent */
+.chamfered-border {
+  border-width: var(--chamfer-border-width, var(--border-strong-width));
+  border-style: solid;
+  border-color: var(--chamfer-border-color, var(--border-strong-color));
+  background-clip: padding-box;
+  -webkit-background-clip: padding-box;
+}
+
+.ch-14 {
+  --chamfer-size: var(--ch);
+}
+
+/* Fallback for very old browsers: square corners maintain layout */
 @supports not (clip-path: polygon(0 0)) {
-  .surface-chamfer {
-    border-radius: calc(var(--surface-chamfer-size, var(--ch)) * 1.2);
+  :where(.chamfered, .surface-chamfer, .home-card, .home-card-media, .home-card-media-overlay) {
+    border-radius: 0;
   }
 }
 
-/* Aspect ratio utility */
+/* Aspect ratio utilities */
 .ratio-4x5 {
   aspect-ratio: 4 / 5;
+  position: relative;
+}
+
+.ratio-1x1 {
+  aspect-ratio: 1 / 1;
   position: relative;
 }
 
@@ -217,6 +244,22 @@ blockquote {
   }
   
   .ratio-4x5 > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@supports not (aspect-ratio: 1 / 1) {
+  .ratio-1x1::before {
+    content: "";
+    display: block;
+    padding-bottom: 100%;
+  }
+  
+  .ratio-1x1 > * {
     position: absolute;
     top: 0;
     left: 0;

@@ -24,7 +24,14 @@ export function PodcastCard({ episode }: PodcastCardProps) {
   }, [episode.date]);
 
   const thumbnailUrl = `https://i.ytimg.com/vi/${episode.youtubeId}/hqdefault.jpg`;
-  const description = episode.pullQuote ?? episode.notes ?? "Long-form conversation coming soon.";
+  const notes = episode.notes?.trim() ?? "";
+  const pullQuote = episode.pullQuote?.trim() ?? "";
+  const bodyCopy =
+    notes.length > 0
+      ? notes
+      : pullQuote.length > 0
+        ? pullQuote
+        : "Episode details coming soon.";
   const autoplayHref = `/podcast/${episode.slug}?autoplay=1`;
 
   const handlePlay = useCallback(() => {
@@ -32,17 +39,18 @@ export function PodcastCard({ episode }: PodcastCardProps) {
   }, [autoplayHref, router]);
 
   return (
-    <article className="home-card surface-chamfer">
+    <article className="home-card home-card--podcast chamfered chamfered-border ch-14 ratio-4x5">
       <div className="home-card-content">
-        <div className="home-card-header">
-          <Link href={`/podcast/${episode.slug}`} className="home-card-title-link">
-            <h3 className="home-card-title">{episode.title}</h3>
-          </Link>
-          <p className="home-card-meta">
+        <Link href={`/podcast/${episode.slug}`} className="home-card-title-link">
+          <h3 className="home-card-title">{episode.title}</h3>
+        </Link>
+        <div className="home-card-meta-block" data-has-secondary="false">
+          <p className="home-card-meta-primary">
+            <span className="sr-only">Guest and date: </span>
             {episode.guest} • {formattedDate}
           </p>
         </div>
-        <div className="home-card-media surface-chamfer">
+        <div className="home-card-media chamfered chamfered-border ch-14">
           <Image
             src={thumbnailUrl}
             alt={`Episode art for ${episode.title} with ${episode.guest}`}
@@ -55,17 +63,17 @@ export function PodcastCard({ episode }: PodcastCardProps) {
           />
           <button
             type="button"
-            className="home-card-media-button surface-chamfer"
+            className="home-card-media-overlay chamfered ch-14"
             aria-label={`Play episode: ${episode.title}`}
             onClick={handlePlay}
           >
-            <span className="home-card-play-hit surface-chamfer">
+            <span className="home-card-play-hit">
               <Image src="/icons/play-chamfer.svg" alt="" width={48} height={48} aria-hidden="true" />
             </span>
           </button>
         </div>
-        <p className="home-card-text" aria-label="Episode description">
-          {description}
+        <p className="home-card-text">
+          {bodyCopy}
         </p>
         <div className="card-actions">
           <ButtonTrapezoid href={autoplayHref} tone="primary" size="sm">

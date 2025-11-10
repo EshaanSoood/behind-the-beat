@@ -4,10 +4,8 @@ type TagProps = {
 };
 
 export function Tag({ children, className }: TagProps) {
-  return (
-    <span className={`tag ${className || ""}`}>
-      {children}
-    </span>
-  );
+  const classes = ["tag", "chamfered", "chamfered-border", className].filter(Boolean).join(" ");
+
+  return <span className={classes}>{children}</span>;
 }
 

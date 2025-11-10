@@ -68,7 +68,7 @@ export function EpisodePlayer({ youtubeId, title, autoplay = false }: EpisodePla
   return (
     <section className="episode-player stack-sm">
       <h2 className="episode-player-heading">Listen in</h2>
-      <div className="youtube-embed-container surface-chamfer ch-14">
+      <div className="youtube-embed-container chamfered chamfered-border ch-14">
         <iframe
           key={embedSrc}
           src={embedSrc}

@@ -13,9 +13,14 @@
   --bg-elevated: var(--magazine-white);
   --offwhite: var(--magazine-white);
   
+  /* Shared color tokens */
+  --text-deep-purple: var(--brand-purple-800);
+  --border-accent: rgba(255, 176, 218, 0.45);
+  --border-accent-strong: rgba(255, 176, 218, 0.68);
+  
   /* Text colors */
-  --text: var(--brand-purple-800);
-  --text-strong: var(--brand-purple-800);
+  --text: var(--text-deep-purple);
+  --text-strong: var(--text-deep-purple);
   --text-muted: var(--brand-purple-600);
   
   /* Brand aliases */
@@ -23,14 +28,19 @@
   --brand-purple: var(--brand-purple-800);
   --brand-dark-pink: var(--brand-pink-500);
   
+  /* Brand gradient */
+  --brand-gradient: linear-gradient(135deg, var(--brand-pink-500) 0%, var(--brand-purple-800) 100%);
+  
   /* Borders & shadows (pink/purple-tinted, no greys) */
-  --border: color-mix(in oklab, var(--brand-pink-300) 60%, transparent);
-  --border-strong: 1.5px;
-  --shadow-soft: 0 4px 14px color-mix(in oklab, var(--brand-purple-800) 8%, transparent);
-  --shadow-card: 0 6px 16px color-mix(in oklab, var(--brand-purple-800) 10%, transparent);
+  --border: var(--border-accent);
+  --border-strong-width: 1.5px;
+  --border-strong-color: var(--border-accent-strong);
+  --shadow-soft: 0 4px 14px rgba(109, 43, 121, 0.08);
+  --shadow-card: 0 6px 16px rgba(109, 43, 121, 0.1);
   
   /* Paper grain opacity (for SVG) */
   --paper-grain-opacity: 0.12;
+  --asset-root: /;
 
   /* Typography */
   --font-display: "GrobeDeutschmeister", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -70,5 +80,14 @@
   --slant-2: -18deg;
   --slant-3: -22deg;
   --divider-thickness: 8px; /* hairline thickness for slanted rules */
+}
+
+@supports (color: color-mix(in oklab, black 50%, white)) {
+  :root {
+    --border-accent: color-mix(in oklab, var(--brand-pink-300) 45%, transparent);
+    --border-accent-strong: color-mix(in oklab, var(--brand-pink-300) 68%, transparent);
+    --shadow-soft: 0 4px 14px color-mix(in oklab, var(--brand-purple-800) 8%, transparent);
+    --shadow-card: 0 6px 16px color-mix(in oklab, var(--brand-purple-800) 10%, transparent);
+  }
 }
 

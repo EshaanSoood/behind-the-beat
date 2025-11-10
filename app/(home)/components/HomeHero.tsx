@@ -1,15 +1,10 @@
 export function HomeHero() {
   return (
-    <div className="hero surface-chamfer">
-      <div className="hero-inner">
-        <h1 className="hero-title">Behind the Beat</h1>
-        <p className="prose-measure">
-          A cozy, modern magazine experience for interviews and reviews. Discover
-          artist stories through deep-dive album reviews and intimate podcast
-          conversations.
-        </p>
-      </div>
-    </div>
+    <header className="hero" aria-labelledby="home-hero-heading">
+      <h1 id="home-hero-heading" className="hero-title">
+        Behind the Beat
+      </h1>
+    </header>
   );
 }
 

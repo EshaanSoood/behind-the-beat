@@ -7,7 +7,7 @@ type TracklistBoxProps = {
 
 export function TracklistBox({ review }: TracklistBoxProps) {
   return (
-    <aside className="review-trackbox chamfer">
+    <aside className="review-trackbox chamfered chamfered-border">
       <h2 className="tracklist-title">Tracklist</h2>
       <ol className="tracklist">
         {review.tracklist.map((track, index) => (

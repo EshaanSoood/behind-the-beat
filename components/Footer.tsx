@@ -30,7 +30,7 @@ export function Footer() {
                   href="https://twitter.com/behindthebeat"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="footer-social-link"
+                  className="footer-social-link chamfered ch-14"
                   aria-label="Follow us on X/Twitter"
                 >
                   <XIcon className="footer-social-icon" />
@@ -42,7 +42,7 @@ export function Footer() {
                   href="https://instagram.com/behindthebeat"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="footer-social-link"
+                  className="footer-social-link chamfered ch-14"
                   aria-label="Follow us on Instagram"
                 >
                   <InstagramIcon className="footer-social-icon" />
@@ -54,7 +54,7 @@ export function Footer() {
                   href="https://youtube.com/@behindthebeat"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="footer-social-link"
+                  className="footer-social-link chamfered ch-14"
                   aria-label="Subscribe on YouTube"
                 >
                   <YouTubeIcon className="footer-social-icon" />
@@ -66,7 +66,7 @@ export function Footer() {
                   href="https://linkedin.com/company/behindthebeat"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="footer-social-link"
+                  className="footer-social-link chamfered ch-14"
                   aria-label="Follow us on LinkedIn"
                 >
                   <LinkedInIcon className="footer-social-icon" />
@@ -93,7 +93,7 @@ export function Footer() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="your@email.com"
-                  className="footer-newsletter-input"
+                  className="footer-newsletter-input chamfered ch-14"
                   required
                   aria-label="Email address for newsletter"
                 />

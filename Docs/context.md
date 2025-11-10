@@ -442,5 +442,14 @@ Behind the Beat is a static, magazine-style website for music reviews and podcas
 - Color contrast: AA compliant
 - Screen reader friendly (breadcrumbs, landmarks)
 
+## Recent Frontend Updates (2025-11-09)
+
+- Dropped quotes from the `--asset-root` token so asset URLs like `url(var(--asset-root)textures/...)` resolve correctly in `ui.css`.
+- Reordered `styles/globals.css` imports to load Tailwind preflight before local tokens, preventing preflight from clobbering brand variables.
+- Review cards now toggle `aria-hidden` as their metadata/pull quote swap, eliminating duplicate announcements for screen readers.
+- Normalised complex `calc()` expressions by grouping each multiplication, avoiding parsing quirks across browsers.
+- Added a high-contrast friendly fallback for the podcast play badge (disables `mix-blend-mode` when users request more contrast).
+- `ButtonTrapezoid` now narrows on `"href" in props`, removing the manual cast and improving TypeScript safety between link/button variants.
+
 
 

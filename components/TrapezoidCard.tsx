@@ -40,7 +40,9 @@ export function TrapezoidCard<T extends ElementType = "article">({
 
   const combinedClassName = [
     "trapezoid-card",
-    "chamfer",
+    "chamfered",
+    "chamfered-border",
+    "ch-14",
     variantClasses[variant],
     isLink && "trapezoid-card-link",
     className,
@@ -50,7 +52,7 @@ export function TrapezoidCard<T extends ElementType = "article">({
 
   const cardContent = (
     <>
-      {media && <div className="trapezoid-card-media surface-chamfer ch-14">{media}</div>}
+      {media && <div className="trapezoid-card-media chamfered ch-14">{media}</div>}
       <div className="trapezoid-card-content stack-sm">
         {kicker && <p className="trapezoid-card-kicker">{kicker}</p>}
         <h3 className="trapezoid-card-title">{title}</h3>

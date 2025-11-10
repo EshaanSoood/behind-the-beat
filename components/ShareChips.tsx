@@ -54,14 +54,14 @@ export function ShareChips({ title, url, quote }: ShareChipsProps) {
           <button
             type="button"
             ref={setCopyButtonRef}
-            className="share-chip share-chip-copy"
+            className="share-chip chamfered chamfered-border share-chip-copy"
             onClick={handleCopy}
             aria-label="Copy link"
           >
             <LinkIcon className="share-chip-icon" />
             <span>{copied ? "Copied!" : "Copy Link"}</span>
           </button>
-          <span className="visually-hidden" aria-live="polite" aria-atomic="true">
+          <span className="sr-only" aria-live="polite" aria-atomic="true">
             {copied ? "Link copied to clipboard" : ""}
           </span>
         </div>
@@ -69,7 +69,7 @@ export function ShareChips({ title, url, quote }: ShareChipsProps) {
           href={shareLinks.twitter}
           target="_blank"
           rel="noopener noreferrer"
-          className="share-chip share-chip-twitter"
+          className="share-chip chamfered chamfered-border share-chip-twitter"
           aria-label="Share on Twitter"
         >
           <XIcon className="share-chip-icon" />
@@ -79,7 +79,7 @@ export function ShareChips({ title, url, quote }: ShareChipsProps) {
           href={shareLinks.facebook}
           target="_blank"
           rel="noopener noreferrer"
-          className="share-chip share-chip-facebook"
+          className="share-chip chamfered chamfered-border share-chip-facebook"
           aria-label="Share on Facebook"
         >
           <FacebookIcon className="share-chip-icon" />
@@ -89,7 +89,7 @@ export function ShareChips({ title, url, quote }: ShareChipsProps) {
           href={shareLinks.linkedin}
           target="_blank"
           rel="noopener noreferrer"
-          className="share-chip share-chip-linkedin"
+          className="share-chip chamfered chamfered-border share-chip-linkedin"
           aria-label="Share on LinkedIn"
         >
           <LinkedInIcon className="share-chip-icon" />
@@ -97,7 +97,7 @@ export function ShareChips({ title, url, quote }: ShareChipsProps) {
         </a>
         <a
           href={shareLinks.email}
-          className="share-chip share-chip-email"
+          className="share-chip chamfered chamfered-border share-chip-email"
           aria-label="Share via email"
         >
           <MailIcon className="share-chip-icon" />

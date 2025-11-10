@@ -16,20 +16,19 @@ type ButtonTrapezoidAsButton = BaseButtonTrapezoidProps &
   };
 
 type ButtonTrapezoidAsLink = BaseButtonTrapezoidProps &
-  Omit<ComponentPropsWithoutRef<typeof Link>, "children" | "className"> & {
-    href: string;
+  Omit<ComponentPropsWithoutRef<typeof Link>, "children" | "className" | "href"> & {
+    href: NonNullable<ComponentPropsWithoutRef<typeof Link>["href"]>;
   };
 
 type ButtonTrapezoidProps = ButtonTrapezoidAsButton | ButtonTrapezoidAsLink;
 
-export function ButtonTrapezoid({
-  tone = "primary",
-  size = "md",
-  href,
-  children,
-  className,
-  ...rest
-}: ButtonTrapezoidProps) {
+function isLinkProps(props: ButtonTrapezoidProps): props is ButtonTrapezoidAsLink {
+  return typeof (props as ButtonTrapezoidAsLink).href !== "undefined";
+}
+
+export function ButtonTrapezoid(props: ButtonTrapezoidProps) {
+  const { tone = "primary", size = "md", children, className } = props;
+
   const toneClasses = {
     primary: "button-trapezoid-primary",
     neutral: "button-trapezoid-neutral",
@@ -40,36 +39,53 @@ export function ButtonTrapezoid({
     md: "button-trapezoid-md",
   };
 
+  const sanitizedExtraClasses = className
+    ?.split(/\s+/)
+    .filter(Boolean)
+    .filter((token) => !/^rounded(-|$)/.test(token) && !token.includes("radius"))
+    .join(" ");
+
   const combinedClassName = [
     "button-trapezoid",
-    "surface-chamfer",
+    "chamfered",
     "ch-14",
     toneClasses[tone],
     sizeClasses[size],
-    className,
+    sanitizedExtraClasses,
   ]
     .filter(Boolean)
     .join(" ");
 
-  if (href) {
-    const linkProps = rest as ComponentPropsWithoutRef<typeof Link>;
-    // Remove href from rest if it exists to avoid duplicate
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { href: _href, ...linkRest } = linkProps as ComponentPropsWithoutRef<typeof Link> & {
-      href?: string;
-    };
+  if (isLinkProps(props)) {
+    const {
+      href,
+      tone: _tone,
+      size: _size,
+      className: _className,
+      children: _children,
+      ...linkProps
+    } = props;
     return (
-      <Link href={href} className={combinedClassName} {...linkRest}>
+      <Link href={href} className={combinedClassName} {...linkProps}>
         {children}
       </Link>
     );
   }
 
+  const {
+    tone: _tone,
+    size: _size,
+    className: _className,
+    children: _children,
+    type = "button",
+    ...buttonProps
+  } = props;
+
   return (
     <button
-      type="button"
+      type={type}
       className={combinedClassName}
-      {...(rest as ComponentPropsWithoutRef<"button">)}
+      {...buttonProps}
     >
       {children}
     </button>

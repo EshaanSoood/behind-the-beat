@@ -74,7 +74,7 @@ export default function PodcastEntryPage({ params, searchParams }: PodcastEntryP
         />
         <EpisodeHeader episode={episode} />
         {episode.cover && (
-          <div className="episode-cover surface-chamfer ch-14">
+          <div className="episode-cover chamfered chamfered-border ch-14">
             <Image
               src={episode.cover}
               alt={episode.alt}
