@@ -7,6 +7,7 @@ import type { FocusEvent, PointerEvent, MouseEvent } from "react";
 import { useId, useMemo, useState } from "react";
 
 import { ButtonTrapezoid } from "../../../components/ButtonTrapezoid";
+import { ElectricBorder } from "../../../components/ElectricBorder";
 
 declare global {
   interface Window {
@@ -129,7 +130,13 @@ export function HomeCard({
 
   const overlayPullQuote = (
     <p
-      className="home-card-pullquote line-clamp-3"
+      className={`home-card-pullquote line-clamp-3 ${
+        !isPodcastCard
+          ? `opacity-10 transition-opacity duration-200 ease-out min-h-[4.5rem] ${
+              isInteracting ? "opacity-100" : ""
+            }`
+          : ""
+      }`}
       aria-hidden={isPodcastCard ? undefined : isInteracting ? "false" : "true"}
     >
       {displayPullQuote}
@@ -138,7 +145,9 @@ export function HomeCard({
 
   return (
     <article
-      className={`paper-grain surface-chamfer home-card home-card--${variant}`}
+      className={`paper-grain surface-chamfer home-card home-card--${variant} transition-transform transition-shadow duration-200 ease-out motion-reduce:transform-none ${
+        isInteracting ? "-translate-y-1 scale-[1.02]" : ""
+      }`}
       data-card="true"
       data-type={variant}
       role="listitem"
@@ -150,6 +159,7 @@ export function HomeCard({
       onFocusCapture={setFocusMode}
       onBlurCapture={clearInteraction}
     >
+      <ElectricBorder variant={variant} isActive={isInteracting} />
       <header className="home-card-head">
         <h3 id={headingId} className="home-card-title-heading">
           <Link href={href} className="focus-chamfer home-card-title">
@@ -206,7 +216,9 @@ export function HomeCard({
             {overlayAction ? (
               <button
                 type="button"
-                className="focus-chamfer home-card-media-overlay"
+                className={`focus-chamfer home-card-media-overlay transition-opacity duration-200 ease-out ${
+                  isInteracting ? "opacity-100" : "opacity-0"
+                }`}
                 aria-label={overlayAction.label}
                 aria-hidden={isInteracting ? "false" : "true"}
                 onClick={handleOverlayClick}
@@ -217,7 +229,12 @@ export function HomeCard({
                 {overlayPullQuote}
               </button>
             ) : (
-              <div className="home-card-media-overlay" aria-hidden={isInteracting ? "false" : "true"}>
+              <div
+                className={`home-card-media-overlay transition-opacity duration-200 ease-out ${
+                  isInteracting ? "opacity-100" : "opacity-0"
+                }`}
+                aria-hidden={isInteracting ? "false" : "true"}
+              >
                 {overlayPullQuote}
               </div>
             )}
@@ -225,19 +242,14 @@ export function HomeCard({
         )}
       </div>
 
-      <div className="card-actions card-actions--image-button">
-        <ButtonTrapezoid 
-          href={href} 
-          tone="neutral"
-          size="sm"
-        >
-          {variant === "review" ? "Read More" : "Listen Now"}
-        </ButtonTrapezoid>
-      </div>
-
       {displaySummary && (
         <div className="home-card-copy">
-          <p className="home-card-text line-clamp-3" aria-hidden={isInteracting ? "true" : "false"}>
+          <p
+            className={`home-card-text line-clamp-3 transition-opacity duration-200 ease-out ${
+              isInteracting ? "opacity-[0.15]" : "opacity-100"
+            }`}
+            aria-hidden={isInteracting ? "true" : "false"}
+          >
             {displaySummary}
           </p>
         </div>

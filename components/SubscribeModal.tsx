@@ -123,7 +123,8 @@ export function SubscribeModal({ isOpen, onClose }: SubscribeModalProps) {
       <div className="subscribe-backdrop fixed inset-0 bg-black/50" aria-hidden="true" />
       <div
         ref={dialogRef}
-        className="subscribe-dialog fixed left-1/2 top-1/2 z-50 max-h-[90vh] w-full max-w-[600px] -translate-x-1/2 -translate-y-1/2 overflow-y-auto bg-neutral-ui-bg p-6 shadow-soft focus:outline-none surface-chamfer"
+        className="subscribe-dialog fixed left-1/2 top-1/2 z-50 max-h-[90vh] w-full max-w-[600px] -translate-x-1/2 -translate-y-1/2 overflow-y-auto bg-neutral-ui-surface p-6 shadow-soft focus:outline-none surface-chamfer"
+        style={{ backgroundColor: "var(--magazine-white)" }}
         role="dialog"
         aria-modal="true"
         aria-labelledby="subscribe-title"
@@ -144,7 +145,7 @@ export function SubscribeModal({ isOpen, onClose }: SubscribeModalProps) {
 
           <style jsx global>{`
             #mc_embed_signup {
-              background: var(--neutral-ui-bg);
+              background: var(--magazine-white);
               font: 16px var(--font-body), Helvetica, Arial, sans-serif;
               max-width: 600px;
               width: 100%;
@@ -208,27 +209,55 @@ export function SubscribeModal({ isOpen, onClose }: SubscribeModalProps) {
             }
             #mc_embed_signup .btb-trap {
               display: inline-block;
-              transform: skewX(-8deg);
-              background: var(--brand-purple-800);
-              border-radius: 10px;
-              padding: 0;
             }
             #mc_embed_signup #mc-embedded-subscribe {
               all: unset;
-              display: inline-block;
-              transform: skewX(8deg);
-              padding: 12px 20px;
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              padding: var(--space-3) var(--space-4);
               min-height: 44px;
-              line-height: 1;
               font-family: var(--font-display), Helvetica, Arial, sans-serif;
+              font-size: 0.875rem;
+              font-weight: 600;
               letter-spacing: 0.06em;
               text-transform: uppercase;
               color: var(--brand-pink-100);
+              background-color: var(--brand-purple-800);
+              border: none;
               cursor: pointer;
               user-select: none;
+              white-space: nowrap;
+              box-shadow: var(--shadow-soft);
+              transition: background-color 160ms ease, box-shadow 160ms ease;
+              border-radius: 0;
+              -webkit-clip-path: polygon(
+                var(--ch) 0,
+                calc(100% - var(--ch)) 0,
+                100% var(--ch),
+                100% calc(100% - var(--ch)),
+                calc(100% - var(--ch)) 100%,
+                var(--ch) 100%,
+                0 calc(100% - var(--ch)),
+                0 var(--ch)
+              );
+              clip-path: polygon(
+                var(--ch) 0,
+                calc(100% - var(--ch)) 0,
+                100% var(--ch),
+                100% calc(100% - var(--ch)),
+                calc(100% - var(--ch)) 100%,
+                var(--ch) 100%,
+                0 calc(100% - var(--ch)),
+                0 var(--ch)
+              );
             }
-            #mc_embed_signup .btb-trap:hover {
-              filter: brightness(1.06);
+            #mc_embed_signup #mc-embedded-subscribe:hover {
+              background-color: var(--brand-purple-600);
+            }
+            #mc_embed_signup #mc-embedded-subscribe:focus-visible {
+              outline: 2px solid color-mix(in oklab, var(--brand-purple-800) 55%, transparent);
+              outline-offset: 4px;
             }
             #mc_embed_signup .btb-actions {
               display: flex;

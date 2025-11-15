@@ -65,7 +65,7 @@ export function Header() {
                   onClick={() => setSubscribeOpen(true)}
                   aria-label="Subscribe to newsletter"
                 >
-                  Subscribe
+                  SUBSCRIBE
                 </button>
               </li>
             </ul>
@@ -119,7 +119,7 @@ export function Header() {
                     }}
                     aria-label="Subscribe to newsletter"
                   >
-                    Subscribe
+                    SUBSCRIBE
                   </button>
                 </li>
               </ul>
