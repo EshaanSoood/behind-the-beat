@@ -16,7 +16,7 @@ export function PodcastCard({ episode }: PodcastCardProps) {
       title={episode.title}
       href={`/podcast/${episode.slug}`}
       metaPrimary={episode.guest}
-      summary={episode.pullQuote}
+      summary=""
       pullQuote={episode.pullQuote}
       published={{
         display: formattedDate,

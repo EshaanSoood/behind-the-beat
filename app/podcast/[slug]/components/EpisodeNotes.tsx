@@ -14,13 +14,14 @@ export function EpisodeNotes({ episode }: EpisodeNotesProps) {
           About the Artist
         </h2>
         <div className="flex max-w-prose flex-col gap-4 text-base leading-relaxed text-[var(--text)]">
-          {episode.notes && <p>{episode.notes}</p>}
-          {episode.body.raw && (
+          {episode.body.raw ? (
             <div
               className="space-y-4"
               dangerouslySetInnerHTML={{ __html: episode.body.raw }}
             />
-          )}
+          ) : episode.notes ? (
+            <p>{episode.notes}</p>
+          ) : null}
           {episode.transcriptUrl && (
             <p className="text-sm text-[var(--text-muted)]">
               <a href={episode.transcriptUrl} target="_blank" rel="noopener noreferrer" className="focus-chamfer hover:underline">
@@ -36,7 +37,7 @@ export function EpisodeNotes({ episode }: EpisodeNotesProps) {
         <h2 className="font-display text-[var(--text-h2)] leading-tight text-[var(--text-deep-purple)]">
           Where to Find Them
         </h2>
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           {/* Placeholder social chips - will be populated when Episode type includes social links */}
           <a
             href="#"
@@ -46,6 +47,7 @@ export function EpisodeNotes({ episode }: EpisodeNotesProps) {
           >
             <span>Website</span>
           </a>
+          <span className="text-[var(--text-muted)]" aria-hidden="true">·</span>
           <a
             href="#"
             className="focus-chamfer surface-chamfer inline-flex items-center gap-2 border border-[var(--border-accent-strong)] bg-[var(--surface)] px-3 py-2 text-sm font-medium text-[var(--text)] shadow-soft transition hover:bg-[var(--bg-elevated)]"

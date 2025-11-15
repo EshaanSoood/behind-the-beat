@@ -58,8 +58,8 @@ export default function RootLayout({
           <main id="main" className="flex flex-1 flex-col pb-10 sm:pb-12 lg:pb-16">
             {children}
           </main>
-          <Footer />
         </div>
+        <Footer />
       </body>
     </html>
   );

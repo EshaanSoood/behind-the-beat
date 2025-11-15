@@ -66,12 +66,17 @@ export function HomeCard({
     const trimmedSummary = summary.trim();
     const trimmedPullQuote = pullQuote.trim();
     const computedPullQuote = trimmedPullQuote.length > 0 ? trimmedPullQuote : trimmedSummary;
-    const computedSummary = trimmedSummary.length > 0 ? trimmedSummary : trimmedPullQuote;
+    // For podcast cards, if summary is empty, don't fall back to pullQuote to avoid duplication
+    const computedSummary = isPodcastCard && trimmedSummary.length === 0 
+      ? "" 
+      : trimmedSummary.length > 0 
+        ? trimmedSummary 
+        : trimmedPullQuote;
     return {
       displaySummary: computedSummary,
       displayPullQuote: computedPullQuote,
     };
-  }, [pullQuote, summary]);
+  }, [pullQuote, summary, isPodcastCard]);
   const router = useRouter();
 
   function registerOverlayClick(event: MouseEvent<HTMLButtonElement>) {
@@ -198,11 +203,13 @@ export function HomeCard({
         )}
       </div>
 
-      <div className="home-card-copy">
-        <p className="home-card-text line-clamp-3" aria-hidden={isInteracting ? "true" : "false"}>
-          {displaySummary}
-        </p>
-      </div>
+      {displaySummary && (
+        <div className="home-card-copy">
+          <p className="home-card-text line-clamp-3" aria-hidden={isInteracting ? "true" : "false"}>
+            {displaySummary}
+          </p>
+        </div>
+      )}
 
       <div className="card-actions">
         <ButtonTrapezoid href={cta.href} tone={cta.tone} size="sm" aria-describedby={publishedId}>

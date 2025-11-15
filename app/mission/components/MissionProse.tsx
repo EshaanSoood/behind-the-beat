@@ -48,17 +48,7 @@ export function MissionProse() {
       </div>
 
       {/* Editor photo - centered below columns */}
-      <div className="mission-photo-wrapper flex justify-center">
-        <div
-          className="mission-photo surface-chamfer relative max-w-md overflow-hidden border border-[var(--border-accent-strong)] bg-[var(--surface)]"
-          data-role="mission-photo"
-        >
-          {/* Placeholder for editor photo - replace with actual image */}
-          <div className="aspect-[4/3] bg-[var(--brand-pink-100)] flex items-center justify-center text-[var(--text-muted)]">
-            Editor Photo
-          </div>
-        </div>
-      </div>
+      {/* Placeholder section removed - add image component when editor photo is available */}
     </article>
   );
 }

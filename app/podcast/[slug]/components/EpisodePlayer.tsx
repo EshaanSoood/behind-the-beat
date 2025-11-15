@@ -71,7 +71,7 @@ export function EpisodePlayer({ youtubeId, title, autoplay = false }: EpisodePla
         Listen in
       </h2>
       <div className="surface-chamfer relative w-full overflow-hidden border border-[var(--border-accent-strong)] bg-[var(--surface)] shadow-soft">
-        <div className="relative w-full pt-[56.25%]">
+        <div className="relative w-full pt-[56.25%] min-h-[200px]">
           <iframe
             key={embedSrc}
             src={embedSrc}
@@ -81,6 +81,7 @@ export function EpisodePlayer({ youtubeId, title, autoplay = false }: EpisodePla
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen
             className="absolute inset-0 h-full w-full border-0"
+            style={{ minHeight: "200px" }}
           />
         </div>
       </div>
