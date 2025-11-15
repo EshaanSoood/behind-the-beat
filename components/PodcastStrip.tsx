@@ -14,7 +14,7 @@ export function PodcastStrip({ episode }: PodcastStripProps) {
 
   return (
     <article
-      className="podcast-strip paper-grain surface-chamfer flex flex-col gap-4 border-[var(--border-strong-width)] border-[var(--card-border-podcast)] bg-[var(--surface)] p-6 md:flex-row md:items-center md:gap-8"
+      className="podcast-strip paper-grain surface-chamfer flex flex-col gap-4 border border-brand-purple800 bg-[var(--surface)] p-6 md:flex-row md:items-center md:gap-8"
       data-kind="podcast-strip"
     >
       {/* Text block - left side on desktop */}
@@ -56,6 +56,7 @@ export function PodcastStrip({ episode }: PodcastStripProps) {
     </article>
   );
 }
+
 
 
 

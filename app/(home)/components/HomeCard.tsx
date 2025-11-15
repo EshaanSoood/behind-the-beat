@@ -34,6 +34,7 @@ type HomeCardProps = {
     width: number;
     height: number;
   };
+  youtubeId?: string;
   cta: {
     href: string;
     label: string;
@@ -54,6 +55,7 @@ export function HomeCard({
   pullQuote,
   published,
   media,
+  youtubeId,
   cta,
   overlayAction,
 }: HomeCardProps) {
@@ -166,41 +168,71 @@ export function HomeCard({
 
       <div
         className="paper-grain surface-chamfer home-card-media ratio-1x1"
-        data-media-layout={isPodcastCard ? "split" : undefined}
+        data-media-layout={isPodcastCard ? "youtube-pullquote" : undefined}
       >
-        <Image
-          src={media.src}
-          alt={media.alt}
-          width={media.width}
-          height={media.height}
-          priority={media.priority}
-          sizes="(min-width: 1280px) 320px, (min-width: 1024px) 280px, (min-width: 640px) 340px, 88vw"
-          className="home-card-media-image"
-          loading={media.priority ? "eager" : "lazy"}
-          decoding="async"
-        />
-        {isPodcastCard ? (
-          <div className="home-card-media-overlay" aria-live="polite">
-            {overlayPullQuote}
-          </div>
-        ) : overlayAction ? (
-          <button
-            type="button"
-            className="focus-chamfer home-card-media-overlay"
-            aria-label={overlayAction.label}
-            aria-hidden={isInteracting ? "false" : "true"}
-            onClick={handleOverlayClick}
-          >
-            <svg aria-hidden="true" width="52" height="52" viewBox="0 0 52 52" fill="currentColor">
-              <path d="M21 16.667 37 26l-16 9.333V16.667Z" />
-            </svg>
-            {overlayPullQuote}
-          </button>
+        {isPodcastCard && youtubeId ? (
+          <>
+            <div className="home-card-youtube-embed">
+              <iframe
+                src={`https://www.youtube-nocookie.com/embed/${youtubeId}?rel=0&modestbranding=1&playsinline=1&autoplay=0`}
+                title={`Watch ${title}`}
+                loading="lazy"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                className="home-card-youtube-iframe"
+              />
+            </div>
+            <div className="home-card-pullquote-spacer" />
+            <div className="home-card-pullquote-container">
+              <p className="home-card-pullquote-text line-clamp-3">
+                {displayPullQuote}
+              </p>
+            </div>
+          </>
         ) : (
-          <div className="home-card-media-overlay" aria-hidden={isInteracting ? "false" : "true"}>
-            {overlayPullQuote}
-          </div>
+          <>
+            <Image
+              src={media.src}
+              alt={media.alt}
+              width={media.width}
+              height={media.height}
+              priority={media.priority}
+              sizes="(min-width: 1280px) 320px, (min-width: 1024px) 280px, (min-width: 640px) 340px, 88vw"
+              className="home-card-media-image"
+              loading={media.priority ? "eager" : "lazy"}
+              decoding="async"
+            />
+            {overlayAction ? (
+              <button
+                type="button"
+                className="focus-chamfer home-card-media-overlay"
+                aria-label={overlayAction.label}
+                aria-hidden={isInteracting ? "false" : "true"}
+                onClick={handleOverlayClick}
+              >
+                <svg aria-hidden="true" width="52" height="52" viewBox="0 0 52 52" fill="currentColor">
+                  <path d="M21 16.667 37 26l-16 9.333V16.667Z" />
+                </svg>
+                {overlayPullQuote}
+              </button>
+            ) : (
+              <div className="home-card-media-overlay" aria-hidden={isInteracting ? "false" : "true"}>
+                {overlayPullQuote}
+              </div>
+            )}
+          </>
         )}
+      </div>
+
+      <div className="card-actions card-actions--image-button">
+        <ButtonTrapezoid 
+          href={href} 
+          tone="neutral"
+          size="sm"
+        >
+          {variant === "review" ? "Read More" : "Listen Now"}
+        </ButtonTrapezoid>
       </div>
 
       {displaySummary && (

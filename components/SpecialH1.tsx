@@ -18,6 +18,7 @@ export function SpecialH1({ children, className }: SpecialH1Props) {
           className="special-h1-bg-text font-display leading-none" 
           data-role="special-h1-background"
           style={{ 
+            fontFamily: 'var(--font-display)',
             fontSize: '88px', // ~2x H1 (44px) - explicit pixel value for Puppeteer
             color: 'rgb(255, 211, 232)', // var(--brand-pink-100) as RGB
             lineHeight: '1',

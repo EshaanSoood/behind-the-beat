@@ -12,7 +12,7 @@ export function TracklistBox({ review }: TracklistBoxProps) {
         <h2 className="font-display text-[var(--text-h2)] leading-tight text-[var(--text-deep-purple)]">
           Tracklist
         </h2>
-        <ol className="list-decimal space-y-2 pl-6 text-base leading-relaxed">
+        <ol className="list-decimal space-y-2 text-base leading-relaxed">
           {review.tracklist.map((track, index) => (
             <li key={index}>{track}</li>
           ))}

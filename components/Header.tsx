@@ -4,9 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useId, useState } from "react";
+import { SubscribeModal } from "./SubscribeModal";
 
 const NAV_ITEMS = [
-  { href: "/", label: "Home" },
   { href: "/mission", label: "Mission" },
   { href: "/reviews", label: "Reviews" },
   { href: "/podcast", label: "Podcasts" },
@@ -19,6 +19,7 @@ export function Header() {
   const pathname = usePathname();
   const menuId = useId();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [subscribeOpen, setSubscribeOpen] = useState(false);
 
   const handleMobileNavClick = () => {
     setMobileOpen(false);
@@ -36,9 +37,6 @@ export function Header() {
           >
             <span className="site-header__brand-mark" data-logo="true">
               <Image src="/images/logo.png" alt="Behind the Beat logo" width={144} height={56} priority />
-            </span>
-            <span className="site-header__logo-wordmark" aria-hidden="true">
-              Behind the Beat
             </span>
           </Link>
           <nav className="site-header__nav" aria-label="Primary navigation">
@@ -60,6 +58,16 @@ export function Header() {
                   </li>
                 );
               })}
+              <li>
+                <button
+                  type="button"
+                  className="nav-link nav-angle-2"
+                  onClick={() => setSubscribeOpen(true)}
+                  aria-label="Subscribe to newsletter"
+                >
+                  Subscribe
+                </button>
+              </li>
             </ul>
           </nav>
         </div>
@@ -101,11 +109,25 @@ export function Header() {
                     </li>
                   );
                 })}
+                <li>
+                  <button
+                    type="button"
+                    className="nav-link"
+                    onClick={() => {
+                      setSubscribeOpen(true);
+                      handleMobileNavClick();
+                    }}
+                    aria-label="Subscribe to newsletter"
+                  >
+                    Subscribe
+                  </button>
+                </li>
               </ul>
             </nav>
           </div>
         </div>
       </div>
+      <SubscribeModal isOpen={subscribeOpen} onClose={() => setSubscribeOpen(false)} />
     </header>
   );
 }

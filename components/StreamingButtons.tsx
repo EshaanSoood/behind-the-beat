@@ -28,11 +28,10 @@ export function StreamingButtons({
         aria-label="Listen on Spotify"
         target="_blank"
         rel="noopener noreferrer"
-        className="gap-2"
+        className="streaming-button"
         data-role="stream-chip"
       >
-        <SpotifyIcon className="h-4 w-4 text-brand-purple800" />
-        <span>Spotify</span>
+        <SpotifyIcon className="h-5 w-5" />
       </ButtonTrapezoid>
     );
   }
@@ -47,11 +46,10 @@ export function StreamingButtons({
         aria-label="Listen on Apple Music"
         target="_blank"
         rel="noopener noreferrer"
-        className="gap-2"
+        className="streaming-button"
         data-role="stream-chip"
       >
-        <AppleMusicIcon className="h-4 w-4 text-brand-purple800" />
-        <span>Apple Music</span>
+        <AppleMusicIcon className="h-5 w-5" />
       </ButtonTrapezoid>
     );
   }
@@ -66,11 +64,10 @@ export function StreamingButtons({
         aria-label="Listen on YouTube Music"
         target="_blank"
         rel="noopener noreferrer"
-        className="gap-2"
+        className="streaming-button"
         data-role="stream-chip"
       >
-        <YouTubeMusicIcon className="h-4 w-4 text-brand-purple800" />
-        <span>YouTube Music</span>
+        <YouTubeMusicIcon className="h-5 w-5" />
       </ButtonTrapezoid>
     );
   }
@@ -79,6 +76,6 @@ export function StreamingButtons({
     return null;
   }
 
-  return <div className="flex flex-wrap gap-3">{buttons}</div>;
+  return <div className="streaming-buttons-container flex items-center gap-3">{buttons}</div>;
 }
 

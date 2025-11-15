@@ -78,7 +78,9 @@ export default async function PodcastEntryPage({ params, searchParams }: Podcast
           ]}
         />
         <EntryColumn variant="podcast">
-          <EpisodeHeader episode={episode} />
+          <div className="podcast-header">
+            <EpisodeHeader episode={episode} />
+          </div>
         </EntryColumn>
       </Section>
       <Section className="flex flex-col gap-8">

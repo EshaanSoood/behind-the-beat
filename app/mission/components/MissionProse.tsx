@@ -5,24 +5,33 @@ export function MissionProse() {
     <article className="flex flex-col gap-8">
       <SpecialH1>Our Mission</SpecialH1>
       
-      {/* Two-column layout: Mission body and Meet the Editor */}
-      <div className="mission-columns-wrapper grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-12">
+      {/* Three-column layout: Mission body, divider, and Meet the Editor */}
+      <div className="mission-columns-wrapper grid grid-cols-1 gap-8 md:grid-cols-[1fr_auto_1fr] md:gap-8">
         {/* Left column: Mission body */}
         <div className="mission-body" data-section="mission-body" data-role="mission-body">
           <div className="flex max-w-prose flex-col gap-4 text-base leading-relaxed text-[var(--text)]">
+            <h2 className="mb-2 font-display text-[var(--text-h2)] leading-tight text-[var(--text-strong)]">
+              Welcome to Behind The Beat
+            </h2>
             <p>
-              Placeholder mission statement. In Step 3 we will weave in the brand
-              voice, visuals, and supporting photography that speak to the magazine
-              vibe.
+              A quiet corner of the internet, far from algorithmic noise.
             </p>
             <p>
-              For now, this copy shell reminds us of the desired cadence and text
-              measure so long-form stories stay comfortable to read.
+              We&apos;re an independent art-journalism platform run by people who care deeply about music, not metrics. Our goal is simple, to bring you artists and albums the way a friend would, with warmth and excitement.
+            </p>
+            <p>
+              We believe that looking behind the curtain doesn&apos;t break the magic - it deepens it. Through thoughtful conversations with artists and reviews written after many deep listens, we hope to capture that spark and share it with you.
+            </p>
+            <p>
+              You won&apos;t find takedowns or trend-chasing here. In 2025, there&apos;s no reason to punch down on any genre or sound. We only write about music we love - every feature, every review, every story is a heartfelt recommendation from us to you.
+            </p>
+            <p>
+              Come on in.
             </p>
           </div>
         </div>
 
-        {/* Slanted divider - visible on desktop */}
+        {/* Center column: Slanted divider - visible on desktop */}
         <div
           className="mission-divider hidden md:block"
           data-role="mission-divider"
@@ -32,16 +41,14 @@ export function MissionProse() {
         {/* Right column: Meet the Editor */}
         <div className="mission-editor" data-section="mission-editor" data-role="mission-editor">
           <h2 className="mb-4 font-display text-[var(--text-h2)] leading-tight text-[var(--text-strong)]">
-            Meet the Editor
+            Meet The Editor
           </h2>
           <div className="flex max-w-prose flex-col gap-4 text-base leading-relaxed text-[var(--text)]">
             <p>
-              Short introduction about the editor. This section provides context
-              about who is behind Behind the Beat and their vision for the magazine.
+              Eshaan Sood is a musician and fellow traveller of the human experience. Originally from New Delhi, India, he currently lives in New York.
             </p>
             <p>
-              Additional details about the editor&apos;s background, musical interests,
-              and what drives their passion for music journalism.
+              I started Behind The Beat because at the end of the day, the only recommendations I take seriously and actually check out are ones from real people.
             </p>
           </div>
         </div>

@@ -1,24 +1,18 @@
-import Image from "next/image";
-
 import { Section } from "../../../components/Section";
 
 export function HomeHero() {
   return (
     <Section as="section" className="home-hero-section" aria-labelledby="home-hero-heading">
       <div className="home-hero-shell surface-chamfer paper-grain">
-        <div className="home-hero-badge surface-chamfer" aria-hidden="true">
-          <Image src="/images/logo.png" alt="" width={56} height={56} priority />
-        </div>
         <div className="home-hero-copy">
-          <h1 id="home-hero-heading">Welcome to Behind the Beat</h1>
+          <h1 id="home-hero-heading" className="font-display">Welcome To Behind The Beat</h1>
           <p className="text-lg text-brand-purple800/80">
-            Interviews and reviews crafted for slow listening, deep dives, and late-night inspiration.
+            A quiet corner of the internet away from algorithmic noise.
+            <br />
+            Bringingon the ground coverage of live music and deep dives into artists we love and their process
           </p>
         </div>
       </div>
-      <p className="home-hero-credit">
-        Illustration direction by Behind the Beat. Designed for a calm, focused read.
-      </p>
     </Section>
   );
 }

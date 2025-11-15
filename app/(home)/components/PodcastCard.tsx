@@ -28,6 +28,7 @@ export function PodcastCard({ episode }: PodcastCardProps) {
         width: 640,
         height: 640,
       }}
+      youtubeId={episode.youtubeId}
       cta={{
         href: `/podcast/${episode.slug}`,
         label: "Listen now",

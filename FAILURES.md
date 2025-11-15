@@ -120,3 +120,4 @@ The script is not finding the `.special-h1-bg-text` element. Debug output shows:
 3. Adjust script selectors or wait conditions
 4. Consider if elements need to be client components vs server components
 
+

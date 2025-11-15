@@ -5,7 +5,7 @@ date: "2024-04-15"
 pullQuote: "An in-depth conversation about ambient textures and electronic landscapes."
 cover: "/images/episodes/creative-process.jpg"
 alt: "Podcast episode cover featuring Luna Collective discussing their creative process"
-youtubeId: "dQw4w9WgXcQ"
+youtubeId: "OYpgBa2bbns"
 notes: "In this episode, we sit down with Luna Collective to discuss their creative process, the inspiration behind their latest album, and how they blend ambient textures with electronic elements. We explore their studio setup, favorite tools, and the journey from initial idea to finished track."
 transcriptUrl: "/transcripts/creative-process.txt"
 tags:

@@ -72,9 +72,11 @@ export default async function ReviewEntryPage({ params }: ReviewEntryPageProps) 
           ]}
         />
         <EntryColumn variant="review">
-          <ReviewHeader review={review} />
+          <div className="review-header">
+            <ReviewHeader review={review} />
+          </div>
           {review.pullQuote && (
-            <div className="mt-6" data-role="pull-quote">
+            <div className="mt-8" data-role="pull-quote">
               <PullQuote cite={review.artist}>{review.pullQuote}</PullQuote>
             </div>
           )}
