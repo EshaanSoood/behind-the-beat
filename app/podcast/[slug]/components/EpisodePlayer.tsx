@@ -66,19 +66,23 @@ export function EpisodePlayer({ youtubeId, title, autoplay = false }: EpisodePla
   const loading = shouldAutoplay ? "eager" : "lazy";
 
   return (
-    <section className="episode-player stack-sm">
-      <h2 className="episode-player-heading">Listen in</h2>
-      <div className="youtube-embed-container chamfered chamfered-border ch-14">
-        <iframe
-          key={embedSrc}
-          src={embedSrc}
-          title={`Watch ${title}`}
-          loading={loading}
-          referrerPolicy="strict-origin-when-cross-origin"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowFullScreen
-          className="youtube-embed"
-        />
+    <section className="episode-player flex flex-col gap-4" data-role="episode-player">
+      <h2 className="font-display text-[clamp(1.5rem,1.4vw+1rem,2rem)] leading-tight text-[var(--text-deep-purple)]">
+        Listen in
+      </h2>
+      <div className="surface-chamfer relative w-full overflow-hidden border border-[var(--border-accent-strong)] bg-[var(--surface)] shadow-soft">
+        <div className="relative w-full pt-[56.25%]">
+          <iframe
+            key={embedSrc}
+            src={embedSrc}
+            title={`Watch ${title}`}
+            loading={loading}
+            referrerPolicy="strict-origin-when-cross-origin"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+            className="absolute inset-0 h-full w-full border-0"
+          />
+        </div>
       </div>
     </section>
   );

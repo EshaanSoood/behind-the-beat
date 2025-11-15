@@ -21,27 +21,30 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
   };
 
   return (
-    <nav aria-label="Breadcrumb" className="breadcrumbs">
-      <ol className="breadcrumbs-list">
+    <nav aria-label="Breadcrumb" className="mb-6">
+      <ol className="flex flex-wrap items-center gap-2 text-sm text-neutral-ui-textMuted">
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
           const displayLabel = isLast ? truncateLabel(item.label) : item.label;
 
           return (
-            <li key={index} className="breadcrumbs-item">
+            <li key={index} className="flex items-center gap-2">
               {isLast ? (
-                <span aria-current="page" className="breadcrumbs-current">
+                <span aria-current="page" className="font-medium text-neutral-ui-text">
                   {displayLabel}
                 </span>
               ) : item.href ? (
-                <Link href={item.href} className="breadcrumbs-link">
+                <Link
+                  href={item.href}
+                  className="focus-chamfer transition hover:text-neutral-ui-text"
+                >
                   {displayLabel}
                 </Link>
               ) : (
                 <span>{displayLabel}</span>
               )}
               {!isLast && (
-                <ChevronRightIcon className="breadcrumbs-separator" aria-hidden="true" />
+                <ChevronRightIcon className="h-3 w-3 flex-shrink-0 text-neutral-ui-textMuted" aria-hidden="true" />
               )}
             </li>
           );

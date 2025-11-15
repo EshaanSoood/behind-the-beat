@@ -14,6 +14,9 @@ type ShareChipsProps = {
   quote?: string;
 };
 
+const chipClassName =
+  "focus-chamfer surface-chamfer inline-flex items-center gap-2 border border-neutral-ui-border bg-neutral-ui-offwhite px-3 py-2 text-sm font-medium text-neutral-ui-text shadow-soft transition hover:bg-neutral-ui-bg";
+
 export function ShareChips({ title, url, quote }: ShareChipsProps) {
   const [copied, setCopied] = useState(false);
   const [copyButtonRef, setCopyButtonRef] = useState<HTMLButtonElement | null>(null);
@@ -47,18 +50,18 @@ export function ShareChips({ title, url, quote }: ShareChipsProps) {
   };
 
   return (
-    <div className="share-chips stack-sm" role="group" aria-label="Share options">
-      <h3 className="share-chips-heading">Share</h3>
-      <div className="share-chips-list">
-        <div className="share-chip-wrapper">
+    <div className="flex flex-col gap-4" role="group" aria-label="Share options">
+      <h3 className="text-2xl font-semibold text-neutral-ui-text">Share</h3>
+      <div className="flex flex-wrap items-center gap-3">
+        <div className="relative inline-flex items-center">
           <button
             type="button"
             ref={setCopyButtonRef}
-            className="share-chip chamfered chamfered-border share-chip-copy"
+            className={chipClassName}
             onClick={handleCopy}
             aria-label="Copy link"
           >
-            <LinkIcon className="share-chip-icon" />
+            <LinkIcon className="h-4 w-4 text-brand-purple800" />
             <span>{copied ? "Copied!" : "Copy Link"}</span>
           </button>
           <span className="sr-only" aria-live="polite" aria-atomic="true">
@@ -69,38 +72,38 @@ export function ShareChips({ title, url, quote }: ShareChipsProps) {
           href={shareLinks.twitter}
           target="_blank"
           rel="noopener noreferrer"
-          className="share-chip chamfered chamfered-border share-chip-twitter"
+          className={chipClassName}
           aria-label="Share on Twitter"
         >
-          <XIcon className="share-chip-icon" />
+          <XIcon className="h-4 w-4 text-brand-purple800" />
           <span>Twitter</span>
         </a>
         <a
           href={shareLinks.facebook}
           target="_blank"
           rel="noopener noreferrer"
-          className="share-chip chamfered chamfered-border share-chip-facebook"
+          className={chipClassName}
           aria-label="Share on Facebook"
         >
-          <FacebookIcon className="share-chip-icon" />
+          <FacebookIcon className="h-4 w-4 text-brand-purple800" />
           <span>Facebook</span>
         </a>
         <a
           href={shareLinks.linkedin}
           target="_blank"
           rel="noopener noreferrer"
-          className="share-chip chamfered chamfered-border share-chip-linkedin"
+          className={chipClassName}
           aria-label="Share on LinkedIn"
         >
-          <LinkedInIcon className="share-chip-icon" />
+          <LinkedInIcon className="h-4 w-4 text-brand-purple800" />
           <span>LinkedIn</span>
         </a>
         <a
           href={shareLinks.email}
-          className="share-chip chamfered chamfered-border share-chip-email"
+          className={chipClassName}
           aria-label="Share via email"
         >
-          <MailIcon className="share-chip-icon" />
+          <MailIcon className="h-4 w-4 text-brand-purple800" />
           <span>Email</span>
         </a>
       </div>

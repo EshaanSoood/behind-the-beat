@@ -1,7 +1,7 @@
 ---
 title: "The Creative Process"
 guest: "Luna Collective"
-date: "2024-03-20"
+date: "2024-04-15"
 pullQuote: "An in-depth conversation about ambient textures and electronic landscapes."
 cover: "/images/episodes/creative-process.jpg"
 alt: "Podcast episode cover featuring Luna Collective discussing their creative process"

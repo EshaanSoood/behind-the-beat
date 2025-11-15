@@ -1,8 +1,6 @@
-import Image from "next/image";
-
 import { Section } from "../../../components/Section";
+import { EntryColumn } from "../../../components/EntryColumn";
 import { Breadcrumbs } from "../../../components/Breadcrumbs";
-import { ShareChips } from "../../../components/ShareChips";
 import { getEpisodeBySlug } from "../../../lib/content";
 import { buildEntryMeta, siteDefaults } from "../../../lib/seo";
 import { pickOgImage, sanitizeDescription } from "../../../lib/sharePreview";
@@ -13,18 +11,19 @@ import { EpisodeNotes } from "./components/EpisodeNotes";
 import { EpisodePlayer } from "./components/EpisodePlayer";
 
 type PodcastEntryPageProps = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
-  searchParams?: {
+  }>;
+  searchParams?: Promise<{
     autoplay?: string;
-  };
+  }>;
 };
 
 export async function generateMetadata({
   params,
 }: PodcastEntryPageProps): Promise<Metadata> {
-  const episode = getEpisodeBySlug(params.slug);
+  const { slug } = await params;
+  const episode = getEpisodeBySlug(slug);
 
   if (!episode) {
     return {
@@ -48,23 +47,29 @@ export async function generateMetadata({
   });
 }
 
-export default function PodcastEntryPage({ params, searchParams }: PodcastEntryPageProps) {
-  const episode = getEpisodeBySlug(params.slug);
-  const currentUrl = `${siteDefaults.url}/podcast/${params.slug}`;
-  const wantsAutoplay = searchParams?.autoplay === "1";
+export default async function PodcastEntryPage({ params, searchParams }: PodcastEntryPageProps) {
+  const { slug } = await params;
+  const episode = getEpisodeBySlug(slug);
+  const currentUrl = `${siteDefaults.url}/podcast/${slug}`;
+  const resolvedSearchParams = await searchParams;
+  const wantsAutoplay = resolvedSearchParams?.autoplay === "1";
 
   if (!episode) {
     return (
-      <Section as="article" className="stack-lg">
-        <h1>Episode not found</h1>
-        <p>The episode you&apos;re looking for doesn&apos;t exist.</p>
+      <Section as="article" className="flex flex-col gap-6">
+        <h1 className="font-display text-[clamp(1.75rem,1.6vw+1rem,2.25rem)] leading-tight text-brand-purple800">
+          Episode not found
+        </h1>
+        <p className="text-base text-neutral-ui-textMuted">
+          The episode you&apos;re looking for doesn&apos;t exist.
+        </p>
       </Section>
     );
   }
 
   return (
-    <>
-      <Section as="article" className="stack-lg">
+    <div data-page="podcast-entry">
+      <Section as="article" className="flex flex-col gap-8">
         <Breadcrumbs
           items={[
             { label: "Home", href: "/" },
@@ -72,35 +77,25 @@ export default function PodcastEntryPage({ params, searchParams }: PodcastEntryP
             { label: episode.title },
           ]}
         />
-        <EpisodeHeader episode={episode} />
-        {episode.cover && (
-          <div className="episode-cover chamfered chamfered-border ch-14">
-            <Image
-              src={episode.cover}
-              alt={episode.alt}
-              width={800}
-              height={800}
-              className="episode-cover-image"
-              loading="lazy"
-              decoding="async"
-            />
-          </div>
-        )}
+        <EntryColumn variant="podcast">
+          <EpisodeHeader episode={episode} />
+        </EntryColumn>
       </Section>
-      <Section className="stack-lg">
-        <EpisodePlayer
-          youtubeId={episode.youtubeId}
-          title={episode.title}
-          autoplay={wantsAutoplay}
-        />
+      <Section className="flex flex-col gap-8">
+        <EntryColumn variant="podcast">
+          <EpisodePlayer
+            youtubeId={episode.youtubeId}
+            title={episode.title}
+            autoplay={wantsAutoplay}
+          />
+        </EntryColumn>
       </Section>
-      <Section className="stack-lg">
-        <EpisodeNotes episode={episode} />
+      <Section className="flex flex-col gap-8">
+        <EntryColumn variant="podcast">
+          <EpisodeNotes episode={episode} />
+        </EntryColumn>
       </Section>
-      <Section className="stack-lg">
-        <ShareChips title={episode.title} url={currentUrl} quote={episode.pullQuote} />
-      </Section>
-    </>
+    </div>
   );
 }
 

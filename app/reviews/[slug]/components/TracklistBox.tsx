@@ -7,17 +7,20 @@ type TracklistBoxProps = {
 
 export function TracklistBox({ review }: TracklistBoxProps) {
   return (
-    <aside className="review-trackbox chamfered chamfered-border">
-      <h2 className="tracklist-title">Tracklist</h2>
-      <ol className="tracklist">
-        {review.tracklist.map((track, index) => (
-          <li key={index}>{track}</li>
-        ))}
-      </ol>
+    <>
+      <aside className="tracklist-panel surface-chamfer flex flex-col gap-4 border border-[var(--border-accent-strong)] bg-[var(--surface-frost-pink-70)] px-6 py-6 text-[var(--text)] shadow-soft" data-role="tracklist-panel">
+        <h2 className="font-display text-[var(--text-h2)] leading-tight text-[var(--text-deep-purple)]">
+          Tracklist
+        </h2>
+        <ol className="list-decimal space-y-2 pl-6 text-base leading-relaxed">
+          {review.tracklist.map((track, index) => (
+            <li key={index}>{track}</li>
+          ))}
+        </ol>
+      </aside>
       {review.streaming && (
-        <>
-          <h2 className="stream-title">Stream the album</h2>
-          <div className="stream-links">
+        <div className="streaming-row mt-6" data-role="streaming-row">
+          <div className="flex flex-col gap-3">
             <StreamingButtons
               spotify={review.streaming.spotify}
               apple={review.streaming.apple}
@@ -25,9 +28,9 @@ export function TracklistBox({ review }: TracklistBoxProps) {
               size="md"
             />
           </div>
-        </>
+        </div>
       )}
-    </aside>
+    </>
   );
 }
 

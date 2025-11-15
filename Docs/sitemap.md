@@ -231,11 +231,11 @@ aria-live="polite" → Screen reader announcement
     ↓
 /styles/globals.css (Base styles, imports tokens.css)
     ↓
-/styles/ui.css (Component styles, imports tokens.css)
+/styles/globals.css (Base styles, imports tokens.css)
     ↓
-Tailwind Config (extends tokens)
+Tailwind Config (extends tokens for Tailwind utilities)
     ↓
-Components (use CSS classes + Tailwind utilities)
+Components (compose Tailwind utilities with token-based arbitrary values)
 ```
 
 ## Content Layer Flow

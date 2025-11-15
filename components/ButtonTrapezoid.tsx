@@ -29,63 +29,53 @@ function isLinkProps(props: ButtonTrapezoidProps): props is ButtonTrapezoidAsLin
 export function ButtonTrapezoid(props: ButtonTrapezoidProps) {
   const { tone = "primary", size = "md", children, className } = props;
 
-  const toneClasses = {
-    primary: "button-trapezoid-primary",
-    neutral: "button-trapezoid-neutral",
+  const toneClassName: Record<"primary" | "neutral", string> = {
+    primary: "bg-brand-purple800 text-brand-pink100 hover:bg-brand-purple600",
+    neutral:
+      "border border-neutral-ui-border bg-neutral-ui-offwhite text-neutral-ui-text hover:bg-neutral-ui-bg",
   };
 
-  const sizeClasses = {
-    sm: "button-trapezoid-sm",
-    md: "button-trapezoid-md",
+  const sizeClassName: Record<"sm" | "md", string> = {
+    sm: "px-4 py-3 text-sm",
+    md: "px-6 py-4 text-base",
   };
-
-  const sanitizedExtraClasses = className
-    ?.split(/\s+/)
-    .filter(Boolean)
-    .filter((token) => !/^rounded(-|$)/.test(token) && !token.includes("radius"))
-    .join(" ");
 
   const combinedClassName = [
-    "button-trapezoid",
-    "chamfered",
-    "ch-14",
-    toneClasses[tone],
-    sizeClasses[size],
-    sanitizedExtraClasses,
+    "button-trapezoid surface-chamfer inline-flex min-h-[44px] items-center justify-center whitespace-nowrap uppercase tracking-wide font-semibold shadow-soft transition focus-chamfer",
+    toneClassName[tone],
+    sizeClassName[size],
+    className,
   ]
     .filter(Boolean)
     .join(" ");
 
   if (isLinkProps(props)) {
-    const {
-      href,
-      tone: _tone,
-      size: _size,
-      className: _className,
-      children: _children,
-      ...linkProps
-    } = props;
+    const { href, ...rawLinkProps } = props;
+    const sanitizedLinkProps = { ...rawLinkProps } as Record<string, unknown>;
+    delete sanitizedLinkProps.tone;
+    delete sanitizedLinkProps.size;
+    delete sanitizedLinkProps.className;
+    delete sanitizedLinkProps.children;
     return (
-      <Link href={href} className={combinedClassName} {...linkProps}>
+      <Link href={href} className={combinedClassName} {...(sanitizedLinkProps as Omit<ButtonTrapezoidAsLink, "href">)}>
         {children}
       </Link>
     );
   }
 
-  const {
-    tone: _tone,
-    size: _size,
-    className: _className,
-    children: _children,
-    type = "button",
-    ...buttonProps
-  } = props;
+  const { type = "button", ...rawButtonProps } = props;
+  const sanitizedButtonProps = { ...rawButtonProps } as Record<string, unknown>;
+  delete sanitizedButtonProps.tone;
+  delete sanitizedButtonProps.size;
+  delete sanitizedButtonProps.className;
+  delete sanitizedButtonProps.children;
+  delete sanitizedButtonProps.href;
 
   return (
     <button
       type={type}
       className={combinedClassName}
-      {...buttonProps}
+      {...(sanitizedButtonProps as Omit<ButtonTrapezoidAsButton, "type">)}
     >
       {children}
     </button>

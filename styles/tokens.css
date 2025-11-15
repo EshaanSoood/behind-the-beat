@@ -12,11 +12,20 @@
   --bg: var(--magazine-white);
   --bg-elevated: var(--magazine-white);
   --offwhite: var(--magazine-white);
+  --surface-frost-pink-70: color-mix(in oklab, var(--brand-pink-100) 70%, transparent);
+  --surface-frost-pink-85: color-mix(in oklab, var(--brand-pink-100) 85%, transparent);
+  --surface-frost-purple-30: color-mix(in oklab, var(--brand-purple-600) 30%, transparent);
+  --surface-frost-white-90: color-mix(in oklab, var(--offwhite) 90%, transparent);
+  --gradient-card-review: linear-gradient(135deg, color-mix(in oklab, var(--magazine-white) 90%, var(--brand-pink-100) 10%) 0%, color-mix(in oklab, var(--magazine-white) 85%, var(--brand-pink-100) 15%) 100%);
+  --gradient-card-podcast: linear-gradient(135deg, color-mix(in oklab, var(--magazine-white) 88%, var(--brand-pink-100) 12%) 0%, color-mix(in oklab, var(--magazine-white) 80%, var(--brand-purple-600) 20%) 100%);
+  --gradient-hero-title: linear-gradient(90deg, color-mix(in oklab, var(--brand-purple-800) 65%, transparent) 0%, color-mix(in oklab, var(--brand-purple-800) 20%, transparent) 60%, transparent 100%);
   
   /* Shared color tokens */
   --text-deep-purple: var(--brand-purple-800);
   --border-accent: rgba(255, 176, 218, 0.45);
   --border-accent-strong: rgba(255, 176, 218, 0.68);
+  --pink-outline: #ffc3d9;
+  --purple-outline: #5a2a82;
   
   /* Text colors */
   --text: var(--text-deep-purple);
@@ -37,6 +46,11 @@
   --border-strong-color: var(--border-accent-strong);
   --shadow-soft: 0 4px 14px rgba(109, 43, 121, 0.08);
   --shadow-card: 0 6px 16px rgba(109, 43, 121, 0.1);
+  --card-shadow-rest: var(--shadow-soft);
+  --card-shadow-hover: 0 10px 28px rgba(109, 43, 121, 0.18);
+  --card-shadow-focus: 0 0 0 3px color-mix(in oklab, var(--brand-purple-600) 45%, transparent);
+  --card-border-review: var(--pink-outline);
+  --card-border-podcast: var(--purple-outline);
   
   /* Paper grain opacity (for SVG) */
   --paper-grain-opacity: 0.12;
@@ -80,6 +94,15 @@
   --slant-2: -18deg;
   --slant-3: -22deg;
   --divider-thickness: 8px; /* hairline thickness for slanted rules */
+
+  /* Layout rhythm */
+  --gutter-horizontal: clamp(1rem, 2vw, 2.5rem);
+  --home-grid-gap: var(--space-6);
+  --home-card-padding: var(--space-6);
+  --home-card-gap: var(--space-4);
+  --newsletter-surface: color-mix(in oklab, var(--brand-pink-100) 40%, transparent);
+  --newsletter-border: color-mix(in oklab, var(--brand-purple-600) 32%, transparent);
+  --hero-min-height: clamp(184px, 25vh, 240px);
 }
 
 @supports (color: color-mix(in oklab, black 50%, white)) {
@@ -88,6 +111,15 @@
     --border-accent-strong: color-mix(in oklab, var(--brand-pink-300) 68%, transparent);
     --shadow-soft: 0 4px 14px color-mix(in oklab, var(--brand-purple-800) 8%, transparent);
     --shadow-card: 0 6px 16px color-mix(in oklab, var(--brand-purple-800) 10%, transparent);
+    --card-shadow-rest: var(--shadow-soft);
+    --card-shadow-hover: 0 10px 28px color-mix(in oklab, var(--brand-purple-800) 18%, transparent);
+    --card-shadow-focus: 0 0 0 3px color-mix(in oklab, var(--brand-purple-600) 45%, transparent);
+    --pink-outline: #ffc3d9;
+    --purple-outline: #5a2a82;
+    --card-border-review: var(--pink-outline);
+    --card-border-podcast: var(--purple-outline);
+    --newsletter-surface: color-mix(in oklab, var(--brand-pink-100) 36%, transparent);
+    --newsletter-border: color-mix(in oklab, var(--brand-purple-600) 32%, transparent);
   }
 }
 

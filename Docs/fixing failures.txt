@@ -1,0 +1,453 @@
+FIXING HOME PAGE FAILURES — IMPLEMENTATION PLAN
+================================================
+
+This plan addresses all visual and semantic failures identified in "big failures.txt" without using inline CSS, using only Tailwind tokens and existing CSS classes, ensuring no code duplication, and maintaining proper semantic hierarchy.
+
+---
+
+FAILURE 1: "LATEST" heading instead of "Latest Posts"
+------------------------------------------------------
+
+CURRENT STATE:
+- HomeTiles.tsx line 30: <p className="kicker">Latest</p>
+- This renders "LATEST" as a kicker above the actual heading
+- The actual "Latest Posts" heading exists but is visually separate
+
+ROOT CAUSE:
+- The kicker is being treated as the primary visual element
+- The spec requires "Latest Posts" as the section heading, not "LATEST"
+
+FIX:
+File: app/(home)/components/HomeTiles.tsx
+- Remove line 30: <p className="kicker">Latest</p>
+- Keep the h1/h2 "Latest Posts" headings (lines 31-36) as-is
+- No CSS changes needed
+
+VALIDATION:
+- Visual: "Latest Posts" should be the first visible text in the section
+- Semantic: h1 (mobile) / h2 (desktop+) remains correct
+- No hierarchy breaks
+
+---
+
+FAILURE 2: Card CTA buttons are rounded rectangles instead of trapezoids
+-------------------------------------------------------------------------
+
+CURRENT STATE:
+- ButtonTrapezoid.tsx uses class "button-trapezoid surface-chamfer"
+- globals.css has no specific .button-trapezoid styling
+- The chamfer is applied, but the button appears rounded in screenshots
+
+ROOT CAUSE:
+- Browser may be applying default border-radius
+- The surface-chamfer clip-path may not be rendering correctly on the button element
+- Possible CSS specificity issue
+
+FIX:
+File: styles/globals.css
+- Add explicit button trapezoid rule after line 422:
+
+.button-trapezoid {
+  border-radius: 0 !important;
+}
+
+- Ensure the surface-chamfer selector includes button elements (line 367 already has this)
+- Verify clip-path is not being overridden
+
+File: components/ButtonTrapezoid.tsx
+- No changes needed (already uses correct classes)
+
+VALIDATION:
+- Visual: Buttons should have chamfered corners matching the --ch token (14px)
+- All four corners should be cut at 45-degree angles
+- No rounded corners visible
+
+---
+
+FAILURE 3: Review card hover replaces entire card with purple overlay
+----------------------------------------------------------------------
+
+CURRENT STATE:
+- HomeCard.tsx lines 158-162: overlay covers the image area only
+- globals.css line 721: overlay background is 85% opaque purple
+- globals.css line 728-730: overlay opacity goes from 0 to 1 on interaction
+- The overlay is positioned over .home-card-media (the image), not the entire card
+
+ROOT CAUSE:
+- The overlay opacity transition makes the image completely disappear
+- The spec requires pull-quote to appear WITHOUT hiding the image
+- Current implementation: image → purple overlay with pull-quote
+- Required implementation: image → image with semi-transparent overlay showing pull-quote
+
+FIX:
+File: styles/globals.css
+
+Line 721 - Change overlay opacity:
+CURRENT: background: color-mix(in oklab, var(--brand-purple-800) 85%, transparent);
+NEW:     background: color-mix(in oklab, var(--brand-purple-800) 50%, transparent);
+
+This allows the image to remain visible underneath while the pull-quote appears on top.
+
+Line 723-724 - Adjust opacity transition:
+CURRENT: opacity: 0;
+NEW:     opacity: 0;
+(Keep as-is, but the lower background opacity will make the image visible)
+
+ALTERNATIVE (if image needs to be more visible):
+- Change background to 35-40% opacity instead of 50%
+- Test for contrast with pull-quote text
+
+File: app/(home)/components/HomeCard.tsx
+- No changes needed (structure is correct)
+
+VALIDATION:
+- On hover/focus: pull-quote appears over the image
+- Image remains visible (dimmed but recognizable)
+- Headline, metadata, and CTA remain stationary
+- No layout shift occurs
+
+---
+
+FAILURE 4: Nav bar has white border instead of "emerging from logo"
+--------------------------------------------------------------------
+
+CURRENT STATE:
+- Header.tsx line 30-35: Logo block with white background
+- Header.tsx line 37-59: Nav shell with pink background
+- globals.css line 516-525: .site-header__nav-shell has clip-path and ::before pseudo
+- globals.css line 527-535: ::before creates triangular extension
+- There's visual separation between logo and nav (white border visible)
+
+ROOT CAUSE:
+- The nav-shell ::before pseudo (line 527-535) is supposed to connect to the logo
+- The clip-path on line 523 starts at 18px, creating a gap
+- The ::before left position is -28px, but there's still a visual disconnect
+- Box-shadow on both elements creates a border effect
+
+FIX:
+File: styles/globals.css
+
+Line 501 - Remove box-shadow from logo:
+CURRENT: box-shadow: var(--shadow-soft);
+NEW:     box-shadow: none;
+
+Line 524 - Remove box-shadow from nav-shell:
+CURRENT: box-shadow: var(--shadow-soft);
+NEW:     box-shadow: none;
+
+Line 493-502 - Adjust logo block positioning:
+Add: position: relative;
+Add: z-index: 1;
+
+Line 516-525 - Adjust nav-shell:
+Change line 523 clip-path to start at 0px instead of 18px:
+CURRENT: clip-path: polygon(18px 0, 100% 0, 100% 100%, 0 100%);
+NEW:     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+
+Remove the ::before pseudo entirely (lines 527-535) as it's creating the separation
+
+Add margin-left to nav-shell to overlap with logo:
+Add: margin-left: -32px;
+Add: padding-left: calc(var(--space-4) + 32px);
+
+This will make the nav bar appear to emerge from behind/within the logo block.
+
+File: components/Header.tsx
+- No changes needed
+
+VALIDATION:
+- Nav bar appears to originate from the logo block
+- No white border or gap between logo and nav
+- Visual continuity between the two elements
+- Logo appears "in front" of the nav bar
+
+---
+
+FAILURE 5: Nav dividers are vertical instead of angled
+-------------------------------------------------------
+
+CURRENT STATE:
+- globals.css line 267-278: .nav-link::before creates dividers
+- Line 275: transform: translateY(-50%) rotate(-12deg);
+- Line 281: .nav-angle-1 uses rotate(-7deg)
+- Line 285: .nav-angle-2 uses rotate(-16deg)
+- Header.tsx line 16: ANGLE_CLASSES array with angle assignments
+
+ROOT CAUSE:
+- The rotation is applied, but the dividers appear vertical in screenshots
+- Possible issue: the divider is 1px wide, so rotation may not be visually apparent
+- The rotation angles may be too subtle
+
+FIX:
+File: styles/globals.css
+
+Line 272-273 - Increase divider width:
+CURRENT: width: 1px;
+         height: 1.75rem;
+NEW:     width: 2px;
+         height: 2rem;
+
+Line 275 - Increase base rotation:
+CURRENT: transform: translateY(-50%) rotate(-12deg);
+NEW:     transform: translateY(-50%) rotate(-18deg);
+
+Line 281 - Adjust angle-1:
+CURRENT: transform: translateY(-50%) rotate(-7deg);
+NEW:     transform: translateY(-50%) rotate(-12deg);
+
+Line 285 - Adjust angle-2:
+CURRENT: transform: translateY(-50%) rotate(-16deg);
+NEW:     transform: translateY(-50%) rotate(-22deg);
+
+These changes make the angles more pronounced and visible.
+
+File: components/Header.tsx
+- No changes needed (angle classes are already applied)
+
+VALIDATION:
+- Nav dividers are visibly slanted at different angles
+- Each divider has a distinct slant (not uniform)
+- Angles match the "slightly different slants per divider" requirement
+
+---
+
+FAILURE 6: Artist name has border/box treatment not in spec
+------------------------------------------------------------
+
+CURRENT STATE:
+- HomeCard.tsx line 127: <p className="home-card-meta home-card-meta-primary">{metaPrimary}</p>
+- globals.css line 684-689: .home-card-meta styling
+- No explicit border in CSS, but screenshots show a border around "COSMIC DRIFTERS"
+
+ROOT CAUSE:
+- The border may be coming from an unknown source
+- Possible inline style or browser default
+- May be a focus ring or outline being applied incorrectly
+
+INVESTIGATION NEEDED:
+- Check if there's CSS we haven't seen yet
+- The class "home-card-meta-primary" only appears in HomeCard.tsx and acceptance script
+- No specific styling for .home-card-meta-primary in globals.css
+
+FIX:
+File: styles/globals.css
+
+After line 689, add explicit rule:
+.home-card-meta-primary {
+  border: none;
+  outline: none;
+  box-shadow: none;
+  background: transparent;
+}
+
+This ensures no border, outline, or background is applied.
+
+File: app/(home)/components/HomeCard.tsx
+- No changes needed (markup is correct)
+
+VALIDATION:
+- Artist name appears as plain text
+- No border, box, or background around metadata
+- Only the card border (pink/purple) should be visible
+
+---
+
+FAILURE 7: Metadata marked as heading level 2 (semantic violation)
+-------------------------------------------------------------------
+
+CURRENT STATE:
+- HomeCard.tsx line 127: <p className="home-card-meta home-card-meta-primary">{metaPrimary}</p>
+- This is correctly a <p> tag, not a heading
+- VoiceOver announces it as "heading level 2"
+
+ROOT CAUSE:
+- The issue is NOT in the markup (it's already a <p>)
+- VoiceOver may be inferring heading semantics from:
+  - Font size
+  - Font weight
+  - Text transform (uppercase)
+  - Position in the document
+
+INVESTIGATION:
+- globals.css line 684-689 shows the styling
+- Line 687: text-transform: uppercase;
+- Line 686: letter-spacing: 0.06em;
+- These visual treatments may be causing VoiceOver to misidentify the element
+
+FIX:
+File: styles/globals.css
+
+Line 684-689 - Ensure proper semantic hints:
+Add role clarification by ensuring the element is clearly not a heading.
+
+Actually, the issue is likely NOT in our code. If the markup is <p>, VoiceOver should not announce it as a heading. This suggests:
+1. The screenshot annotation may be incorrect, OR
+2. There's a different element being focused
+
+VERIFICATION NEEDED:
+- Re-test with VoiceOver to confirm which element is being announced as h2
+- Check if the card title (line 122-126 in HomeCard.tsx) is being announced correctly
+
+LIKELY ACTUAL ISSUE:
+- The card title (line 123) has no explicit heading tag
+- It's a <span> inside a <Link>
+- This should be an <h3> or <h2> depending on hierarchy
+
+FIX:
+File: app/(home)/components/HomeCard.tsx
+
+Lines 122-126 - Change structure:
+CURRENT:
+<Link href={href} className="focus-chamfer home-card-title">
+  <span id={headingId} className="line-clamp-2">
+    {title}
+  </span>
+</Link>
+
+NEW:
+<h3 id={headingId} className="home-card-title-heading">
+  <Link href={href} className="focus-chamfer home-card-title">
+    <span className="line-clamp-2">
+      {title}
+    </span>
+  </Link>
+</h3>
+
+File: styles/globals.css
+
+After line 682, add:
+.home-card-title-heading {
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  color: inherit;
+}
+
+This maintains visual styling while fixing semantic structure.
+
+VALIDATION:
+- Card title is announced as h3 (or appropriate level)
+- Metadata is announced as plain text
+- Heading hierarchy: h1 (hero/Latest Posts) → h2 (sections) → h3 (card titles)
+- No heading level skips
+
+---
+
+IMPLEMENTATION ORDER
+--------------------
+
+1. FAILURE 1 (Latest heading) - Simplest, no dependencies
+2. FAILURE 6 (Artist border) - Simple CSS addition
+3. FAILURE 2 (Button trapezoid) - CSS fix
+4. FAILURE 5 (Nav angles) - CSS adjustments
+5. FAILURE 3 (Review hover) - CSS opacity change
+6. FAILURE 4 (Nav emergence) - Complex CSS restructuring
+7. FAILURE 7 (Heading semantics) - Requires markup change and CSS
+
+---
+
+FILES TO MODIFY
+---------------
+
+1. app/(home)/components/HomeTiles.tsx
+   - Remove kicker line
+
+2. app/(home)/components/HomeCard.tsx
+   - Restructure title to use h3 wrapper
+
+3. styles/globals.css
+   - Add .button-trapezoid border-radius rule
+   - Adjust .home-card-media-overlay opacity
+   - Remove box-shadows from header elements
+   - Adjust nav-shell clip-path and positioning
+   - Increase nav divider width and rotation angles
+   - Add .home-card-meta-primary explicit reset
+   - Add .home-card-title-heading styling
+
+4. components/Header.tsx
+   - No changes needed
+
+5. components/ButtonTrapezoid.tsx
+   - No changes needed
+
+---
+
+TAILWIND TOKEN USAGE
+--------------------
+
+All spacing, colors, and effects use existing CSS custom properties from tokens.css:
+- --space-* for spacing
+- --brand-purple-*, --brand-pink-* for colors
+- --shadow-soft, --shadow-card for elevations
+- --ch for chamfer size
+- No new tokens needed
+- No inline styles
+- No Tailwind arbitrary values
+
+---
+
+VALIDATION CHECKLIST
+--------------------
+
+After implementation:
+□ "Latest Posts" is the visible section heading (not "LATEST")
+□ CTA buttons have chamfered corners, no rounded edges
+□ Review card hover shows pull-quote over dimmed image (image still visible)
+□ Nav bar appears to emerge from logo block (no white border)
+□ Nav dividers are visibly angled at varying degrees
+□ Artist name has no border or box around it
+□ Card titles are announced as h3 by screen readers
+□ Metadata is announced as plain text (not heading)
+□ No heading hierarchy skips (h1 → h2 → h3)
+□ All changes use existing Tailwind/CSS tokens
+□ No inline styles introduced
+□ No code duplication
+
+---
+
+ACCESSIBILITY NOTES
+-------------------
+
+- Heading hierarchy must be: h1 (mobile: Latest Posts, desktop: hero) → h2 (desktop: Latest Posts) → h3 (card titles)
+- Focus indicators must remain visible throughout
+- Color contrast must be maintained (especially with overlay opacity changes)
+- Reduced motion preferences already respected in globals.css line 841-850
+- All interactive elements remain keyboard accessible
+
+---
+
+TESTING STRATEGY
+----------------
+
+1. Visual QA:
+   - Compare against screenshots in tech spec
+   - Verify each failure is resolved
+   - Check at mobile, tablet, desktop breakpoints
+
+2. Semantic QA:
+   - Use VoiceOver to verify heading announcements
+   - Tab through page to verify focus order
+   - Check aria-labelledby connections
+
+3. Automated QA:
+   - Run existing Puppeteer scripts
+   - Verify no new linter errors
+   - Check for CSS specificity conflicts
+
+4. Cross-browser:
+   - Test in Safari (primary)
+   - Test in Chrome
+   - Test in Firefox
+   - Verify clip-path support
+
+---
+
+END OF PLAN
+
+
+
+
+
+
+

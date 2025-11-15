@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import { ButtonTrapezoid } from "../../../components/ButtonTrapezoid";
 import { EmptyState } from "../../../components/EmptyState";
+import { SpecialH1 } from "../../../components/SpecialH1";
 import type { Review } from "../../../lib/content";
 
 import { ReviewListItem } from "./ReviewListItem";
@@ -48,9 +49,9 @@ export function ReviewList({ initialReviews }: ReviewListProps) {
 
   if (initialReviews.length === 0) {
     return (
-      <section className="stack-md">
-        <h1>Reviews</h1>
-        <p className="tile-meta">
+      <section className="flex flex-col gap-6">
+        <SpecialH1>Reviews</SpecialH1>
+        <p className="text-base text-neutral-ui-textMuted">
           Deep-dive album reviews with tracklists, streaming links, and pull
           quotes. Explore the stories behind the music.
         </p>
@@ -63,19 +64,22 @@ export function ReviewList({ initialReviews }: ReviewListProps) {
   }
 
   return (
-    <section className="stack-md">
-      <h1>Reviews</h1>
-      <p className="tile-meta">
+    <section className="flex flex-col gap-6">
+      <SpecialH1>Reviews</SpecialH1>
+      <p className="text-base text-neutral-ui-textMuted">
         Deep-dive album reviews with tracklists, streaming links, and pull
         quotes. Explore the stories behind the music.
       </p>
-      <ul id="review-grid" className="post-grid">
+      <ul
+        id="review-grid"
+        className="flex flex-col gap-6"
+      >
         {visibleReviews.map((review) => (
           <ReviewListItem key={review.slug} review={review} />
         ))}
       </ul>
       {hasMore && (
-        <div>
+        <div className="mt-6">
           <ButtonTrapezoid
             tone="neutral"
             size="md"

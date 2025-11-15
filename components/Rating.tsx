@@ -9,11 +9,15 @@ export function Rating({ value, outOf = 5 }: RatingProps) {
   }
 
   return (
-    <div className="rating" role="img" aria-label={`Rating: ${value} out of ${outOf}`}>
+    <div
+      className="inline-flex items-center gap-1 text-sm text-neutral-ui-textMuted"
+      role="img"
+      aria-label={`Rating: ${value} out of ${outOf}`}
+    >
       {Array.from({ length: outOf }, (_, i) => (
         <svg
           key={i}
-          className="rating-icon"
+          className="h-3 w-3 text-brand-pink500"
           width="12"
           height="12"
           viewBox="0 0 12 12"
@@ -23,10 +27,7 @@ export function Rating({ value, outOf = 5 }: RatingProps) {
           aria-hidden="true"
           focusable="false"
         >
-          <polygon
-            points="6,1 7.5,4.5 11.5,5 8.5,7.5 9.5,11.5 6,9 2.5,11.5 3.5,7.5 0.5,5 4.5,4.5"
-            clipPath="polygon(6% 0, 100% 0, 94% 100%, 0 100%)"
-          />
+          <polygon points="6,1 7.5,4.5 11.5,5 8.5,7.5 9.5,11.5 6,9 2.5,11.5 3.5,7.5 0.5,5 4.5,4.5" />
         </svg>
       ))}
     </div>

@@ -1,0 +1,40 @@
+Homepage Revamp – Implementation Plan (Final Decisions)
+
+Source References
+- `app/page.tsx`: Hero + grid layout structure
+- `app/(home)/components/HomeHero.tsx`: Hero content block, credits placement
+- `app/(home)/components/CardGrid.tsx`: Grid container, gap handling
+- `app/(home)/components/PodcastCard.tsx`, `ReviewCard.tsx`: Card layout, height, media crop, chamfers
+- `styles/globals.css`: Chamfer utilities, section spacing tokens
+- `components/Footer.tsx`: Shared container padding rhythm
+
+Planned Changes
+1. Remove Debug Borders
+   - Audit `PodcastCard.tsx`, `ReviewCard.tsx`, and any helper styles to eliminate temporary outline/border classes used for debugging.
+
+2. Equal Card Heights
+   - Ensure the grid (`CardGrid.tsx`) enforces equal heights per row via CSS grid `auto-rows` coupled with consistent card min-height. Adjust individual card components to respect the shared height.
+
+3. Gutter Rhythm
+   - Update grid gap to `gap-6` (24px) and confirm container padding uses `px-4 sm:px-6 lg:px-8`. Cross-check the surrounding sections (`Section` component) to maintain consistent padding.
+
+4. Chamfer Treatment
+   - Verify all card surfaces, media wrappers, CTAs, and overlays use `var(--ch)` chamfer (likely via shared `clip-path`). Confirm hero artwork is allowed full-bleed without chamfer per exception.
+
+5. Inset Media Crop
+   - Review card media blocks to enforce `object-fit: cover` on a fixed square aspect ratio (no letterboxing). Validate fallback placeholders remain square.
+
+6. Hero-to-Grid Spacing
+   - Adjust vertical spacing between hero section and grid to 24px (`my-6`). Ensure Section spacing utilities reflect this rhythm.
+
+7. Credits Placement & Contrast
+   - Move hero credit copy into a separate caption row below the artwork, with tinted background or typographic treatment guaranteeing AA contrast. Update `HomeHero.tsx` accordingly.
+
+8. Content Width Discipline
+   - Maintain full-bleed hero while constraining the grid within `max-w-7xl` (or equivalent) plus the prescribed paddings. Double-check there’s no horizontal overflow.
+
+Validation Checklist
+- Keyboard/VO focus: confirm chamfer focus treatment remains intact after layout tweaks.
+- Responsive check (mobile/tablet/desktop) for spacing, card heights, and gutters.
+- Visual QA: revisit hero screenshot after changes to ensure issues 1–8 are resolved.
+- Run `npm run lint` and `npm run build` post-refactor.

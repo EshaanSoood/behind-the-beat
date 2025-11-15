@@ -22,7 +22,15 @@ tags:
 
 Whisper Woods' *Acoustic Sessions* is a return to simplicity. Recorded in a single room with minimal production, the album captures the raw emotion of live performance.
 
+<img src="/images/reviews/acoustic-sessions.jpg" alt="Acoustic guitar setup" style="width: 60%; max-width: 400px; margin: 1rem 0;" />
+
 Each track feels like a private moment shared between artist and listener. The vocals are warm and intimate, the guitar work is understated yet expressive, and the overall production values the song over the studio trickery.
 
-This is music for quiet mornings, for reflection, for those moments when you need something real and unadorned. Whisper Woods has created something genuinely special here.
+<img src="/images/reviews/acoustic-sessions.jpg" alt="Intimate performance space" style="width: 40%; max-width: 250px; margin: 1rem 0;" />
+
+This is music for quiet mornings, for reflection, for those moments when you need something real and unadorned.
+
+<img src="/images/reviews/acoustic-sessions.jpg" alt="Warm acoustic atmosphere" style="width: 100%; max-width: 600px; margin: 1rem 0;" />
+
+Whisper Woods has created something genuinely special here.
 

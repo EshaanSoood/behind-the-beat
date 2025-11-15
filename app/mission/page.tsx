@@ -11,7 +11,7 @@ export const metadata = genMeta({
 
 export default function MissionPage() {
   return (
-    <Section as="article" className="stack-lg">
+    <Section as="article" className="flex flex-col gap-12" data-page="mission">
       <MissionProse />
     </Section>
   );

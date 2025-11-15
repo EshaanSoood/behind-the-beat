@@ -1,0 +1,101 @@
+Homepage Issues to Address (Next Refactor)
+
+Execution Order (high → low severity)
+1. Card Aspect & Row Stability (Critical)
+2. Grid Row Model (Critical)
+3. Chamfer Consistency (Critical)
+4. Tokenized Colors & Shadows (Critical)
+5. Heading ↔ Grid Alignment (High)
+6. Focus Ring Visibility (High)
+7. Alt Text Fallbacks (Medium)
+8. SVG ClipPath Fix (Low but correctness)
+9. Tailwind Config Coverage (Medium)
+10. Rounded-Corner Guardrail & Underline Unification (Critical)
+11. Fixture Stability & Shadow Docs (High)
+
+Problems & Target Files
+1. Card Aspect & Row Stability
+   - Files: `app/(home)/components/PodcastCard.tsx`, `ReviewCard.tsx`, `CardGrid.tsx`
+   - Remove fixed aspect classes on outer `<article>`, drop outer `overflow-hidden`.
+   - Align summary and quote typography (font-size, line-height, margins) to avoid height shifts.
+   - Ensure row bottoms align within ±1px across 6 desktop cards (visual QA).
+
+2. Grid Row Model
+   - Files: same as above.
+   - Remove `grid-auto-rows: 1fr` when item height is natural; keep 3/2/1 columns via media queries.
+
+3. Chamfer Consistency
+   - Files: `styles/globals.css`, `components/Header.tsx`, card components.
+   - Centralize chamfer helper; eliminate duplicate inline polygon definitions.
+   - Remove any `rounded-*` usage and add CI guard (fail build if `rounded-` appears).
+
+4. Tokenized Colors & Shadows
+   - Replace inline RGBA/hex with tokens or documented utilities.
+   - Confirm `shadow-soft` and `shadow-card` exist in `tailwind.config.ts`.
+
+5. Heading ↔ Grid Alignment
+   - File: `HomeTilesClient.tsx`.
+   - Anchor heading and grid to the same container; remove `--home-card-gap` var.
+
+6. Focus Ring Visibility
+   - Ensure focus rings render fully (no clipping) after chamfer/focus updates.
+
+7. Alt Text Fallbacks
+   - `ReviewCard.tsx`: guarantee alt strings never include “undefined”.
+
+8. SVG ClipPath Fix
+   - `components/Rating.tsx`: remove invalid `clipPath="polygon(...)"` attribute.
+
+9. Tailwind Config Coverage
+   - Confirm `tailwind.config.ts` content globs cover all template paths and custom utilities (chamfer, shadows, underline). 
+
+10. Rounded-Corner Guardrail / Underline Unification
+   - Add build-time checks to prevent `rounded-` usage.
+   - Align nav underline with `.section-title::after` thickness/edge style.
+
+11. Fixture Stability & Shadow Docs
+   - Freeze representative cards (1 long review, 1 long podcast) to test height stability.
+   - Document shadow utilities in `tailwind.config.ts` or README.
+
+Pass/Fail Acceptance (automatable)
+1. Card Aspect & Row Stability
+   - “No outer `<article>` has an `aspect-*` class → PASS.”
+   - “No card has `overflow-hidden` on the outer container → PASS.”
+   - “Summary and quote blocks share identical font-size, line-height, margins → PASS.”
+   - “Row bottoms align within ±1px across 6 desktop cards → PASS.”
+
+2. Grid Row Model
+   - “Grid container has no `grid-auto-rows: 1fr` when cards control height → PASS.”
+   - “At desktop, 3 columns render; at tablet, 2; at mobile, 1 → PASS.”
+
+3. Tokenized Colors & Shadows
+   - “No inline `rgba(...)` or non-token hex on backgrounds/borders → PASS.”
+   - “Classes `shadow-soft` and `shadow-card` resolve to configured values → PASS.”
+
+4. Chamfer Consistency & Rounded Guardrail
+   - “Exactly one chamfer utility applied; no element defines its own polygon → PASS.”
+   - “No class matching `rounded-` exists (CI fails otherwise) → PASS.”
+
+5. Focus Ring Visibility
+   - “Card CTA and container show visible, unclipped focus ring on keyboard focus → PASS.”
+
+6. Heading ↔ Grid Alignment
+   - “Left x-position of ‘Latest’ equals first card within ±1px at all breakpoints → PASS.”
+   - “`--home-card-gap` variable removed → PASS.”
+
+7. Alt Text Fallbacks
+   - “Review card image `alt` never contains ‘undefined’ → PASS.”
+
+8. SVG ClipPath Fix
+   - “No SVG element uses `clipPath="polygon(...)"` → PASS.”
+
+9. Tailwind Config Coverage
+   - “Content globs include `app/**`, `components/**`, and other template dirs → PASS.”
+   - “Custom utilities (chamfer, shadows, underline) defined in config → PASS.”
+
+10. Underline Unification
+   - “Nav underline thickness/shape matches `.section-title::after` style → PASS.”
+
+11. Fixture Stability & Shadow Docs
+   - “Regression fixtures for long/short tiles run in CI → PASS.”
+   - “Shadow utilities documented in config/README → PASS.”

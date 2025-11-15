@@ -1,0 +1,25 @@
+Clarifying Questions – Layout QA (Screenshot Review)
+
+1. Debug Borders
+   - Are the visible tile borders intentional for a debug build, or should they be removed entirely for production screenshots?
+
+2. Card Height Consistency
+   - Should every tile enforce the same min/max height regardless of content length, or can certain tiles (e.g., featured) be taller?
+
+3. Gutter Rhythm
+   - Do you have a target gutter value (px or Tailwind token) we should use to lock left/right spacing, or should we match an existing design spec?
+
+4. Corner Treatment
+   - Should all visible surfaces switch to the standard chamfer size (var(--ch)), or are any exceptions allowed (e.g., hero artwork)?
+
+5. Inset Media
+   - How should the inset image behave: strict square crop with object-fit: cover, or should we letterbox if the source art isn’t square?
+
+6. Hero-to-Grid Spacing
+   - What vertical spacing token should we use between the hero art and the first card row to hit the “modest rhythm” you’re expecting?
+
+7. Credits Placement/Contrast
+   - Would you prefer the credit text inside a badge, moved below the hero, or adjusted with a backdrop/gradient to ensure contrast?
+
+8. Content Width
+   - Should the hero artwork respect the same max-width as the grid (with equal left/right padding), or do we intentionally allow full-bleed art with controlled overflow?

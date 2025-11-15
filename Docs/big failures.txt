@@ -1,0 +1,9 @@
+Big Visual Failures (per Behind The Beat Home Page Tech Spec)
+
+- Latest posts heading is rendered as "LATEST" instead of the required "Latest Posts," so the section fails Tech Spec 4 (Latest posts heading placement and copy).
+- Card CTA buttons are rounded rectangles; the spec (Card System 5) requires trapezoid buttons that align horizontally across each row.
+- Review card hover replaces the entire card with a purple overlay, hiding the album art and headline; Tech Spec 6 acceptance says the pull-quote must appear without moving existing content.
+- Primary navigation bar no longer "emerges" from the logo block: a white border now separates the logo from the nav bar, and separators remain straight vertical lines. Tech Spec 2 requires the nav bar to visually originate from the logo with angled dividers, so this implementation breaks the intended treatment instead of fulfilling it.
+- Card artist/metadata line (e.g., "COSMIC DRIFTERS") is announced by VoiceOver as "heading level 2" when it should be selectable text, not a heading. Tech Spec 10 (Accessibility & semantics) requires proper heading order with no skips, and metadata should not be marked up as headings.
+- Artist name "COSMIC DRIFTERS" has a visible border/box treatment not specified in the card system rules (Tech Spec 5). The spec only calls for card borders (pink for reviews, purple for podcasts), chamfered corners, and shadows—no additional boxes around metadata elements.
+

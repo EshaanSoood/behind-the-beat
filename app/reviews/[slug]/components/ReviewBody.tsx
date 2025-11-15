@@ -6,11 +6,11 @@ type ReviewBodyProps = {
 
 export function ReviewBody({ review }: ReviewBodyProps) {
   return (
-    <article className="prose-measure stack-sm">
+    <article className="review-body flex max-w-prose flex-col gap-4 text-base leading-relaxed text-[var(--text)]" data-role="review-body">
       <p>{review.summary}</p>
       {review.body.raw && (
         <div
-          className="review-body-content"
+          className="space-y-4"
           dangerouslySetInnerHTML={{ __html: review.body.raw }}
         />
       )}

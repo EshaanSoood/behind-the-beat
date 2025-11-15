@@ -11,7 +11,7 @@ export const metadata = genMeta({
 
 export default function ContactPage() {
   return (
-    <Section className="stack-lg">
+    <Section className="flex flex-col gap-12">
       <ContactForm />
     </Section>
   );

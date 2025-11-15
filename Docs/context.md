@@ -9,7 +9,7 @@ Behind the Beat is a static, magazine-style website for music reviews and podcas
 ### Tech Stack
 - **Framework**: Next.js 16.0.1 (App Router)
 - **Language**: TypeScript
-- **Styling**: Tailwind CSS + Custom CSS (tokens.css, globals.css, ui.css)
+- **Styling**: Tailwind CSS + tokenized globals (tokens.css, globals.css)
 - **Content**: Markdown files with front-matter (custom content layer)
 - **Content Parsing**: `gray-matter` for front-matter, `remark` + `remark-html` for Markdown
 - **Fonts**: GrobeDeutschmeister (display font), System fonts (body)
@@ -231,21 +231,10 @@ Behind the Beat is a static, magazine-style website for music reviews and podcas
 - Blockquote default styles
 - Reduced motion guards
 
-**`/styles/ui.css`**:
-- Layout components (site-container, site-frame, page-well)
-- Header & nav (brand-bar, nav-link, active states)
-- Cards & grids (trapezoid-card, post-grid, overlap-grid)
-- Buttons (button-trapezoid)
-- Pull quotes
-- Review Trackbox (cream-glass treatment)
-- Streaming buttons
-- Share chips
-- Breadcrumbs
-- Footer
-- Empty/error/loading states
-- Loading skeletons
-- Tags & ratings
-- Large screen polish (2K/4K)
+**Component styling**:
+- Tailwind utility classes live alongside components (e.g., `components/Footer.tsx`, `app/(home)/components/*.tsx`)
+- Decorative geometry uses CSS variables (`--ch`, gradient tokens) via Tailwind arbitrary values
+- Shared helpers: `Section`, `ButtonTrapezoid`, `TrapezoidCard`
 
 ### Tailwind Config (`tailwind.config.ts`)
 - Extends theme with token variables
@@ -374,8 +363,7 @@ Behind the Beat is a static, magazine-style website for music reviews and podcas
 
 /styles
   tokens.css           # CSS variables
-  globals.css          # Base styles
-  ui.css               # Component styles
+  globals.css          # Base styles + utilities
 
 /scripts
   check-links.mjs     # Link integrity checker
@@ -442,14 +430,20 @@ Behind the Beat is a static, magazine-style website for music reviews and podcas
 - Color contrast: AA compliant
 - Screen reader friendly (breadcrumbs, landmarks)
 
-## Recent Frontend Updates (2025-11-09)
+## Recent Frontend Updates (2025-11-11)
+- Homepage rhythm tightened: single plain H1, shared container alignment, responsive nav-to-hero spacing.
+- Introduced kicker + section-title utilities with pseudo-element underline and applied across hero/sections.
+- Home grid rebuilt (1/2/3 columns) with natural-height cards, chamfered media, clamped copy, and type-specific gradients.
+- Trapezoid CTA buttons now sanitize props, guarantee ≥44px tap targets, and share the chamfered focus treatment.
+- Global `.focus-chamfer` helper added; all interactive elements (nav, hero overlays, cards, footer links) now show chamfered focus outlines.
+- Tokenized surface utilities (`surface-frost-*`) and gradient helpers (`gradient-card-*`) replace ad-hoc RGBA values; shadows (`shadow-soft`, `shadow-card`) confirmed in Tailwind config.
+- Added CI guard (`scripts/enforce-no-rounded.mjs`) to fail builds if Tailwind `rounded-*` utilities appear.
+- Footer and newsletter blocks restyled with chamfers, list resets, and design-token form controls for consistent spacing and contrast.
+- Documented clarifications and the step-by-step execution plan in `Docs/clarifying questions.txt` and `Docs/homepage revamp plan.txt`.
 
-- Dropped quotes from the `--asset-root` token so asset URLs like `url(var(--asset-root)textures/...)` resolve correctly in `ui.css`.
-- Reordered `styles/globals.css` imports to load Tailwind preflight before local tokens, preventing preflight from clobbering brand variables.
-- Review cards now toggle `aria-hidden` as their metadata/pull quote swap, eliminating duplicate announcements for screen readers.
-- Normalised complex `calc()` expressions by grouping each multiplication, avoiding parsing quirks across browsers.
-- Added a high-contrast friendly fallback for the podcast play badge (disables `mix-blend-mode` when users request more contrast).
-- `ButtonTrapezoid` now narrows on `"href" in props`, removing the manual cast and improving TypeScript safety between link/button variants.
-
-
+## Homepage Stabilization Summary (2025-11-12)
+- Removed fixed aspect ratios and overflow clipping from home cards; grid now flows naturally with uniform typography and hover states.
+- Token-driven surfaces and gradients (`surface-frost-*`, `gradient-card-*`) replace inline RGBA values across hero, cards, and overlays.
+- Added chamfer/focus utilities and a `check:rounded` CI guard to enforce geometry rules and keep focus rings visible.
+- Confirmed Tailwind coverage, shadow utility mappings, SVG fixes, and alt-text fallbacks as part of the refactor gates.
 

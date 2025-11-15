@@ -14,7 +14,7 @@ export default function PodcastPage() {
   const episodes = allEpisodesSorted();
 
   return (
-    <Section className="stack-lg">
+    <Section className="flex flex-col gap-12" data-page="podcast-list">
       <PodcastList initialEpisodes={episodes} />
     </Section>
   );

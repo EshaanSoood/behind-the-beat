@@ -14,7 +14,7 @@ export default function ReviewsPage() {
   const reviews = allReviewsSorted();
 
   return (
-    <Section className="stack-lg">
+    <Section className="flex flex-col gap-12" data-page="review-list">
       <ReviewList initialReviews={reviews} />
     </Section>
   );

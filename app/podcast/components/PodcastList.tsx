@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import { ButtonTrapezoid } from "../../../components/ButtonTrapezoid";
 import { EmptyState } from "../../../components/EmptyState";
+import { SpecialH1 } from "../../../components/SpecialH1";
 import type { Episode } from "../../../lib/content";
 
 import { PodcastListItem } from "./PodcastListItem";
@@ -48,9 +49,9 @@ export function PodcastList({ initialEpisodes }: PodcastListProps) {
 
   if (initialEpisodes.length === 0) {
     return (
-      <section className="stack-md">
-        <h1>Podcast Episodes</h1>
-        <p className="tile-meta">
+      <section className="flex flex-col gap-6">
+        <SpecialH1>Podcasts</SpecialH1>
+        <p className="text-base text-neutral-ui-textMuted">
           Intimate conversations with artists about their creative process, the
           stories behind their music, and life in the studio.
         </p>
@@ -63,19 +64,22 @@ export function PodcastList({ initialEpisodes }: PodcastListProps) {
   }
 
   return (
-    <section className="stack-md">
-      <h1>Podcast Episodes</h1>
-      <p className="tile-meta">
+    <section className="flex flex-col gap-6">
+      <SpecialH1>Podcasts</SpecialH1>
+      <p className="text-base text-neutral-ui-textMuted">
         Intimate conversations with artists about their creative process, the
         stories behind their music, and life in the studio.
       </p>
-      <ul id="podcast-grid" className="post-grid">
+      <ul
+        id="podcast-grid"
+        className="flex flex-col gap-6"
+      >
         {visibleEpisodes.map((episode) => (
           <PodcastListItem key={episode.slug} episode={episode} />
         ))}
       </ul>
       {hasMore && (
-        <div>
+        <div className="mt-6">
           <ButtonTrapezoid
             tone="neutral"
             size="md"
