@@ -117,7 +117,7 @@ const components: PortableTextComponents = {
 };
 
 export function PortableTextRenderer({ value }: PortableTextRendererProps) {
-  if (!value || value.length === 0) return null;
+  if (!value || !Array.isArray(value) || value.length === 0) return null;
 
   return (
     <div className="portable-text-content">

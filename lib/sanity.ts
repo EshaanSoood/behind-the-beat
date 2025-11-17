@@ -1,16 +1,13 @@
 import { createClient } from "@sanity/client";
 
-if (!process.env.SANITY_PROJECT_ID) {
-  throw new Error("Missing SANITY_PROJECT_ID environment variable");
-}
-
-if (!process.env.SANITY_DATASET) {
-  throw new Error("Missing SANITY_DATASET environment variable");
-}
+// Use defaults for build time if env vars are not set
+// These will be overridden by actual env vars at runtime
+const projectId = process.env.SANITY_PROJECT_ID || "74f8ikg7";
+const dataset = process.env.SANITY_DATASET || "production";
 
 export const client = createClient({
-  projectId: process.env.SANITY_PROJECT_ID,
-  dataset: process.env.SANITY_DATASET,
+  projectId,
+  dataset,
   apiVersion: process.env.SANITY_API_VERSION || "2024-10-01",
   useCdn: true,
   perspective: "published",

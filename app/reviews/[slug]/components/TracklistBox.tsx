@@ -38,7 +38,7 @@ export function TracklistBox({ review }: TracklistBoxProps) {
           </ol>
         </aside>
       )}
-      {hasStreaming && (
+      {hasStreaming && review.streaming && (
         <div className="streaming-row mt-6" data-role="streaming-row">
           <div className="flex flex-col gap-3">
             <StreamingButtons

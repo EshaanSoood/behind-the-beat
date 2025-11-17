@@ -23,7 +23,7 @@ export function EpisodeNotes({ episode }: EpisodeNotesProps) {
             About the Artist
           </h2>
           <div className="flex max-w-prose flex-col gap-4 text-base leading-relaxed text-[var(--text)]">
-            <PortableTextRenderer value={episode.aboutTheArtist} />
+            {episode.aboutTheArtist && <PortableTextRenderer value={episode.aboutTheArtist} />}
             {episode.transcriptUrl && (
               <p className="text-sm text-[var(--text-muted)]">
                 <a href={episode.transcriptUrl} target="_blank" rel="noopener noreferrer" className="focus-chamfer hover:underline">
