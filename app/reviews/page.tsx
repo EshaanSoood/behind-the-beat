@@ -10,8 +10,8 @@ export const metadata = genMeta({
   path: "/reviews",
 });
 
-export default function ReviewsPage() {
-  const reviews = allReviewsSorted();
+export default async function ReviewsPage() {
+  const reviews = await allReviewsSorted();
 
   return (
     <Section className="flex flex-col gap-12" data-page="review-list">

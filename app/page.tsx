@@ -13,9 +13,9 @@ export const metadata = genMeta({
   path: "/",
 });
 
-export default function HomePage() {
-  const reviews = getAllReviews();
-  const episodes = getAllEpisodes();
+export default async function HomePage() {
+  const reviews = await getAllReviews();
+  const episodes = await getAllEpisodes();
 
   return (
     <>

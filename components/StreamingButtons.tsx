@@ -2,11 +2,13 @@ import { ButtonTrapezoid } from "./ButtonTrapezoid";
 import { SpotifyIcon } from "./icons/Spotify";
 import { AppleMusicIcon } from "./icons/AppleMusic";
 import { YouTubeMusicIcon } from "./icons/YouTubeMusic";
+import { BandcampIcon } from "./icons/Bandcamp";
 
 type StreamingButtonsProps = {
   spotify?: string;
   apple?: string;
   youtubeMusic?: string;
+  bandcamp?: string;
   size?: "sm" | "md";
 };
 
@@ -14,6 +16,7 @@ export function StreamingButtons({
   spotify,
   apple,
   youtubeMusic,
+  bandcamp,
   size = "md",
 }: StreamingButtonsProps) {
   const buttons = [];
@@ -68,6 +71,24 @@ export function StreamingButtons({
         data-role="stream-chip"
       >
         <YouTubeMusicIcon className="h-5 w-5" />
+      </ButtonTrapezoid>
+    );
+  }
+
+  if (bandcamp) {
+    buttons.push(
+      <ButtonTrapezoid
+        key="bandcamp"
+        href={bandcamp}
+        tone="neutral"
+        size={size}
+        aria-label="Listen on Bandcamp"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="streaming-button"
+        data-role="stream-chip"
+      >
+        <BandcampIcon className="h-5 w-5" />
       </ButtonTrapezoid>
     );
   }

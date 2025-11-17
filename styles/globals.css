@@ -1480,3 +1480,85 @@ blockquote {
   }
 }
 
+/* Review body image utilities */
+.review-image {
+  display: block;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.review-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.review-image-small {
+  max-width: 320px;
+}
+
+.review-image-medium {
+  max-width: 448px;
+}
+
+.review-image-large {
+  max-width: 672px;
+}
+
+.review-image-featured {
+  max-width: 100%;
+  width: 100%;
+}
+
+.review-image-left {
+  float: left;
+  margin-right: var(--space-4);
+  margin-bottom: var(--space-4);
+  margin-top: 0;
+}
+
+.review-image-right {
+  float: right;
+  margin-left: var(--space-4);
+  margin-bottom: var(--space-4);
+  margin-top: 0;
+}
+
+.review-image-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-6);
+  clear: both;
+}
+
+.review-image-featured.review-image-center {
+  margin-top: var(--space-8);
+  margin-bottom: var(--space-8);
+}
+
+/* Clear floats after images */
+.portable-text-content::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+@media (max-width: 768px) {
+  .review-image-left,
+  .review-image-right {
+    float: none;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+  }
+  
+  .review-image-small,
+  .review-image-medium,
+  .review-image-large {
+    max-width: 100%;
+  }
+}
+

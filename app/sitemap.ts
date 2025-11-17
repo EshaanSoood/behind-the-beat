@@ -2,7 +2,7 @@ import { MetadataRoute } from "next";
 import { allReviewsSorted, allEpisodesSorted } from "../lib/content";
 import { siteDefaults } from "../lib/seo";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = siteDefaults.url;
 
   const staticRoutes: MetadataRoute.Sitemap = [
@@ -38,14 +38,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  const reviewRoutes: MetadataRoute.Sitemap = allReviewsSorted().map((review) => ({
+  const reviews = await allReviewsSorted();
+  const episodes = await allEpisodesSorted();
+
+  const reviewRoutes: MetadataRoute.Sitemap = reviews.map((review) => ({
     url: `${baseUrl}/reviews/${review.slug}`,
     lastModified: new Date(review.date),
     changeFrequency: "monthly" as const,
     priority: 0.8,
   }));
 
-  const episodeRoutes: MetadataRoute.Sitemap = allEpisodesSorted().map((episode) => ({
+  const episodeRoutes: MetadataRoute.Sitemap = episodes.map((episode) => ({
     url: `${baseUrl}/podcast/${episode.slug}`,
     lastModified: new Date(episode.date),
     changeFrequency: "monthly" as const,

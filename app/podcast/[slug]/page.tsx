@@ -23,7 +23,7 @@ export async function generateMetadata({
   params,
 }: PodcastEntryPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const episode = getEpisodeBySlug(slug);
+  const episode = await getEpisodeBySlug(slug);
 
   if (!episode) {
     return {
@@ -49,7 +49,7 @@ export async function generateMetadata({
 
 export default async function PodcastEntryPage({ params, searchParams }: PodcastEntryPageProps) {
   const { slug } = await params;
-  const episode = getEpisodeBySlug(slug);
+  const episode = await getEpisodeBySlug(slug);
   const currentUrl = `${siteDefaults.url}/podcast/${slug}`;
   const resolvedSearchParams = await searchParams;
   const wantsAutoplay = resolvedSearchParams?.autoplay === "1";

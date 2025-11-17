@@ -10,8 +10,8 @@ export const metadata = genMeta({
   path: "/podcast",
 });
 
-export default function PodcastPage() {
-  const episodes = allEpisodesSorted();
+export default async function PodcastPage() {
+  const episodes = await allEpisodesSorted();
 
   return (
     <Section className="flex flex-col gap-12" data-page="podcast-list">

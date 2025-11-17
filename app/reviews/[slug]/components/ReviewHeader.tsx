@@ -22,8 +22,10 @@ export function ReviewHeader({ review }: ReviewHeaderProps) {
             <SpecialH1>{review.title}</SpecialH1>
           </div>
           <p className="text-base text-[var(--text-muted)]" data-role="meta">
-            {review.artist} · {formattedDate}
-            {review.tags && review.tags.length > 0 && ` · ${review.tags.join(", ")}`}
+            {review.artist} · {review.author} · {formattedDate}
+            {(review.tags && review.tags.length > 0) || (review.genreTags && review.genreTags.length > 0)
+              ? ` · ${(review.genreTags || review.tags || []).join(", ")}`
+              : ""}
           </p>
         </div>
         <div data-role="share-chips" className="md:absolute md:bottom-0 md:left-0 md:right-0">

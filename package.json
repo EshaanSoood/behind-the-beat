@@ -10,6 +10,9 @@
     "lint": "npm run check:rounded && eslint"
   },
   "dependencies": {
+    "@portabletext/react": "^5.0.0",
+    "@sanity/client": "^7.12.1",
+    "@sanity/image-url": "^1.2.0",
     "date-fns": "^4.1.0",
     "gray-matter": "^4.0.3",
     "next": "16.0.1",
@@ -21,6 +24,7 @@
     "remark-html": "^16.0.1"
   },
   "devDependencies": {
+    "@sanity/cli": "^4.15.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

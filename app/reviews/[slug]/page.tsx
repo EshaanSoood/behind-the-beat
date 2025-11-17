@@ -10,6 +10,7 @@ import type { Metadata } from "next";
 import { ReviewBody } from "./components/ReviewBody";
 import { ReviewHeader } from "./components/ReviewHeader";
 import { TracklistBox } from "./components/TracklistBox";
+import { ArtistLinks } from "../../../components/ArtistLinks";
 
 type ReviewEntryPageProps = {
   params: Promise<{
@@ -21,7 +22,7 @@ export async function generateMetadata({
   params,
 }: ReviewEntryPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const review = getReviewBySlug(slug);
+  const review = await getReviewBySlug(slug);
 
   if (!review) {
     return {
@@ -45,7 +46,7 @@ export async function generateMetadata({
 
 export default async function ReviewEntryPage({ params }: ReviewEntryPageProps) {
   const { slug } = await params;
-  const review = getReviewBySlug(slug);
+  const review = await getReviewBySlug(slug);
   const currentUrl = `${siteDefaults.url}/reviews/${slug}`;
 
   if (!review) {
@@ -90,6 +91,18 @@ export default async function ReviewEntryPage({ params }: ReviewEntryPageProps) 
       <Section className="flex flex-col gap-8">
         <EntryColumn variant="review">
           <TracklistBox review={review} />
+          {review.reviewType === "Live review" && review.artistLinks && (
+            <section className="where-to-find flex flex-col gap-4 mt-8" data-section="where-to-find">
+              <h2 className="font-display text-[var(--text-h2)] leading-tight text-[var(--text-deep-purple)]">
+                Where to Find the Artist
+              </h2>
+              <ArtistLinks
+                instagram={review.artistLinks.instagram}
+                youtube={review.artistLinks.youtube}
+                website={review.artistLinks.website}
+              />
+            </section>
+          )}
         </EntryColumn>
       </Section>
     </div>

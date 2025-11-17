@@ -1,27 +1,32 @@
-import matter from "gray-matter";
-import { readFileSync, readdirSync } from "fs";
-import { join } from "path";
+import type { PortableTextBlock } from "@portabletext/types";
 
 export type Review = {
   slug: string;
   title: string;
   artist: string;
+  author: string;
+  reviewType: "Album review" | "Live review";
   date: string;
   pullQuote: string;
   cover: string;
   alt: string;
   summary: string;
-  tracklist: string[];
+  tracklist: Array<{ title: string }>;
   streaming?: {
     spotify?: string;
     apple?: string;
+    appleMusic?: string;
     youtubeMusic?: string;
+    bandcamp?: string;
   };
   tags?: string[];
+  genreTags?: string[];
   ogImage?: string;
-  body: {
-    raw: string;
-    html: string;
+  body: PortableTextBlock[];
+  artistLinks?: {
+    instagram?: string;
+    youtube?: string;
+    website?: string;
   };
 };
 
@@ -34,6 +39,7 @@ export type Episode = {
   cover: string;
   alt: string;
   youtubeId: string;
+  youtubeUrl?: string;
   notes?: string;
   transcriptUrl?: string;
   tags?: string[];
@@ -42,132 +48,194 @@ export type Episode = {
     raw: string;
     html: string;
   };
+  aboutTheArtist?: PortableTextBlock[];
+  artistLinks?: {
+    instagram?: string;
+    youtube?: string;
+    website?: string;
+  };
 };
 
-const contentDir = join(process.cwd(), "content");
+import { client } from "./sanity";
+import {
+  allReviewsQuery,
+  allPodcastEpisodesQuery,
+  reviewBySlugQuery,
+  podcastEpisodeBySlugQuery,
+} from "./sanity/queries";
+import { getImageUrl } from "./sanity/image";
 
-function getSlugFromFilename(filename: string): string {
-  return filename.replace(/\.md$/, "");
+function extractSummaryFromPortableText(body: PortableTextBlock[]): string {
+  if (!body || body.length === 0) return "";
+  
+  // Find the first text block and extract text
+  for (const block of body) {
+    if (block._type === "block" && block.children) {
+      const text = block.children
+        .filter((child: any) => child._type === "span")
+        .map((child: any) => child.text)
+        .join("");
+      if (text.trim()) {
+        // Return first 200 characters or first sentence
+        const firstSentence = text.split(/[.!?]/)[0];
+        return firstSentence.length > 200 ? text.substring(0, 200) + "..." : firstSentence;
+      }
+    }
+  }
+  return "";
 }
 
-type ReviewData = {
-  title?: string;
-  artist?: string;
-  date?: string;
-  pullQuote?: string;
-  cover?: string;
-  alt?: string;
-  summary?: string;
-  tracklist?: unknown;
-  [key: string]: unknown;
-};
-
-function validateReview(data: ReviewData): Review {
-  if (!data.title) throw new Error("Review missing required field: title");
-  if (!data.artist) throw new Error("Review missing required field: artist");
-  if (!data.date) throw new Error("Review missing required field: date");
-  if (!data.pullQuote) throw new Error("Review missing required field: pullQuote");
-  if (!data.cover) throw new Error("Review missing required field: cover");
-  if (!data.alt || String(data.alt).trim() === "")
-    throw new Error("Review missing required field: alt (must be non-empty)");
-  if (!data.summary) throw new Error("Review missing required field: summary");
-  if (!data.tracklist || !Array.isArray(data.tracklist))
-    throw new Error("Review missing required field: tracklist (must be array)");
-
-  return data as Review;
+function extractTextFromPortableText(body: PortableTextBlock[]): string {
+  if (!body || body.length === 0) return "";
+  
+  const textParts: string[] = [];
+  for (const block of body) {
+    if (block._type === "block" && block.children) {
+      const text = block.children
+        .filter((child: any) => child._type === "span")
+        .map((child: any) => child.text)
+        .join("");
+      if (text.trim()) {
+        textParts.push(text);
+      }
+    }
+  }
+  return textParts.join("\n\n");
 }
 
-type EpisodeData = {
-  title?: string;
-  guest?: string;
-  date?: string;
-  pullQuote?: string;
-  cover?: string;
-  alt?: string;
-  youtubeId?: string;
-  [key: string]: unknown;
-};
+function mapSanityReviewToReview(sanityReview: any): Review {
+  if (!sanityReview) {
+    throw new Error("Review data is missing");
+  }
 
-function validateEpisode(data: EpisodeData): Episode {
-  if (!data.title) throw new Error("Episode missing required field: title");
-  if (!data.guest) throw new Error("Episode missing required field: guest");
-  if (!data.date) throw new Error("Episode missing required field: date");
-  if (!data.pullQuote) throw new Error("Episode missing required field: pullQuote");
-  if (!data.cover) throw new Error("Episode missing required field: cover");
-  if (!data.alt || String(data.alt).trim() === "")
-    throw new Error("Episode missing required field: alt (must be non-empty)");
-  if (!data.youtubeId) throw new Error("Episode missing required field: youtubeId");
+  const summary = extractSummaryFromPortableText(sanityReview.body || []);
 
-  return data as Episode;
+  return {
+    slug: sanityReview.slug || "",
+    title: sanityReview.title || "",
+    artist: sanityReview.artist || "",
+    author: sanityReview.author || "",
+    reviewType: sanityReview.reviewType || "Album review",
+    date: sanityReview.date || new Date().toISOString(),
+    pullQuote: sanityReview.pullQuote || "",
+    cover: sanityReview.cover || "",
+    alt: sanityReview.alt || "",
+    summary: summary || "",
+    tracklist: (sanityReview.tracklist || []).map((track: any) => ({
+      title: track.title || "",
+    })),
+    streaming: sanityReview.streamingLinks
+      ? {
+          spotify: sanityReview.streamingLinks.spotify,
+          apple: sanityReview.streamingLinks.appleMusic,
+          appleMusic: sanityReview.streamingLinks.appleMusic,
+          youtubeMusic: sanityReview.streamingLinks.youtubeMusic,
+          bandcamp: sanityReview.streamingLinks.bandcamp,
+        }
+      : undefined,
+    tags: sanityReview.genreTags || [],
+    genreTags: sanityReview.genreTags || [],
+    body: sanityReview.body || [],
+    artistLinks: sanityReview.artistLinks,
+  };
 }
 
-export function getAllReviews(): Review[] {
-  const reviewsDir = join(contentDir, "reviews");
-  const filenames = readdirSync(reviewsDir).filter((f) => f.endsWith(".md"));
+function mapSanityEpisodeToEpisode(sanityEpisode: any): Episode {
+  if (!sanityEpisode) {
+    throw new Error("Episode data is missing");
+  }
 
-  const reviews = filenames.map((filename) => {
-    const filePath = join(reviewsDir, filename);
-    const fileContents = readFileSync(filePath, "utf8");
-    const { data, content } = matter(fileContents);
+  // Extract YouTube ID from URL
+  const youtubeId = extractYouTubeId(sanityEpisode.youtubeUrl || "");
 
-    const review: Review = {
-      ...validateReview({
-        slug: getSlugFromFilename(filename),
-        ...data,
-        body: {
-          raw: content,
-          html: content, // For now, just return raw markdown; can add MDX processing later
-        },
-      }),
-    };
+  // Generate summary from aboutTheArtist or use empty string
+  const summary = extractTextFromPortableText(sanityEpisode.aboutTheArtist || []);
 
-    return review;
-  });
-
-  return reviews.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  return {
+    slug: sanityEpisode.slug || "",
+    title: sanityEpisode.title || "",
+    guest: sanityEpisode.guest || "",
+    date: sanityEpisode.date || new Date().toISOString(),
+    pullQuote: sanityEpisode.pullQuote || "",
+    cover: sanityEpisode.cover || "",
+    alt: sanityEpisode.alt || "",
+    youtubeId: youtubeId || "",
+    youtubeUrl: sanityEpisode.youtubeUrl || "",
+    body: {
+      raw: summary,
+      html: summary,
+    },
+    aboutTheArtist: sanityEpisode.aboutTheArtist || [],
+    artistLinks: sanityEpisode.artistLinks,
+  };
 }
 
-export function getAllEpisodes(): Episode[] {
-  const episodesDir = join(contentDir, "episodes");
-  const filenames = readdirSync(episodesDir).filter((f) => f.endsWith(".md"));
-
-  const episodes = filenames.map((filename) => {
-    const filePath = join(episodesDir, filename);
-    const fileContents = readFileSync(filePath, "utf8");
-    const { data, content } = matter(fileContents);
-
-    const episode: Episode = {
-      ...validateEpisode({
-        slug: getSlugFromFilename(filename),
-        ...data,
-        body: {
-          raw: content,
-          html: content, // For now, just return raw markdown; can add MDX processing later
-        },
-      }),
-    };
-
-    return episode;
-  });
-
-  return episodes.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+function extractYouTubeId(url: string): string {
+  if (!url) return "";
+  
+  // Handle various YouTube URL formats
+  const patterns = [
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
+    /youtube\.com\/watch\?.*v=([^&\n?#]+)/,
+  ];
+  
+  for (const pattern of patterns) {
+    const match = url.match(pattern);
+    if (match && match[1]) {
+      return match[1];
+    }
+  }
+  
+  return "";
 }
 
-export function getReviewBySlug(slug: string): Review | null {
-  const reviews = getAllReviews();
-  return reviews.find((r) => r.slug === slug) || null;
+export async function getAllReviews(): Promise<Review[]> {
+  try {
+    const sanityReviews = await client.fetch(allReviewsQuery);
+    return sanityReviews.map(mapSanityReviewToReview);
+  } catch (error) {
+    console.error("Error fetching reviews from Sanity:", error);
+    return [];
+  }
 }
 
-export function getEpisodeBySlug(slug: string): Episode | null {
-  const episodes = getAllEpisodes();
-  return episodes.find((e) => e.slug === slug) || null;
+export async function getAllEpisodes(): Promise<Episode[]> {
+  try {
+    const sanityEpisodes = await client.fetch(allPodcastEpisodesQuery);
+    return sanityEpisodes.map(mapSanityEpisodeToEpisode);
+  } catch (error) {
+    console.error("Error fetching episodes from Sanity:", error);
+    return [];
+  }
 }
 
-export function allReviewsSorted(): Review[] {
+export async function getReviewBySlug(slug: string): Promise<Review | null> {
+  try {
+    const sanityReview = await client.fetch(reviewBySlugQuery, { slug });
+    if (!sanityReview) return null;
+    return mapSanityReviewToReview(sanityReview);
+  } catch (error) {
+    console.error("Error fetching review by slug from Sanity:", error);
+    return null;
+  }
+}
+
+export async function getEpisodeBySlug(slug: string): Promise<Episode | null> {
+  try {
+    const sanityEpisode = await client.fetch(podcastEpisodeBySlugQuery, { slug });
+    if (!sanityEpisode) return null;
+    return mapSanityEpisodeToEpisode(sanityEpisode);
+  } catch (error) {
+    console.error("Error fetching episode by slug from Sanity:", error);
+    return null;
+  }
+}
+
+export async function allReviewsSorted(): Promise<Review[]> {
   return getAllReviews();
 }
 
-export function allEpisodesSorted(): Episode[] {
+export async function allEpisodesSorted(): Promise<Episode[]> {
   return getAllEpisodes();
 }
 
