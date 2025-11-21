@@ -81,7 +81,7 @@ export function ReviewList({ initialReviews }: ReviewListProps) {
       {hasMore && (
         <div className="mt-6">
           <ButtonTrapezoid
-            tone="neutral"
+            tone="primary"
             size="md"
             aria-controls="review-grid"
             onClick={handleLoadMore}

@@ -30,7 +30,7 @@ export function ButtonTrapezoid(props: ButtonTrapezoidProps) {
   const { tone = "primary", size = "md", children, className } = props;
 
   const toneClassName: Record<"primary" | "neutral", string> = {
-    primary: "bg-brand-purple800 text-brand-pink100 hover:bg-brand-purple600",
+    primary: "border border-brand-purple600 bg-[var(--brand-purple-800)] !text-[#FFD3E8] hover:bg-brand-purple600",
     neutral:
       "border border-neutral-ui-border bg-neutral-ui-offwhite text-neutral-ui-text hover:bg-neutral-ui-bg",
   };

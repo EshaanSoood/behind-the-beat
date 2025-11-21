@@ -16,19 +16,19 @@ export function ReviewHeader({ review }: ReviewHeaderProps) {
   return (
     <header className="entry-header flex flex-col gap-6 md:flex-row md:items-start md:gap-8" data-role="entry-header">
       {/* Left column: Headline, meta, share chips */}
-      <div className="entry-header-left flex-1 flex flex-col gap-4 md:h-[240px] md:relative">
-        <div className="flex flex-col gap-4">
+      <div className="entry-header-left flex-1 flex flex-col gap-4 md:min-h-[240px] md:justify-between">
+        <div className="flex flex-col items-center gap-4">
           <div data-role="headline">
             <SpecialH1>{review.title}</SpecialH1>
           </div>
-          <p className="text-base text-[var(--text-muted)]" data-role="meta">
+          <p className="text-base text-center text-[var(--text-muted)]" data-role="meta">
             {review.artist} · {review.author} · {formattedDate}
             {(review.tags && review.tags.length > 0) || (review.genreTags && review.genreTags.length > 0)
               ? ` · ${(review.genreTags || review.tags || []).join(", ")}`
               : ""}
           </p>
         </div>
-        <div data-role="share-chips" className="md:absolute md:bottom-0 md:left-0 md:right-0">
+        <div data-role="share-chips" className="flex justify-center">
           <ShareChips title={review.title} url={currentUrl} quote={review.pullQuote} />
         </div>
       </div>

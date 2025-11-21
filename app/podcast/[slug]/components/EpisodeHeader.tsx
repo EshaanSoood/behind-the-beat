@@ -13,15 +13,15 @@ export function EpisodeHeader({ episode }: EpisodeHeaderProps) {
   const currentUrl = `${siteDefaults.url}/podcast/${episode.slug}`;
 
   return (
-    <header className="entry-header flex flex-col gap-4" data-role="entry-header">
+    <header className="flex flex-col items-center gap-4" data-role="entry-header">
       <div data-role="headline">
         <SpecialH1>{episode.title}</SpecialH1>
       </div>
-      <p className="text-base text-[var(--text-muted)]" data-role="meta">
+      <p className="text-base text-center text-[var(--text-muted)]" data-role="meta">
         {episode.guest} · {formattedDate}
         {episode.tags && episode.tags.length > 0 && ` · ${episode.tags.join(", ")}`}
       </p>
-      <div data-role="share-chips">
+      <div data-role="share-chips" className="flex justify-center">
         <ShareChips title={episode.title} url={currentUrl} quote={episode.pullQuote} />
       </div>
     </header>

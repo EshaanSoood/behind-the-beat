@@ -69,6 +69,7 @@ export default async function PodcastEntryPage({ params, searchParams }: Podcast
 
   return (
     <div data-page="podcast-entry">
+      {/* Breadcrumbs and Header - wider container */}
       <Section as="article" className="flex flex-col gap-8">
         <Breadcrumbs
           items={[
@@ -77,22 +78,26 @@ export default async function PodcastEntryPage({ params, searchParams }: Podcast
             { label: episode.title },
           ]}
         />
-        <EntryColumn variant="podcast">
-          <div className="podcast-header">
-            <EpisodeHeader episode={episode} />
-          </div>
-        </EntryColumn>
+
+        {/* Header - wider container for title + metadata */}
+        <div className="podcast-header-container mx-auto flex w-full max-w-[900px] flex-col px-6">
+          <EpisodeHeader episode={episode} />
+        </div>
       </Section>
+
+      {/* Player - wider container for video */}
       <Section className="flex flex-col gap-8">
-        <EntryColumn variant="podcast">
+        <div className="podcast-player-container mx-auto w-full max-w-[900px] px-6">
           <EpisodePlayer
             youtubeId={episode.youtubeId}
             title={episode.title}
             autoplay={wantsAutoplay}
           />
-        </EntryColumn>
+        </div>
       </Section>
-      <Section className="flex flex-col gap-8">
+
+      {/* Episode notes - constrained prose width for readability */}
+      <Section className="mt-8 flex flex-col gap-8">
         <EntryColumn variant="podcast">
           <EpisodeNotes episode={episode} />
         </EntryColumn>

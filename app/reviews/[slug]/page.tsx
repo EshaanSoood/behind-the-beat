@@ -64,6 +64,7 @@ export default async function ReviewEntryPage({ params }: ReviewEntryPageProps) 
 
   return (
     <div data-page="review-entry">
+      {/* Breadcrumbs - full width within Section */}
       <Section as="article" className="flex flex-col gap-8">
         <Breadcrumbs
           items={[
@@ -72,24 +73,32 @@ export default async function ReviewEntryPage({ params }: ReviewEntryPageProps) 
             { label: review.title },
           ]}
         />
-        <EntryColumn variant="review">
-          <div className="review-header">
-            <ReviewHeader review={review} />
-          </div>
-          {review.pullQuote && (
-            <div className="mt-8" data-role="pull-quote">
+
+        {/* Header - wider container for album art + metadata */}
+        <div className="review-header-container mx-auto w-full max-w-[900px] px-6">
+          <ReviewHeader review={review} />
+        </div>
+
+        {/* Pull quote - within prose width */}
+        {review.pullQuote && (
+          <EntryColumn variant="review">
+            <div data-role="pull-quote">
               <PullQuote cite={review.artist}>{review.pullQuote}</PullQuote>
             </div>
-          )}
-        </EntryColumn>
+          </EntryColumn>
+        )}
       </Section>
+
+      {/* Review body - constrained prose width for readability */}
       <Section className="flex flex-col gap-8">
         <EntryColumn variant="review">
           <ReviewBody review={review} />
         </EntryColumn>
       </Section>
-      <Section className="flex flex-col gap-8">
-        <EntryColumn variant="review">
+
+      {/* Tracklist and artist links - wider container */}
+      <Section className="mt-8 flex flex-col gap-8">
+        <div className="review-footer-container mx-auto w-full max-w-[900px] px-6">
           <TracklistBox review={review} />
           {review.reviewType === "Live review" && review.artistLinks && (
             <section className="where-to-find flex flex-col gap-4 mt-8" data-section="where-to-find">
@@ -103,7 +112,7 @@ export default async function ReviewEntryPage({ params }: ReviewEntryPageProps) 
               />
             </section>
           )}
-        </EntryColumn>
+        </div>
       </Section>
     </div>
   );

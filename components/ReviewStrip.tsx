@@ -40,7 +40,7 @@ export function ReviewStrip({ review }: ReviewStripProps) {
             size="sm"
             className="!bg-transparent !text-brand-pink500 !border-brand-pink100 hover:!bg-brand-pink100/20"
           >
-            <span className="font-display text-xl leading-none">+</span>
+            Read More <span className="ml-2 font-display text-xl leading-none">+</span>
           </ButtonTrapezoid>
         </div>
       </div>

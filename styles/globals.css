@@ -827,10 +827,10 @@ blockquote {
   gap: var(--home-card-gap);
   padding: var(--home-card-padding);
   background: var(--surface);
+  overflow: visible;
   box-shadow: var(--card-shadow-rest);
   border-width: var(--border-strong-width);
   border-style: solid;
-  aspect-ratio: 4 / 5.8;
   clip-path: polygon(
     var(--ch) 0,
     calc(100% - var(--ch)) 0,
@@ -1045,6 +1045,15 @@ blockquote {
   margin-top: auto;
   position: relative;
   z-index: 3;
+}
+
+.card-actions .button-trapezoid {
+  background-color: color-mix(in oklab, var(--brand-pink-300) 40%, transparent);
+  color: var(--brand-purple-800);
+  border: 1px solid var(--brand-pink-300);
+  width: 100%;
+  text-align: center;
+  justify-content: center;
 }
 
 .card-actions--image-button {
