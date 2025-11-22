@@ -123,3 +123,5 @@ The script is not finding the `.special-h1-bg-text` element. Debug output shows:
 
 
 
+
+

@@ -26,15 +26,15 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="site-footer" role="contentinfo">
-      <div className="site-footer__bar">
-        <div className="container-page site-footer__inner">
-          <div className="site-footer__social">
+    <footer className="site-footer mt-12" role="contentinfo">
+      <div className="site-footer__bar bg-brand-pink500 w-full py-6">
+        <div className="container-page site-footer__inner flex items-center gap-6 flex-wrap">
+          <div className="site-footer__social flex items-center gap-4">
             {SOCIAL_LINKS.map(({ href, label, icon: Icon }) => (
               <a
                 key={href}
                 href={href}
-                className="site-footer__social-link"
+                className="site-footer__social-link inline-flex items-center justify-center text-brand-purple800 transition-opacity hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-purple800 focus-visible:outline-offset-2 focus-visible:rounded-sm"
                 aria-label={label}
                 target={href.startsWith("http") ? "_blank" : undefined}
                 rel={href.startsWith("http") ? "noreferrer noopener" : undefined}
@@ -44,7 +44,7 @@ export function Footer() {
             ))}
           </div>
 
-          <nav className="site-footer__nav" aria-label="Footer navigation">
+          <nav className="site-footer__nav flex-1" aria-label="Footer navigation">
             <ul className="nav-list">
               {NAV_ITEMS.map((item, index) => {
                 const angleClass = ANGLE_CLASSES[index % ANGLE_CLASSES.length];
@@ -61,10 +61,10 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="site-footer__meta">
+      <div className="site-footer__meta py-4 text-[color-mix(in_oklab,var(--brand-purple-800)_70%,transparent)]">
         <div className="container-page">
-          <p className="caption">
-            <Link href="/privacy">Privacy</Link> · © {currentYear} Behind the Beat
+          <p className="caption text-inherit">
+            <Link href="/privacy" className="text-inherit underline underline-offset-2 hover:text-brand-purple800">Privacy</Link> · © {currentYear} Behind the Beat
           </p>
         </div>
       </div>

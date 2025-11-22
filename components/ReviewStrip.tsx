@@ -47,9 +47,9 @@ export function ReviewStrip({ review }: ReviewStripProps) {
 
       {/* Album art - right side on desktop */}
       {review.cover && (
-        <div className="review-strip-artwork flex-shrink-0 md:self-stretch" data-role="artwork">
-          <Link href={`/reviews/${review.slug}`} className="focus-chamfer block h-full">
-            <div className="surface-chamfer relative h-full overflow-hidden border border-[var(--border-accent-strong)] bg-[var(--surface)]" style={{ aspectRatio: "1 / 1", width: "100%" }}>
+        <div className="review-strip-artwork flex-shrink-0 md:self-stretch min-w-[200px] md:w-auto md:min-w-[200px]" data-role="artwork">
+          <Link href={`/reviews/${review.slug}`} className="focus-chamfer block h-full md:flex md:items-stretch">
+            <div className="surface-chamfer relative h-full overflow-hidden border border-[var(--border-accent-strong)] bg-[var(--surface)] md:w-full md:h-full md:aspect-square" style={{ aspectRatio: "1 / 1", width: "100%" }}>
               <Image
                 src={review.cover}
                 alt={review.alt}

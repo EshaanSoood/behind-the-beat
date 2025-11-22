@@ -6,7 +6,7 @@ export function MissionProse() {
       <SpecialH1>Our Mission</SpecialH1>
       
       {/* Three-column layout: Mission body, divider, and Meet the Editor */}
-      <div className="mission-columns-wrapper grid grid-cols-1 gap-8 md:grid-cols-[1fr_auto_1fr] md:gap-8">
+      <div className="mission-columns-wrapper relative grid grid-cols-1 gap-8 md:grid-cols-[1fr_auto_1fr] md:gap-8">
         {/* Left column: Mission body */}
         <div className="mission-body" data-section="mission-body" data-role="mission-body">
           <div className="flex max-w-prose flex-col gap-4 text-base leading-relaxed text-[var(--text)]">

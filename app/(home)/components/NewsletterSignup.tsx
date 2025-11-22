@@ -11,8 +11,8 @@ export function NewsletterSignup() {
 
   return (
     <>
-      <section className="newsletter-section" role="region" aria-labelledby={headingId} data-newsletter="true">
-        <div className="newsletter-shell surface-chamfer paper-grain">
+      <section className="newsletter-section mt-16" role="region" aria-labelledby={headingId} data-newsletter="true">
+        <div className="newsletter-shell surface-chamfer paper-grain grid gap-4 bg-[var(--newsletter-surface)] border border-[var(--newsletter-border)] p-6 shadow-soft">
           <div>
             <h2 id={headingId} className="font-display text-[clamp(1.5rem,1.4vw+1rem,2rem)] leading-tight text-brand-purple800">
               Be The First To Know
@@ -22,7 +22,7 @@ export function NewsletterSignup() {
               <span className="font-display">Behind The Beat</span> before anyone else.
             </p>
           </div>
-          <div className="newsletter-form">
+          <div className="newsletter-form flex items-center">
             <ButtonTrapezoid
               type="button"
               tone="primary"
