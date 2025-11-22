@@ -39,3 +39,4 @@ The following selectors were kept because they contain complex styling not fully
 
 Removed 17 CSS rule blocks that were fully duplicated by Tailwind utilities. Kept 8+ rule blocks that contain complex art-direction (clip-path chamfer, color-mix backgrounds, interaction states, conditional styling) that cannot be cleanly replaced with Tailwind utilities.
 
+

@@ -121,3 +121,4 @@
 | `.review-image-center` | yes | components/PortableTextRenderer.tsx | Review image center alignment |
 | `.portable-text-content` | yes | components/PortableTextRenderer.tsx | Portable text content wrapper |
 
+

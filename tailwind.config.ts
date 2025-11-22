@@ -19,9 +19,6 @@ const config: Config = {
             600: "var(--brand-purple-600)",
             800: "var(--brand-purple-800)",
           },
-          // Convenience aliases
-          pink: "var(--brand-pink)",
-          purple: "var(--brand-purple)",
           "dark-pink": "var(--brand-dark-pink)",
           // Backwards compatibility (keep existing flat keys)
           pink100: "var(--brand-pink-100)",

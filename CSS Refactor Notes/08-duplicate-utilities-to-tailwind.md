@@ -29,3 +29,4 @@ For `sr-only` and `line-clamp-*` the class names stay the same; we're just remov
 
 The `.line-clamp-2` and `.line-clamp-3` utilities remain in `globals.css` because the `@tailwindcss/line-clamp` plugin is not installed. Once the plugin is added to `tailwind.config.ts`, these CSS rules can be removed.
 
+

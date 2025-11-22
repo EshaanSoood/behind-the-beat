@@ -323,3 +323,4 @@ boxShadow: {
 4. Gradually migrate components to use Tailwind utilities where appropriate
 5. Document which utilities are available and their usage patterns
 
+

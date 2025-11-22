@@ -59,3 +59,4 @@
 - `.site-footer__nav .nav-list` - component-specific override, keep for specificity
 - `.site-footer__meta` - color-mix requires CSS (kept: `text-[color-mix(...)]` requires CSS)
 
+

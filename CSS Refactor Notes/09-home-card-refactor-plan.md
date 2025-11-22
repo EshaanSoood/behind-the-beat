@@ -89,3 +89,4 @@
 
 7. **Cleanup**: Once Tailwind equivalents are verified visually, remove unused `.home-card*` rules from `globals.css`, keeping only the complex art-direction pieces (chamfered corners, complex color-mix, conditional data-attribute styling).
 
+

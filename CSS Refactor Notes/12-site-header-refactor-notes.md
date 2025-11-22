@@ -49,3 +49,4 @@
 - `.site-header__nav .nav-list > li:nth-child(4n + 4)` - Header nav divider angle variant 4 (CSS variable assignment)
 - `.site-header__mobile-panel .nav-link::before` - Hide nav link divider in mobile panel (pseudo-element control)
 
+
