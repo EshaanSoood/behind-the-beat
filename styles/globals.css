@@ -884,6 +884,22 @@
     fill: var(--brand-pink-500) !important;
   }
 
+  .card-actions .button-trapezoid {
+    background-color: color-mix(in oklab, var(--brand-pink-300) 40%, transparent);
+    color: var(--brand-purple-800);
+    border: 1px solid var(--brand-pink-300);
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .card-actions--image-button {
+    margin-top: 0;
+    margin-bottom: var(--space-4);
+    display: flex;
+    align-items: baseline;
+  }
+
   .newsletter-shell {
     display: grid;
     gap: var(--space-4);
