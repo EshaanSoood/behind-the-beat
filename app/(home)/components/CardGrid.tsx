@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, Children, cloneElement, isValidElement } from "react";
 
 type CardGridProps = {
   children: ReactNode;
@@ -9,9 +9,19 @@ export function CardGrid({ children }: CardGridProps) {
     <div
       data-card-grid="true"
       role="list"
-      className="home-card-grid grid w-full grid-cols-1 auto-rows-[minmax(0,1fr)] sm:grid-cols-2 lg:grid-cols-3"
+      className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
     >
-      {children}
+      {Children.map(children, (child) => {
+        if (!isValidElement(child)) {
+          return child;
+        }
+        const props = child.props as any;
+        const existingClassName = props.className || "";
+        return cloneElement(child, {
+          ...props,
+          className: `min-h-[90vh] snap-center md:min-h-0 md:snap-none ${existingClassName}`,
+        });
+      })}
     </div>
   );
 }

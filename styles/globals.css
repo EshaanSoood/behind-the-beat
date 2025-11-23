@@ -301,6 +301,39 @@
     }
   }
 
+  /* Glass surface effect for tracklist panel */
+  .tracklist-panel {
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+  }
+
+  /* HomeCard wiggle animation */
+  @keyframes home-card-wiggle {
+    0% {
+      transform: rotate(0deg) translateY(0) scale(1);
+    }
+    25% {
+      transform: rotate(-0.5deg) translateY(-1px) scale(1.005);
+    }
+    50% {
+      transform: rotate(0.5deg) translateY(-2px) scale(1.01);
+    }
+    75% {
+      transform: rotate(-0.25deg) translateY(-3px) scale(1.015);
+    }
+    100% {
+      transform: rotate(0deg) translateY(-4px) scale(1.02);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    @keyframes home-card-wiggle {
+      0%, 100% {
+        transform: none;
+      }
+    }
+  }
+
 }
 
 @layer components {
@@ -635,17 +668,35 @@
       0 calc(100% - var(--ch)),
       0 var(--ch)
     );
+    transition: box-shadow 200ms ease-out;
   }
 
-  .home-card[data-interaction="hover"],
-  .home-card[data-interaction="focus"] {
-    box-shadow: var(--card-shadow-hover);
+  /* Wiggle + lift on hover/focus - desktop only */
+  @media (min-width: 768px) {
+    .home-card:hover,
+    .home-card:focus-within {
+      box-shadow: var(--card-shadow-hover);
+    }
+
+    .home-card:hover:not(:active),
+    .home-card:focus-within:not(:active) {
+      animation: home-card-wiggle 350ms ease-out forwards;
+    }
+  }
+
+  /* Active/pressed state - global (works on all breakpoints) */
+  .home-card:active {
+    transform: scale(0.99);
+    box-shadow: var(--card-shadow-rest);
+    transition: transform 120ms ease-in, box-shadow 120ms ease-in;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .home-card[data-interaction="hover"],
-    .home-card[data-interaction="focus"] {
+    .home-card:hover,
+    .home-card:focus-within,
+    .home-card:active {
       transform: none !important;
+      animation: none !important;
     }
   }
 
@@ -755,6 +806,41 @@
 
   .review-strip-button .button-trapezoid:hover {
     background-color: color-mix(in oklab, var(--brand-pink-100) 20%, transparent) !important;
+  }
+
+  /* Listing tile interactions */
+  .review-strip,
+  .podcast-strip {
+    box-shadow: var(--card-shadow-rest);
+    transition: box-shadow 200ms ease-out, transform 200ms ease-out;
+  }
+
+  /* Listing tile excerpt expansion with delay */
+  .review-strip-excerpt {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    max-height: 4.5rem; /* Approximate height for 3 lines */
+    transition-property: max-height;
+    transition-duration: 300ms;
+    transition-timing-function: ease-out;
+    transition-delay: 0ms;
+  }
+
+  @media (min-width: 768px) {
+    .review-strip-link:hover .review-strip-excerpt,
+    .review-strip-link:focus-within .review-strip-excerpt {
+      -webkit-line-clamp: none;
+      max-height: 999px;
+      transition-delay: 2000ms; /* 2s delay before expansion */
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .review-strip-excerpt {
+      transition: none;
+    }
   }
 
   .review-header {
@@ -964,7 +1050,7 @@
     position: absolute;
     inset: -2px;
     border: 1.5px solid;
-    opacity: 0.4;
+    opacity: 0.25;
     transition: opacity 200ms ease-out, border-width 200ms ease-out;
     clip-path: polygon(
       var(--ch) 0,
@@ -1009,13 +1095,17 @@
       linear-gradient(#fff 0 0);
     -webkit-mask-clip: content-box, border-box;
     -webkit-mask-composite: xor;
-    animation: electric-border-rotate 4s linear infinite;
+    animation: electric-border-rotate 8s linear infinite;
   }
 
-  .electric-border[data-active="true"]::before {
-    opacity: 0.8;
-    border-width: 2px;
-    animation-duration: 2s;
+  /* ElectricBorder activation via CSS (hover/focus on parent card) - desktop only */
+  @media (min-width: 768px) {
+    .home-card:hover .electric-border::before,
+    .home-card:focus-within .electric-border::before {
+      opacity: 0.65;
+      border-width: 2px;
+      animation-duration: 4s;
+    }
   }
 
   .electric-border--review::before {
@@ -1040,13 +1130,16 @@
   @media (prefers-reduced-motion: reduce) {
     .electric-border::before {
       animation: none;
-      opacity: 0.3;
+      opacity: 0.4;
       background: currentColor;
     }
     
-    .electric-border[data-active="true"]::before {
-      opacity: 0.6;
-      animation: none;
+    @media (min-width: 768px) {
+      .home-card:hover .electric-border::before,
+      .home-card:focus-within .electric-border::before {
+        opacity: 0.6;
+        animation: none;
+      }
     }
   }
 

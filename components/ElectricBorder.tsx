@@ -2,15 +2,13 @@
 
 type ElectricBorderProps = {
   variant: "review" | "podcast";
-  isActive: boolean;
   className?: string;
 };
 
-export function ElectricBorder({ variant, isActive, className = "" }: ElectricBorderProps) {
+export function ElectricBorder({ variant, className = "" }: ElectricBorderProps) {
   return (
     <div
       className={`electric-border electric-border--${variant} ${className}`}
-      data-active={isActive ? "true" : "false"}
       aria-hidden="true"
     />
   );

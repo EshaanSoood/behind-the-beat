@@ -3,8 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import type { FocusEvent, PointerEvent, MouseEvent } from "react";
-import { useId, useMemo, useState } from "react";
+import type { MouseEvent } from "react";
+import { useId, useMemo } from "react";
 
 import { ButtonTrapezoid } from "../../../components/ButtonTrapezoid";
 import { ElectricBorder } from "../../../components/ElectricBorder";
@@ -14,8 +14,6 @@ declare global {
     __overlayClicks?: Record<number, number>;
   }
 }
-
-type InteractionMode = "rest" | "hover" | "focus";
 
 type HomeCardProps = {
   variant: "review" | "podcast";
@@ -63,8 +61,6 @@ export function HomeCard({
   const headingId = useId();
   const publishedId = useId();
   const isPodcastCard = variant === "podcast";
-  const [interactionMode, setInteractionMode] = useState<InteractionMode>("rest");
-  const isInteracting = interactionMode !== "rest";
   const { displaySummary, displayPullQuote } = useMemo(() => {
     const trimmedSummary = summary.trim();
     const trimmedPullQuote = pullQuote.trim();
@@ -111,33 +107,14 @@ export function HomeCard({
     }
   }
 
-  function setHoverMode() {
-    setInteractionMode("hover");
-  }
-
-  function setFocusMode() {
-    setInteractionMode("focus");
-  }
-
-  function clearInteraction(event: FocusEvent<HTMLElement> | PointerEvent<HTMLElement>) {
-    const activeElement = typeof document !== "undefined" ? (document.activeElement as Element | null) : null;
-    if (activeElement && event.currentTarget.contains(activeElement)) {
-      setInteractionMode("focus");
-      return;
-    }
-    setInteractionMode("rest");
-  }
-
   const overlayPullQuote = (
     <p
-      className={`home-card-pullquote line-clamp-3 text-[0.95rem] leading-normal text-center max-w-[26ch] ${
+            className={`home-card-pullquote line-clamp-3 text-[0.95rem] leading-normal text-center max-w-[26ch] ${
         !isPodcastCard
-          ? `opacity-10 transition-opacity duration-200 ease-out min-h-[4.5rem] ${
-              isInteracting ? "opacity-100" : ""
-            }`
+          ? "opacity-0 group-focus-within:opacity-100 md:group-hover:opacity-100 transition-opacity duration-200 ease-out min-h-[4.5rem] motion-reduce:transition-none"
           : ""
       }`}
-      aria-hidden={isPodcastCard ? undefined : isInteracting ? "false" : "true"}
+      aria-hidden={isPodcastCard ? undefined : "true"}
     >
       {displayPullQuote}
     </p>
@@ -145,25 +122,17 @@ export function HomeCard({
 
   return (
     <article
-      className={`paper-grain surface-chamfer home-card home-card--${variant} flex flex-col gap-4 p-6 bg-surface shadow-card-rest border-[1.5px] border-solid ${
+      className={`group paper-grain surface-chamfer home-card home-card--${variant} flex flex-col gap-4 p-6 bg-surface shadow-card-rest border-[1.5px] border-solid ${
         variant === "review" ? "border-[var(--card-border-review)]" : ""
       } ${
         variant === "podcast" ? "border-brand-purple-800" : ""
-      } transition-transform transition-shadow duration-200 ease-out motion-reduce:transform-none ${
-        isInteracting ? "-translate-y-1 scale-[1.02]" : ""
       }`}
       data-card="true"
       data-type={variant}
       role="listitem"
-      data-interacting={isInteracting ? "true" : "false"}
-      data-interaction={interactionMode}
       aria-labelledby={headingId}
-      onPointerEnter={setHoverMode}
-      onPointerLeave={clearInteraction}
-      onFocusCapture={setFocusMode}
-      onBlurCapture={clearInteraction}
     >
-      <ElectricBorder variant={variant} isActive={isInteracting} />
+      <ElectricBorder variant={variant} />
       <header className="home-card-head flex flex-col gap-2">
         <h3 id={headingId} className="home-card-title-heading m-0">
           <Link href={href} className="focus-chamfer home-card-title font-display text-[clamp(1.35rem,1vw+1rem,1.65rem)] leading-snug text-brand-purple-800">
@@ -215,22 +184,20 @@ export function HomeCard({
               height={media.height}
               priority={media.priority}
               sizes="(min-width: 1280px) 320px, (min-width: 1024px) 280px, (min-width: 640px) 340px, 88vw"
-              className="home-card-media-image w-full h-full object-cover"
+              className="home-card-media-image w-full h-full object-cover md:motion-safe:group-hover:blur-sm md:motion-safe:group-focus-within:blur-sm md:group-hover:brightness-[0.85] md:group-focus-within:brightness-[0.85] transition-[filter] duration-200 ease-out motion-reduce:blur-0 motion-reduce:brightness-100 motion-reduce:transition-none"
               loading={media.priority ? "eager" : "lazy"}
               decoding="async"
             />
             {overlayAction ? (
               <button
                 type="button"
-                className={`focus-chamfer home-card-media-overlay absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[color-mix(in_oklab,var(--brand-purple-800)_40%,transparent)] text-brand-pink-100 z-[2] pointer-events-none transition-opacity duration-200 ease-out ${
+                className={`focus-chamfer home-card-media-overlay absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[color-mix(in_oklab,var(--brand-purple-800)_40%,transparent)] text-brand-pink-100 z-[2] pointer-events-none opacity-0 group-focus-within:opacity-100 md:group-hover:opacity-100 transition-opacity duration-200 ease-out motion-reduce:transition-none ${
                   variant === "review" ? "bg-[color-mix(in_oklab,var(--brand-pink-500)_30%,transparent)]" : ""
                 } ${
                   variant === "podcast" ? "bg-[color-mix(in_oklab,var(--brand-purple-600)_30%,transparent)]" : ""
-                } ${
-                  isInteracting ? "opacity-100" : "opacity-0"
                 }`}
                 aria-label={overlayAction.label}
-                aria-hidden={isInteracting ? "false" : "true"}
+                aria-hidden="true"
                 onClick={handleOverlayClick}
               >
                 <svg aria-hidden="true" width="52" height="52" viewBox="0 0 52 52" fill="currentColor">
@@ -240,14 +207,12 @@ export function HomeCard({
               </button>
             ) : (
               <div
-                className={`home-card-media-overlay absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[color-mix(in_oklab,var(--brand-purple-800)_40%,transparent)] text-brand-pink-100 z-[2] pointer-events-none transition-opacity duration-200 ease-out ${
+                className={`home-card-media-overlay absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[color-mix(in_oklab,var(--brand-purple-800)_40%,transparent)] text-brand-pink-100 z-[2] pointer-events-none opacity-0 group-focus-within:opacity-100 md:group-hover:opacity-100 transition-opacity duration-200 ease-out motion-reduce:transition-none ${
                   variant === "review" ? "bg-[color-mix(in_oklab,var(--brand-pink-500)_30%,transparent)]" : ""
                 } ${
                   variant === "podcast" ? "bg-[color-mix(in_oklab,var(--brand-purple-600)_30%,transparent)]" : ""
-                } ${
-                  isInteracting ? "opacity-100" : "opacity-0"
                 }`}
-                aria-hidden={isInteracting ? "false" : "true"}
+                aria-hidden="true"
               >
                 {overlayPullQuote}
               </div>
@@ -261,10 +226,8 @@ export function HomeCard({
           isPodcastCard ? "justify-end" : ""
         }`}>
           <p
-            className={`home-card-text line-clamp-3 text-[0.95rem] leading-normal text-[color-mix(in_oklab,var(--brand-purple-800)_90%,transparent)] transition-opacity duration-200 ease-out ${
-              isInteracting ? "opacity-[0.15]" : "opacity-100"
-            }`}
-            aria-hidden={isInteracting ? "true" : "false"}
+            className="home-card-text line-clamp-3 text-[0.95rem] leading-normal text-[color-mix(in_oklab,var(--brand-purple-800)_90%,transparent)] opacity-100 md:group-hover:opacity-20 md:group-focus-within:opacity-20 transition-opacity duration-200 ease-out motion-reduce:transition-none"
+            aria-hidden="false"
           >
             {displaySummary}
           </p>

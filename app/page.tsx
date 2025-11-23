@@ -20,7 +20,7 @@ export default async function HomePage() {
   return (
     <>
       <HomeHero />
-      <Section className="home-feed-section space-y-16" as="section" data-site-container="">
+      <Section className="home-feed-section space-y-16 snap-y snap-mandatory md:snap-none" as="section" data-site-container="">
         <HomeTiles reviews={reviews} episodes={episodes} />
         <NewsletterSignup />
       </Section>

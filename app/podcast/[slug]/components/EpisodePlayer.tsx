@@ -80,8 +80,7 @@ export function EpisodePlayer({ youtubeId, title, autoplay = false }: EpisodePla
             referrerPolicy="strict-origin-when-cross-origin"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen
-            className="absolute inset-0 h-full w-full border-0"
-            style={{ minHeight: "200px" }}
+            className="absolute inset-0 h-full w-full min-h-[200px] border-0"
           />
         </div>
       </div>

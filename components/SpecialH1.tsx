@@ -15,19 +15,8 @@ export function SpecialH1({ children, className }: SpecialH1Props) {
         className="special-h1-background absolute inset-0 flex items-center justify-center pointer-events-none"
       >
         <div 
-          className="special-h1-bg-text font-display leading-none" 
+          className="special-h1-bg-text block font-display text-[88px] text-[rgb(255,211,232)] leading-[1] text-center whitespace-nowrap visible opacity-100" 
           data-role="special-h1-background"
-          style={{ 
-            fontFamily: 'var(--font-display)',
-            fontSize: '88px', // ~2x H1 (44px) - explicit pixel value for Puppeteer
-            color: 'rgb(255, 211, 232)', // var(--brand-pink-100) as RGB
-            lineHeight: '1',
-            textAlign: 'center',
-            whiteSpace: 'nowrap',
-            display: 'block',
-            visibility: 'visible',
-            opacity: '1'
-          }}
         >
           {text}
         </div>

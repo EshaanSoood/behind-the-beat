@@ -1,17 +1,104 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 interface SubscribeModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
+type FormStatus = "idle" | "submitting" | "success" | "error";
+
 export function SubscribeModal({ isOpen, onClose }: SubscribeModalProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const [isMounted, setIsMounted] = useState(false);
+  const [status, setStatus] = useState<FormStatus>("idle");
+
+  // Watch for Mailchimp success/error responses
+  useEffect(() => {
+    if (!isOpen || status === "success") return;
+
+    const checkMailchimpResponse = () => {
+      const successResponse = document.getElementById("mce-success-response");
+      const errorResponse = document.getElementById("mce-error-response");
+
+      if (successResponse && !successResponse.classList.contains("hidden") && successResponse.textContent?.trim()) {
+        setStatus("success");
+      } else if (errorResponse && !errorResponse.classList.contains("hidden") && errorResponse.textContent?.trim()) {
+        setStatus("error");
+      }
+    };
+
+    // Check immediately
+    checkMailchimpResponse();
+
+    // Use MutationObserver to watch for DOM changes
+    const successResponse = document.getElementById("mce-success-response");
+    const errorResponse = document.getElementById("mce-error-response");
+
+    const observer = new MutationObserver(checkMailchimpResponse);
+
+    if (successResponse) {
+      observer.observe(successResponse, {
+        attributes: true,
+        attributeFilter: ["class"],
+        childList: true,
+        subtree: true,
+      });
+    }
+
+    if (errorResponse) {
+      observer.observe(errorResponse, {
+        attributes: true,
+        attributeFilter: ["class"],
+        childList: true,
+        subtree: true,
+      });
+    }
+
+    return () => observer.disconnect();
+  }, [isOpen, status]);
+
+  // Handle form submission state
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const form = document.getElementById("mc-embedded-subscribe-form");
+    if (!form) return;
+
+    const handleSubmit = () => {
+      setStatus("submitting");
+    };
+
+    form.addEventListener("submit", handleSubmit);
+    return () => form.removeEventListener("submit", handleSubmit);
+  }, [isOpen]);
+
+  // Auto-close after success
+  useEffect(() => {
+    if (status !== "success") return;
+
+    const timeout = window.setTimeout(() => {
+      onClose();
+      setStatus("idle");
+    }, 3500);
+
+    return () => window.clearTimeout(timeout);
+  }, [status, onClose]);
+
+  // Reset status when modal closes
+  useEffect(() => {
+    if (!isOpen) {
+      setStatus("idle");
+    }
+  }, [isOpen]);
+
+  const handleClose = useCallback(() => {
+    onClose();
+    setStatus("idle");
+  }, [onClose]);
 
   useEffect(() => {
     if (isOpen) {
@@ -94,7 +181,7 @@ export function SubscribeModal({ isOpen, onClose }: SubscribeModalProps) {
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) {
-        onClose();
+        handleClose();
       }
     };
 
@@ -102,11 +189,11 @@ export function SubscribeModal({ isOpen, onClose }: SubscribeModalProps) {
       document.addEventListener("keydown", handleEscape);
       return () => document.removeEventListener("keydown", handleEscape);
     }
-  }, [isOpen, onClose]);
+  }, [isOpen, handleClose]);
 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
-      onClose();
+      handleClose();
     }
   };
 
@@ -123,8 +210,7 @@ export function SubscribeModal({ isOpen, onClose }: SubscribeModalProps) {
       <div className="subscribe-backdrop fixed inset-0 bg-black/50" aria-hidden="true" />
       <div
         ref={dialogRef}
-        className="subscribe-dialog fixed left-1/2 top-1/2 z-50 max-h-[90vh] w-full max-w-[600px] -translate-x-1/2 -translate-y-1/2 overflow-y-auto bg-neutral-ui-surface p-6 shadow-soft focus:outline-none surface-chamfer"
-        style={{ backgroundColor: "var(--magazine-white)" }}
+        className="subscribe-dialog fixed left-1/2 top-1/2 z-50 max-h-[90vh] w-full max-w-[600px] -translate-x-1/2 -translate-y-1/2 overflow-y-auto bg-neutral-ui-surface bg-[var(--magazine-white)] p-6 shadow-soft focus:outline-none surface-chamfer"
         role="dialog"
         aria-modal="true"
         aria-labelledby="subscribe-title"
@@ -134,7 +220,7 @@ export function SubscribeModal({ isOpen, onClose }: SubscribeModalProps) {
           ref={closeButtonRef}
           type="button"
           className="subscribe-close absolute right-4 top-4 flex h-10 w-10 items-center justify-center text-2xl text-neutral-ui-text hover:text-brand-purple800 focus:outline-none focus:ring-2 focus:ring-brand-purple800"
-          onClick={onClose}
+          onClick={handleClose}
           aria-label="Close subscribe form"
         >
           <span aria-hidden="true">×</span>
@@ -296,16 +382,42 @@ export function SubscribeModal({ isOpen, onClose }: SubscribeModalProps) {
           `}</style>
 
           <div id="mc_embed_signup">
-            <Image
-              className="btb-form__logo"
-              src="/images/logo.png"
-              alt="Behind The Beat logo"
-              width={200}
-              height={78}
-              priority
-            />
+            {status === "success" ? (
+              <div
+                className="flex flex-col items-start gap-3 py-4"
+                role="status"
+                aria-live="polite"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <Image
+                    src="/images/logo.png"
+                    alt="Behind The Beat logo"
+                    width={200}
+                    height={78}
+                    priority
+                    className="max-w-[200px] h-auto"
+                    aria-hidden="true"
+                  />
+                </div>
+                <h2 className="font-display text-lg font-semibold text-[var(--text-deep-purple)]">
+                  Thank you For Signing Up.
+                </h2>
+                <p className="text-sm text-[var(--brand-purple-600)]">
+                  We solemnly swear to not spam you.
+                </p>
+              </div>
+            ) : (
+              <>
+                <Image
+                  className="btb-form__logo"
+                  src="/images/logo.png"
+                  alt="Behind The Beat logo"
+                  width={200}
+                  height={78}
+                  priority
+                />
 
-            <form
+                <form
               action="https://github.us22.list-manage.com/subscribe/post?u=f1b69e21f3230273dacff4ed5&id=9df3622d09&f_id=00e5c2e1f0"
               method="post"
               id="mc-embedded-subscribe-form"
@@ -346,10 +458,10 @@ export function SubscribeModal({ isOpen, onClose }: SubscribeModalProps) {
                   <input type="text" name="PHONE" className="REQ_CSS" id="mce-PHONE" value="" />
                 </div>
                 <div id="mce-responses" className="clear foot">
-                  <div className="response" id="mce-error-response" style={{ display: "none" }}></div>
-                  <div className="response" id="mce-success-response" style={{ display: "none" }}></div>
+                  <div className="response hidden" id="mce-error-response"></div>
+                  <div className="response hidden" id="mce-success-response"></div>
                 </div>
-                <div aria-hidden="true" style={{ position: "absolute", left: "-5000px" }}>
+                <div aria-hidden="true" className="absolute -left-[5000px]">
                   <input
                     type="text"
                     name="b_f1b69e21f3230273dacff4ed5_9df3622d09"
@@ -364,13 +476,14 @@ export function SubscribeModal({ isOpen, onClose }: SubscribeModalProps) {
                         type="submit"
                         name="subscribe"
                         id="mc-embedded-subscribe"
-                        value="Subscribe"
+                        value={status === "submitting" ? "Subscribing..." : "Subscribe"}
                         aria-label="Subscribe"
+                        disabled={status === "submitting"}
                       />
                     </span>
-                    <p className="btb-badge" style={{ margin: 0 }}>
+                    <p className="btb-badge m-0">
                       <a href="http://eepurl.com/jpl9DA" title="Mailchimp - email marketing made easy and fun">
-                        <span style={{ display: "inline-block", backgroundColor: "transparent", borderRadius: "4px" }}>
+                        <span className="inline-block bg-transparent rounded">
                           <img
                             className="refferal_badge"
                             src="https://digitalasset.intuit.com/render/content/dam/intuit/mc-fe/en_us/images/intuit-mc-rewards-text-dark.svg"
@@ -383,6 +496,8 @@ export function SubscribeModal({ isOpen, onClose }: SubscribeModalProps) {
                 </div>
               </div>
             </form>
+              </>
+            )}
           </div>
         </div>
       </div>
