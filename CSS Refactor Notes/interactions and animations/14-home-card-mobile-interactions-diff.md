@@ -178,3 +178,4 @@ Remains as-is. Cards still:
 - **No JavaScript changes**: All adjustments are CSS-only (Tailwind classes and media queries)
 - **Accessibility**: Focus states remain accessible on all breakpoints; reduced motion preferences respected
 
+

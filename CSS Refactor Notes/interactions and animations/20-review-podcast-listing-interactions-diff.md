@@ -335,3 +335,4 @@
 - **Excerpt expansion**: Current `max-height: 4.5rem` approximation could be refined with CSS custom properties or JavaScript measurement if needed
 - **Podcast excerpt**: If podcast tiles get excerpt text in the future, same delayed expansion pattern can be applied
 
+

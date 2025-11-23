@@ -434,3 +434,4 @@
 - **Overlay click tracking**: Analytics system in place but may need cleanup/refinement
 - **Multiple opacity transitions**: Overlay, pull quote, and summary all have separate opacity transitions (could be consolidated)
 
+

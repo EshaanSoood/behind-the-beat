@@ -151,3 +151,4 @@
 - Mailchimp integration unchanged; we're just observing its DOM updates
 - Status state is properly reset on close to ensure clean state on next open
 
+
