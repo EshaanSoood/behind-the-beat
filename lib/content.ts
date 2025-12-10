@@ -11,7 +11,7 @@ export type Review = {
   cover: string;
   alt: string;
   summary: string;
-  tracklist: Array<{ title: string }>;
+  tracklist: string[];
   streaming?: {
     spotify?: string;
     apple?: string;
@@ -117,13 +117,11 @@ function mapSanityReviewToReview(sanityReview: any): Review {
     author: sanityReview.author || "",
     reviewType: sanityReview.reviewType || "Album review",
     date: sanityReview.date || new Date().toISOString(),
-    pullQuote: sanityReview.pullQuote || "",
+    pullQuote: sanityReview.pullQuote ?? "",
     cover: sanityReview.cover || "",
     alt: sanityReview.alt || "",
     summary: summary || "",
-    tracklist: (sanityReview.tracklist || []).map((track: any) => ({
-      title: track.title || "",
-    })),
+    tracklist: sanityReview.tracklist || [],
     streaming: sanityReview.streamingLinks
       ? {
           spotify: sanityReview.streamingLinks.spotify,
@@ -156,7 +154,7 @@ function mapSanityEpisodeToEpisode(sanityEpisode: any): Episode {
     title: sanityEpisode.title || "",
     guest: sanityEpisode.guest || "",
     date: sanityEpisode.date || new Date().toISOString(),
-    pullQuote: sanityEpisode.pullQuote || "",
+    pullQuote: sanityEpisode.pullQuote ?? "",
     cover: sanityEpisode.cover || "",
     alt: sanityEpisode.alt || "",
     youtubeId: youtubeId || "",
@@ -192,7 +190,21 @@ function extractYouTubeId(url: string): string {
 export async function getAllReviews(): Promise<Review[]> {
   try {
     const sanityReviews = await client.fetch(allReviewsQuery);
-    return sanityReviews.map(mapSanityReviewToReview);
+    if (!Array.isArray(sanityReviews)) {
+      console.error("Sanity returned non-array for reviews:", sanityReviews);
+      return [];
+    }
+    return sanityReviews
+      .filter((review) => review != null)
+      .map((review) => {
+        try {
+          return mapSanityReviewToReview(review);
+        } catch (error) {
+          console.error("Error mapping review:", error, review);
+          return null;
+        }
+      })
+      .filter((review): review is Review => review !== null);
   } catch (error) {
     console.error("Error fetching reviews from Sanity:", error);
     return [];
@@ -202,7 +214,21 @@ export async function getAllReviews(): Promise<Review[]> {
 export async function getAllEpisodes(): Promise<Episode[]> {
   try {
     const sanityEpisodes = await client.fetch(allPodcastEpisodesQuery);
-    return sanityEpisodes.map(mapSanityEpisodeToEpisode);
+    if (!Array.isArray(sanityEpisodes)) {
+      console.error("Sanity returned non-array for episodes:", sanityEpisodes);
+      return [];
+    }
+    return sanityEpisodes
+      .filter((episode) => episode != null)
+      .map((episode) => {
+        try {
+          return mapSanityEpisodeToEpisode(episode);
+        } catch (error) {
+          console.error("Error mapping episode:", error, episode);
+          return null;
+        }
+      })
+      .filter((episode): episode is Episode => episode !== null);
   } catch (error) {
     console.error("Error fetching episodes from Sanity:", error);
     return [];
