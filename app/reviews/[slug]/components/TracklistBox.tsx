@@ -33,7 +33,7 @@ export function TracklistBox({ review }: TracklistBoxProps) {
           </h2>
           <ol className="list-decimal space-y-2 text-base leading-relaxed">
             {review.tracklist.map((track, index) => (
-              <li key={index}>{typeof track === "string" ? track : track.title}</li>
+              <li key={index}>{track}</li>
             ))}
           </ol>
         </aside>
