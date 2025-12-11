@@ -67,21 +67,31 @@ import { getImageUrl } from "./sanity/image";
 
 function extractSummaryFromPortableText(body: PortableTextBlock[]): string {
   if (!body || body.length === 0) return "";
-  
-  // Find the first text block and extract text
+
+  const MAX_WORDS = 20;
+
   for (const block of body) {
     if (block._type === "block" && block.children) {
+
       const text = block.children
         .filter((child: any) => child._type === "span")
         .map((child: any) => child.text)
-        .join("");
-      if (text.trim()) {
-        // Return first 200 characters or first sentence
-        const firstSentence = text.split(/[.!?]/)[0];
-        return firstSentence.length > 200 ? text.substring(0, 200) + "..." : firstSentence;
+        .join(" ")
+        .trim();
+
+      if (!text) continue;
+
+      const words = text.split(/\s+/);
+
+      if (words.length <= MAX_WORDS) {
+        return text; // No ellipsis needed
       }
+
+      const summary = words.slice(0, MAX_WORDS).join(" ") + "…";
+      return summary;
     }
   }
+
   return "";
 }
 
