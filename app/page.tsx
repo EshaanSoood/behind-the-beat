@@ -13,6 +13,9 @@ export const metadata = genMeta({
   path: "/",
 });
 
+// Revalidate every 60 seconds to pick up new content
+export const revalidate = 60;
+
 export default async function HomePage() {
   const reviews = await getAllReviews();
   const episodes = await getAllEpisodes();

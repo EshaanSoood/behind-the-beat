@@ -18,6 +18,9 @@ type ReviewEntryPageProps = {
   }>;
 };
 
+// Revalidate every 60 seconds to pick up content updates
+export const revalidate = 60;
+
 export async function generateMetadata({
   params,
 }: ReviewEntryPageProps): Promise<Metadata> {

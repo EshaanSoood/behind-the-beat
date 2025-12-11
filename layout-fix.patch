@@ -1,0 +1,358 @@
+diff --git a/app/podcast/[slug]/components/EpisodeHeader.tsx b/app/podcast/[slug]/components/EpisodeHeader.tsx
+index 4302993..e71fe82 100644
+--- a/app/podcast/[slug]/components/EpisodeHeader.tsx
++++ b/app/podcast/[slug]/components/EpisodeHeader.tsx
+@@ -13,15 +13,15 @@ export function EpisodeHeader({ episode }: EpisodeHeaderProps) {
+   const currentUrl = `${siteDefaults.url}/podcast/${episode.slug}`;
+ 
+   return (
+-    <header className="entry-header flex flex-col gap-4" data-role="entry-header">
++    <header className="flex flex-col items-center gap-4" data-role="entry-header">
+       <div data-role="headline">
+         <SpecialH1>{episode.title}</SpecialH1>
+       </div>
+-      <p className="text-base text-[var(--text-muted)]" data-role="meta">
++      <p className="text-base text-center text-[var(--text-muted)]" data-role="meta">
+         {episode.guest} · {formattedDate}
+         {episode.tags && episode.tags.length > 0 && ` · ${episode.tags.join(", ")}`}
+       </p>
+-      <div data-role="share-chips">
++      <div data-role="share-chips" className="flex justify-center">
+         <ShareChips title={episode.title} url={currentUrl} quote={episode.pullQuote} />
+       </div>
+     </header>
+diff --git a/app/podcast/[slug]/page.tsx b/app/podcast/[slug]/page.tsx
+index 8f36c87..e53e2de 100644
+--- a/app/podcast/[slug]/page.tsx
++++ b/app/podcast/[slug]/page.tsx
+@@ -69,6 +69,7 @@ export default async function PodcastEntryPage({ params, searchParams }: Podcast
+ 
+   return (
+     <div data-page="podcast-entry">
++      {/* Breadcrumbs and Header - wider container */}
+       <Section as="article" className="flex flex-col gap-8">
+         <Breadcrumbs
+           items={[
+@@ -77,22 +78,26 @@ export default async function PodcastEntryPage({ params, searchParams }: Podcast
+             { label: episode.title },
+           ]}
+         />
+-        <EntryColumn variant="podcast">
+-          <div className="podcast-header">
+-            <EpisodeHeader episode={episode} />
+-          </div>
+-        </EntryColumn>
++
++        {/* Header - wider container for title + metadata */}
++        <div className="podcast-header-container mx-auto flex w-full max-w-[900px] flex-col px-6">
++          <EpisodeHeader episode={episode} />
++        </div>
+       </Section>
++
++      {/* Player - wider container for video */}
+       <Section className="flex flex-col gap-8">
+-        <EntryColumn variant="podcast">
++        <div className="podcast-player-container mx-auto w-full max-w-[900px] px-6">
+           <EpisodePlayer
+             youtubeId={episode.youtubeId}
+             title={episode.title}
+             autoplay={wantsAutoplay}
+           />
+-        </EntryColumn>
++        </div>
+       </Section>
+-      <Section className="flex flex-col gap-8">
++
++      {/* Episode notes - constrained prose width for readability */}
++      <Section className="mt-8 flex flex-col gap-8">
+         <EntryColumn variant="podcast">
+           <EpisodeNotes episode={episode} />
+         </EntryColumn>
+diff --git a/app/reviews/[slug]/components/ReviewHeader.tsx b/app/reviews/[slug]/components/ReviewHeader.tsx
+index e6fc1cb..4c0bf66 100644
+--- a/app/reviews/[slug]/components/ReviewHeader.tsx
++++ b/app/reviews/[slug]/components/ReviewHeader.tsx
+@@ -16,19 +16,19 @@ export function ReviewHeader({ review }: ReviewHeaderProps) {
+   return (
+     <header className="entry-header flex flex-col gap-6 md:flex-row md:items-start md:gap-8" data-role="entry-header">
+       {/* Left column: Headline, meta, share chips */}
+-      <div className="entry-header-left flex-1 flex flex-col gap-4 md:h-[240px] md:relative">
+-        <div className="flex flex-col gap-4">
++      <div className="entry-header-left flex-1 flex flex-col gap-4 md:min-h-[240px] md:justify-between">
++        <div className="flex flex-col items-center gap-4">
+           <div data-role="headline">
+             <SpecialH1>{review.title}</SpecialH1>
+           </div>
+-          <p className="text-base text-[var(--text-muted)]" data-role="meta">
++          <p className="text-base text-center text-[var(--text-muted)]" data-role="meta">
+             {review.artist} · {review.author} · {formattedDate}
+             {(review.tags && review.tags.length > 0) || (review.genreTags && review.genreTags.length > 0)
+               ? ` · ${(review.genreTags || review.tags || []).join(", ")}`
+               : ""}
+           </p>
+         </div>
+-        <div data-role="share-chips" className="md:absolute md:bottom-0 md:left-0 md:right-0">
++        <div data-role="share-chips" className="flex justify-center">
+           <ShareChips title={review.title} url={currentUrl} quote={review.pullQuote} />
+         </div>
+       </div>
+diff --git a/app/reviews/[slug]/page.tsx b/app/reviews/[slug]/page.tsx
+index 60e1a92..0959896 100644
+--- a/app/reviews/[slug]/page.tsx
++++ b/app/reviews/[slug]/page.tsx
+@@ -64,6 +64,7 @@ export default async function ReviewEntryPage({ params }: ReviewEntryPageProps)
+ 
+   return (
+     <div data-page="review-entry">
++      {/* Breadcrumbs - full width within Section */}
+       <Section as="article" className="flex flex-col gap-8">
+         <Breadcrumbs
+           items={[
+@@ -72,24 +73,32 @@ export default async function ReviewEntryPage({ params }: ReviewEntryPageProps)
+             { label: review.title },
+           ]}
+         />
+-        <EntryColumn variant="review">
+-          <div className="review-header">
+-            <ReviewHeader review={review} />
+-          </div>
+-          {review.pullQuote && (
+-            <div className="mt-8" data-role="pull-quote">
++
++        {/* Header - wider container for album art + metadata */}
++        <div className="review-header-container mx-auto w-full max-w-[900px] px-6">
++          <ReviewHeader review={review} />
++        </div>
++
++        {/* Pull quote - within prose width */}
++        {review.pullQuote && (
++          <EntryColumn variant="review">
++            <div data-role="pull-quote">
+               <PullQuote cite={review.artist}>{review.pullQuote}</PullQuote>
+             </div>
+-          )}
+-        </EntryColumn>
++          </EntryColumn>
++        )}
+       </Section>
++
++      {/* Review body - constrained prose width for readability */}
+       <Section className="flex flex-col gap-8">
+         <EntryColumn variant="review">
+           <ReviewBody review={review} />
+         </EntryColumn>
+       </Section>
+-      <Section className="flex flex-col gap-8">
+-        <EntryColumn variant="review">
++
++      {/* Tracklist and artist links - wider container */}
++      <Section className="mt-8 flex flex-col gap-8">
++        <div className="review-footer-container mx-auto w-full max-w-[900px] px-6">
+           <TracklistBox review={review} />
+           {review.reviewType === "Live review" && review.artistLinks && (
+             <section className="where-to-find flex flex-col gap-4 mt-8" data-section="where-to-find">
+@@ -103,7 +112,7 @@ export default async function ReviewEntryPage({ params }: ReviewEntryPageProps)
+               />
+             </section>
+           )}
+-        </EntryColumn>
++        </div>
+       </Section>
+     </div>
+   );
+diff --git a/app/reviews/components/ReviewList.tsx b/app/reviews/components/ReviewList.tsx
+index aec139f..7dd22b9 100644
+--- a/app/reviews/components/ReviewList.tsx
++++ b/app/reviews/components/ReviewList.tsx
+@@ -81,7 +81,7 @@ export function ReviewList({ initialReviews }: ReviewListProps) {
+       {hasMore && (
+         <div className="mt-6">
+           <ButtonTrapezoid
+-            tone="neutral"
++            tone="primary"
+             size="md"
+             aria-controls="review-grid"
+             onClick={handleLoadMore}
+diff --git a/components/ButtonTrapezoid.tsx b/components/ButtonTrapezoid.tsx
+index f0aa446..f986e30 100644
+--- a/components/ButtonTrapezoid.tsx
++++ b/components/ButtonTrapezoid.tsx
+@@ -30,7 +30,7 @@ export function ButtonTrapezoid(props: ButtonTrapezoidProps) {
+   const { tone = "primary", size = "md", children, className } = props;
+ 
+   const toneClassName: Record<"primary" | "neutral", string> = {
+-    primary: "bg-brand-purple800 text-brand-pink100 hover:bg-brand-purple600",
++    primary: "border border-brand-purple600 bg-[var(--brand-purple-800)] !text-[#FFD3E8] hover:bg-brand-purple600",
+     neutral:
+       "border border-neutral-ui-border bg-neutral-ui-offwhite text-neutral-ui-text hover:bg-neutral-ui-bg",
+   };
+diff --git a/components/ReviewStrip.tsx b/components/ReviewStrip.tsx
+index 8e63e10..71122f8 100644
+--- a/components/ReviewStrip.tsx
++++ b/components/ReviewStrip.tsx
+@@ -40,7 +40,7 @@ export function ReviewStrip({ review }: ReviewStripProps) {
+             size="sm"
+             className="!bg-transparent !text-brand-pink500 !border-brand-pink100 hover:!bg-brand-pink100/20"
+           >
+-            <span className="font-display text-xl leading-none">+</span>
++            Read More <span className="ml-2 font-display text-xl leading-none">+</span>
+           </ButtonTrapezoid>
+         </div>
+       </div>
+diff --git a/components/ShareChips.tsx b/components/ShareChips.tsx
+index d16c791..b97e1bc 100644
+--- a/components/ShareChips.tsx
++++ b/components/ShareChips.tsx
+@@ -5,7 +5,7 @@ import { useState } from "react";
+ import { FacebookIcon } from "./icons/Facebook";
+ import { MailIcon } from "./icons/Mail";
+ import { WhatsAppIcon } from "./icons/WhatsApp";
+-import { ButtonTrapezoid } from "./ButtonTrapezoid";
++import { LinkIcon } from "./icons/Link";
+ 
+ type ShareChipsProps = {
+   title: string;
+@@ -14,7 +14,7 @@ type ShareChipsProps = {
+ };
+ 
+ const shareButtonClassName =
+-  "inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-brand-purple800 border border-neutral-ui-border bg-neutral-ui-offwhite hover:bg-neutral-ui-bg transition focus-chamfer";
++  "inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-brand-purple800 bg-neutral-ui-offwhite hover:bg-neutral-ui-bg transition focus-chamfer cursor-pointer";
+ 
+ export function ShareChips({ title, url, quote }: ShareChipsProps) {
+   const [copied, setCopied] = useState(false);
+@@ -44,47 +44,46 @@ export function ShareChips({ title, url, quote }: ShareChipsProps) {
+   };
+ 
+   return (
+-    <div className="flex flex-col gap-4" role="group" aria-label="Share options">
+-      <h3 className="text-2xl font-semibold text-neutral-ui-text">Share</h3>
+-      <div className="flex flex-wrap items-center gap-3">
+-        <a
+-          href={shareLinks.facebook}
+-          target="_blank"
+-          rel="noopener noreferrer"
+-          className={shareButtonClassName}
+-          aria-label="Share on Facebook"
+-        >
+-          <FacebookIcon className="h-4 w-4" />
+-        </a>
+-        <a
+-          href={shareLinks.whatsapp}
+-          target="_blank"
+-          rel="noopener noreferrer"
+-          className={shareButtonClassName}
+-          aria-label="Share on WhatsApp"
+-        >
+-          <WhatsAppIcon className="h-4 w-4" />
+-        </a>
+-        <a
+-          href={shareLinks.email}
+-          className={shareButtonClassName}
+-          aria-label="Share via email"
+-        >
+-          <MailIcon className="h-4 w-4" />
+-        </a>
+-        <div className="share-copy-button">
+-          <ButtonTrapezoid
+-            onClick={handleCopy}
+-            size="sm"
+-          >
+-            {copied ? "Copied!" : "Copy Link"}
+-          </ButtonTrapezoid>
+-          <span className="sr-only" aria-live="polite" aria-atomic="true">
+-            {copied ? "Link copied to clipboard" : ""}
+-          </span>
+-        </div>
+-      </div>
+-    </div>
++    <nav aria-label="Share this article" className="flex flex-wrap items-center gap-3">
++      <a
++        href={shareLinks.facebook}
++        target="_blank"
++        rel="noopener noreferrer"
++        className={shareButtonClassName}
++        aria-label="Share on Facebook"
++      >
++        <FacebookIcon className="h-5 w-5" />
++      </a>
++      <a
++        href={shareLinks.whatsapp}
++        target="_blank"
++        rel="noopener noreferrer"
++        className={shareButtonClassName}
++        aria-label="Share on WhatsApp"
++      >
++        <WhatsAppIcon className="h-5 w-5" />
++      </a>
++      <a
++        href={shareLinks.email}
++        className={shareButtonClassName}
++        aria-label="Share via email"
++      >
++        <MailIcon className="h-5 w-5" />
++      </a>
++      <button
++        type="button"
++        onClick={handleCopy}
++        className={shareButtonClassName}
++        aria-label={copied ? "Link copied to clipboard" : "Copy link to clipboard"}
++        aria-live="polite"
++      >
++        {copied ? (
++          <span className="text-xs">Copied!</span>
++        ) : (
++          <LinkIcon className="h-5 w-5" />
++        )}
++      </button>
++    </nav>
+   );
+ }
+ 
+diff --git a/next.config.ts b/next.config.ts
+index 41eacef..8d2991e 100644
+--- a/next.config.ts
++++ b/next.config.ts
+@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
+         protocol: "https",
+         hostname: "i.ytimg.com",
+       },
++      {
++        protocol: "https",
++        hostname: "cdn.sanity.io",
++      },
+     ],
+   },
+   turbopack: {
+diff --git a/styles/globals.css b/styles/globals.css
+index 6c6e212..18cf071 100644
+--- a/styles/globals.css
++++ b/styles/globals.css
+@@ -827,10 +827,10 @@ blockquote {
+   gap: var(--home-card-gap);
+   padding: var(--home-card-padding);
+   background: var(--surface);
++  overflow: visible;
+   box-shadow: var(--card-shadow-rest);
+   border-width: var(--border-strong-width);
+   border-style: solid;
+-  aspect-ratio: 4 / 5.8;
+   clip-path: polygon(
+     var(--ch) 0,
+     calc(100% - var(--ch)) 0,
+@@ -1047,6 +1047,15 @@ blockquote {
+   z-index: 3;
+ }
+ 
++.card-actions .button-trapezoid {
++  background-color: color-mix(in oklab, var(--brand-pink-300) 40%, transparent);
++  color: var(--brand-purple-800);
++  border: 1px solid var(--brand-pink-300);
++  width: 100%;
++  text-align: center;
++  justify-content: center;
++}
++
+ .card-actions--image-button {
+   margin-top: 0;
+   margin-bottom: var(--space-4);

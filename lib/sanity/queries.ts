@@ -17,9 +17,7 @@ export const reviewFields = `
       asset->
     }
   },
-  tracklist[]{
-    title
-  },
+  tracklist,
   streamingLinks{
     spotify,
     appleMusic,

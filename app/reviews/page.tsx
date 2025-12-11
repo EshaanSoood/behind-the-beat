@@ -10,6 +10,9 @@ export const metadata = genMeta({
   path: "/reviews",
 });
 
+// Revalidate every 60 seconds to pick up new content
+export const revalidate = 60;
+
 export default async function ReviewsPage() {
   const reviews = await allReviewsSorted();
 

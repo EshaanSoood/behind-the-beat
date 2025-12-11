@@ -317,3 +317,7 @@ Successfully replaced horizontal carousel with vertical snap feed:
 The implementation provides a social feed-like experience on mobile while maintaining the existing grid layout on desktop. All existing HomeCard interactions (wiggle, blur, ElectricBorder, etc.) remain unchanged.
 
 
+
+
+
+

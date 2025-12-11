@@ -19,6 +19,9 @@ type PodcastEntryPageProps = {
   }>;
 };
 
+// Revalidate every 60 seconds to pick up content updates
+export const revalidate = 60;
+
 export async function generateMetadata({
   params,
 }: PodcastEntryPageProps): Promise<Metadata> {

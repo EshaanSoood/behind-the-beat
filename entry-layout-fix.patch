@@ -1,0 +1,162 @@
+diff --git a/app/podcast/[slug]/components/EpisodeHeader.tsx b/app/podcast/[slug]/components/EpisodeHeader.tsx
+index 4302993..e71fe82 100644
+--- a/app/podcast/[slug]/components/EpisodeHeader.tsx
++++ b/app/podcast/[slug]/components/EpisodeHeader.tsx
+@@ -13,15 +13,15 @@ export function EpisodeHeader({ episode }: EpisodeHeaderProps) {
+   const currentUrl = `${siteDefaults.url}/podcast/${episode.slug}`;
+ 
+   return (
+-    <header className="entry-header flex flex-col gap-4" data-role="entry-header">
++    <header className="flex flex-col items-center gap-4" data-role="entry-header">
+       <div data-role="headline">
+         <SpecialH1>{episode.title}</SpecialH1>
+       </div>
+-      <p className="text-base text-[var(--text-muted)]" data-role="meta">
++      <p className="text-base text-center text-[var(--text-muted)]" data-role="meta">
+         {episode.guest} · {formattedDate}
+         {episode.tags && episode.tags.length > 0 && ` · ${episode.tags.join(", ")}`}
+       </p>
+-      <div data-role="share-chips">
++      <div data-role="share-chips" className="flex justify-center">
+         <ShareChips title={episode.title} url={currentUrl} quote={episode.pullQuote} />
+       </div>
+     </header>
+diff --git a/app/podcast/[slug]/page.tsx b/app/podcast/[slug]/page.tsx
+index 8f36c87..e53e2de 100644
+--- a/app/podcast/[slug]/page.tsx
++++ b/app/podcast/[slug]/page.tsx
+@@ -69,6 +69,7 @@ export default async function PodcastEntryPage({ params, searchParams }: Podcast
+ 
+   return (
+     <div data-page="podcast-entry">
++      {/* Breadcrumbs and Header - wider container */}
+       <Section as="article" className="flex flex-col gap-8">
+         <Breadcrumbs
+           items={[
+@@ -77,22 +78,26 @@ export default async function PodcastEntryPage({ params, searchParams }: Podcast
+             { label: episode.title },
+           ]}
+         />
+-        <EntryColumn variant="podcast">
+-          <div className="podcast-header">
+-            <EpisodeHeader episode={episode} />
+-          </div>
+-        </EntryColumn>
++
++        {/* Header - wider container for title + metadata */}
++        <div className="podcast-header-container mx-auto flex w-full max-w-[900px] flex-col px-6">
++          <EpisodeHeader episode={episode} />
++        </div>
+       </Section>
++
++      {/* Player - wider container for video */}
+       <Section className="flex flex-col gap-8">
+-        <EntryColumn variant="podcast">
++        <div className="podcast-player-container mx-auto w-full max-w-[900px] px-6">
+           <EpisodePlayer
+             youtubeId={episode.youtubeId}
+             title={episode.title}
+             autoplay={wantsAutoplay}
+           />
+-        </EntryColumn>
++        </div>
+       </Section>
+-      <Section className="flex flex-col gap-8">
++
++      {/* Episode notes - constrained prose width for readability */}
++      <Section className="mt-8 flex flex-col gap-8">
+         <EntryColumn variant="podcast">
+           <EpisodeNotes episode={episode} />
+         </EntryColumn>
+diff --git a/app/reviews/[slug]/components/ReviewHeader.tsx b/app/reviews/[slug]/components/ReviewHeader.tsx
+index e6fc1cb..4c0bf66 100644
+--- a/app/reviews/[slug]/components/ReviewHeader.tsx
++++ b/app/reviews/[slug]/components/ReviewHeader.tsx
+@@ -16,19 +16,19 @@ export function ReviewHeader({ review }: ReviewHeaderProps) {
+   return (
+     <header className="entry-header flex flex-col gap-6 md:flex-row md:items-start md:gap-8" data-role="entry-header">
+       {/* Left column: Headline, meta, share chips */}
+-      <div className="entry-header-left flex-1 flex flex-col gap-4 md:h-[240px] md:relative">
+-        <div className="flex flex-col gap-4">
++      <div className="entry-header-left flex-1 flex flex-col gap-4 md:min-h-[240px] md:justify-between">
++        <div className="flex flex-col items-center gap-4">
+           <div data-role="headline">
+             <SpecialH1>{review.title}</SpecialH1>
+           </div>
+-          <p className="text-base text-[var(--text-muted)]" data-role="meta">
++          <p className="text-base text-center text-[var(--text-muted)]" data-role="meta">
+             {review.artist} · {review.author} · {formattedDate}
+             {(review.tags && review.tags.length > 0) || (review.genreTags && review.genreTags.length > 0)
+               ? ` · ${(review.genreTags || review.tags || []).join(", ")}`
+               : ""}
+           </p>
+         </div>
+-        <div data-role="share-chips" className="md:absolute md:bottom-0 md:left-0 md:right-0">
++        <div data-role="share-chips" className="flex justify-center">
+           <ShareChips title={review.title} url={currentUrl} quote={review.pullQuote} />
+         </div>
+       </div>
+diff --git a/app/reviews/[slug]/page.tsx b/app/reviews/[slug]/page.tsx
+index 60e1a92..0959896 100644
+--- a/app/reviews/[slug]/page.tsx
++++ b/app/reviews/[slug]/page.tsx
+@@ -64,6 +64,7 @@ export default async function ReviewEntryPage({ params }: ReviewEntryPageProps)
+ 
+   return (
+     <div data-page="review-entry">
++      {/* Breadcrumbs - full width within Section */}
+       <Section as="article" className="flex flex-col gap-8">
+         <Breadcrumbs
+           items={[
+@@ -72,24 +73,32 @@ export default async function ReviewEntryPage({ params }: ReviewEntryPageProps)
+             { label: review.title },
+           ]}
+         />
+-        <EntryColumn variant="review">
+-          <div className="review-header">
+-            <ReviewHeader review={review} />
+-          </div>
+-          {review.pullQuote && (
+-            <div className="mt-8" data-role="pull-quote">
++
++        {/* Header - wider container for album art + metadata */}
++        <div className="review-header-container mx-auto w-full max-w-[900px] px-6">
++          <ReviewHeader review={review} />
++        </div>
++
++        {/* Pull quote - within prose width */}
++        {review.pullQuote && (
++          <EntryColumn variant="review">
++            <div data-role="pull-quote">
+               <PullQuote cite={review.artist}>{review.pullQuote}</PullQuote>
+             </div>
+-          )}
+-        </EntryColumn>
++          </EntryColumn>
++        )}
+       </Section>
++
++      {/* Review body - constrained prose width for readability */}
+       <Section className="flex flex-col gap-8">
+         <EntryColumn variant="review">
+           <ReviewBody review={review} />
+         </EntryColumn>
+       </Section>
+-      <Section className="flex flex-col gap-8">
+-        <EntryColumn variant="review">
++
++      {/* Tracklist and artist links - wider container */}
++      <Section className="mt-8 flex flex-col gap-8">
++        <div className="review-footer-container mx-auto w-full max-w-[900px] px-6">
+           <TracklistBox review={review} />
+           {review.reviewType === "Live review" && review.artistLinks && (
+             <section className="where-to-find flex flex-col gap-4 mt-8" data-section="where-to-find">
+@@ -103,7 +112,7 @@ export default async function ReviewEntryPage({ params }: ReviewEntryPageProps)
+               />
+             </section>
+           )}
+-        </EntryColumn>
++        </div>
+       </Section>
+     </div>
+   );

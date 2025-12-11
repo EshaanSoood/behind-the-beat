@@ -10,6 +10,9 @@ export const metadata = genMeta({
   path: "/podcast",
 });
 
+// Revalidate every 60 seconds to pick up new content
+export const revalidate = 60;
+
 export default async function PodcastPage() {
   const episodes = await allEpisodesSorted();
 

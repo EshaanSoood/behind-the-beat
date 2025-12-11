@@ -38,22 +38,39 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  const reviews = await allReviewsSorted();
-  const episodes = await allEpisodesSorted();
+  // Safely fetch reviews and episodes, handling errors gracefully
+  let reviews: Awaited<ReturnType<typeof allReviewsSorted>> = [];
+  let episodes: Awaited<ReturnType<typeof allEpisodesSorted>> = [];
 
-  const reviewRoutes: MetadataRoute.Sitemap = reviews.map((review) => ({
-    url: `${baseUrl}/reviews/${review.slug}`,
-    lastModified: new Date(review.date),
-    changeFrequency: "monthly" as const,
-    priority: 0.8,
-  }));
+  try {
+    reviews = await allReviewsSorted();
+  } catch (error) {
+    console.error("Error fetching reviews for sitemap:", error);
+  }
 
-  const episodeRoutes: MetadataRoute.Sitemap = episodes.map((episode) => ({
-    url: `${baseUrl}/podcast/${episode.slug}`,
-    lastModified: new Date(episode.date),
-    changeFrequency: "monthly" as const,
-    priority: 0.8,
-  }));
+  try {
+    episodes = await allEpisodesSorted();
+  } catch (error) {
+    console.error("Error fetching episodes for sitemap:", error);
+  }
+
+  const reviewRoutes: MetadataRoute.Sitemap = reviews
+    .filter((review) => review.slug && review.date)
+    .map((review) => ({
+      url: `${baseUrl}/reviews/${review.slug}`,
+      lastModified: new Date(review.date),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    }));
+
+  const episodeRoutes: MetadataRoute.Sitemap = episodes
+    .filter((episode) => episode.slug && episode.date)
+    .map((episode) => ({
+      url: `${baseUrl}/podcast/${episode.slug}`,
+      lastModified: new Date(episode.date),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    }));
 
   return [...staticRoutes, ...reviewRoutes, ...episodeRoutes];
 }
