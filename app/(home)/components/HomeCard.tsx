@@ -114,7 +114,7 @@ export function HomeCard({
           ? "opacity-0 group-focus-within:opacity-100 md:group-hover:opacity-100 transition-opacity duration-200 ease-out min-h-[4.5rem] motion-reduce:transition-none"
           : ""
       }`}
-      aria-hidden={isPodcastCard ? undefined : "true"}
+      aria-hidden={isPodcastCard ? "false" : "true"}
     >
       {displayPullQuote}
     </p>
@@ -129,6 +129,19 @@ export function HomeCard({
       }`}
       data-card="true"
       data-type={variant}
+      data-interacting="false"
+      onMouseEnter={(e) => {
+        e.currentTarget.setAttribute("data-interacting", "true");
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.setAttribute("data-interacting", "false");
+      }}
+      onFocus={(e) => {
+        e.currentTarget.setAttribute("data-interacting", "true");
+      }}
+      onBlur={(e) => {
+        e.currentTarget.setAttribute("data-interacting", "false");
+      }}
       role="listitem"
       aria-labelledby={headingId}
     >
@@ -174,6 +187,31 @@ export function HomeCard({
                 {displayPullQuote}
               </p>
             </div>
+            {overlayAction ? (
+              <button
+                type="button"
+                className={`focus-chamfer home-card-media-overlay absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[color-mix(in_oklab,var(--brand-purple-800)_40%,transparent)] text-brand-pink-100 z-[2] pointer-events-none opacity-0 group-focus-within:opacity-100 md:group-hover:opacity-100 transition-opacity duration-200 ease-out motion-reduce:transition-none ${
+                  variant === "podcast" ? "bg-[color-mix(in_oklab,var(--brand-purple-600)_30%,transparent)]" : ""
+                }`}
+                aria-label={overlayAction.label}
+                aria-hidden="true"
+                onClick={handleOverlayClick}
+              >
+                <svg aria-hidden="true" width="52" height="52" viewBox="0 0 52 52" fill="currentColor">
+                  <path d="M21 16.667 37 26l-16 9.333V16.667Z" />
+                </svg>
+                {overlayPullQuote}
+              </button>
+            ) : (
+              <div
+                className={`home-card-media-overlay absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[color-mix(in_oklab,var(--brand-purple-800)_40%,transparent)] text-brand-pink-100 z-[2] pointer-events-none opacity-0 group-focus-within:opacity-100 md:group-hover:opacity-100 transition-opacity duration-200 ease-out motion-reduce:transition-none ${
+                  variant === "podcast" ? "bg-[color-mix(in_oklab,var(--brand-purple-600)_30%,transparent)]" : ""
+                }`}
+                aria-hidden="true"
+              >
+                {overlayPullQuote}
+              </div>
+            )}
           </>
         ) : (
           <>

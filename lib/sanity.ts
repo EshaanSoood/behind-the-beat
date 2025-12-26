@@ -14,6 +14,15 @@ const projectId = cleanEnvVar(process.env.SANITY_PROJECT_ID, "74f8ikg7");
 const dataset = cleanEnvVar(process.env.SANITY_DATASET, "production");
 const apiVersion = cleanEnvVar(process.env.SANITY_API_VERSION, "2024-10-01");
 
+// Validate that we have required values (especially important in production)
+if (!projectId || projectId === "") {
+  console.error("SANITY_PROJECT_ID is missing or empty. Sanity queries will fail.");
+}
+
+if (!dataset || dataset === "") {
+  console.error("SANITY_DATASET is missing or empty. Sanity queries will fail.");
+}
+
 // Default client with CDN enabled for better performance
 // CDN cache is typically cleared within seconds of content updates
 // Combined with Next.js revalidation (60s), this provides a good balance

@@ -118,10 +118,19 @@ function mapSanityReviewToReview(sanityReview: any): Review {
     throw new Error("Review data is missing");
   }
 
+  // Ensure slug is always a string, never null/undefined
+  const slug = sanityReview.slug && typeof sanityReview.slug === "string" 
+    ? sanityReview.slug 
+    : "";
+
+  if (!slug) {
+    console.warn("Review missing slug:", sanityReview._id, sanityReview.title);
+  }
+
   const summary = extractSummaryFromPortableText(sanityReview.body || []);
 
   return {
-    slug: sanityReview.slug || "",
+    slug,
     title: sanityReview.title || "",
     artist: sanityReview.artist || "",
     author: sanityReview.author || "",
@@ -131,7 +140,7 @@ function mapSanityReviewToReview(sanityReview: any): Review {
     cover: sanityReview.cover || "",
     alt: sanityReview.alt || "",
     summary: summary || "",
-    tracklist: sanityReview.tracklist || [],
+    tracklist: Array.isArray(sanityReview.tracklist) ? sanityReview.tracklist : [],
     streaming: sanityReview.streamingLinks
       ? {
           spotify: sanityReview.streamingLinks.spotify,
@@ -141,9 +150,9 @@ function mapSanityReviewToReview(sanityReview: any): Review {
           bandcamp: sanityReview.streamingLinks.bandcamp,
         }
       : undefined,
-    tags: sanityReview.genreTags || [],
-    genreTags: sanityReview.genreTags || [],
-    body: sanityReview.body || [],
+    tags: Array.isArray(sanityReview.genreTags) ? sanityReview.genreTags : [],
+    genreTags: Array.isArray(sanityReview.genreTags) ? sanityReview.genreTags : [],
+    body: Array.isArray(sanityReview.body) ? sanityReview.body : [],
     artistLinks: sanityReview.artistLinks,
   };
 }
@@ -153,6 +162,15 @@ function mapSanityEpisodeToEpisode(sanityEpisode: any): Episode {
     throw new Error("Episode data is missing");
   }
 
+  // Ensure slug is always a string, never null/undefined
+  const slug = sanityEpisode.slug && typeof sanityEpisode.slug === "string" 
+    ? sanityEpisode.slug 
+    : "";
+
+  if (!slug) {
+    console.warn("Episode missing slug:", sanityEpisode._id, sanityEpisode.title);
+  }
+
   // Extract YouTube ID from URL
   const youtubeId = extractYouTubeId(sanityEpisode.youtubeUrl || "");
 
@@ -160,7 +178,7 @@ function mapSanityEpisodeToEpisode(sanityEpisode: any): Episode {
   const summary = extractTextFromPortableText(sanityEpisode.aboutTheArtist || []);
 
   return {
-    slug: sanityEpisode.slug || "",
+    slug,
     title: sanityEpisode.title || "",
     guest: sanityEpisode.guest || "",
     date: sanityEpisode.date || new Date().toISOString(),
@@ -173,7 +191,7 @@ function mapSanityEpisodeToEpisode(sanityEpisode: any): Episode {
       raw: summary,
       html: summary,
     },
-    aboutTheArtist: sanityEpisode.aboutTheArtist || [],
+    aboutTheArtist: Array.isArray(sanityEpisode.aboutTheArtist) ? sanityEpisode.aboutTheArtist : [],
     artistLinks: sanityEpisode.artistLinks,
   };
 }

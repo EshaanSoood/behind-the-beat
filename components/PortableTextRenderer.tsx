@@ -20,49 +20,61 @@ const components: PortableTextComponents = {
     reviewImage: ({ value }: { value: ReviewImageBlock }) => {
       if (!value?.asset) return null;
 
-      const imageUrl = urlFor(value.asset).width(1200).url();
-      const sizeClasses = {
-        small: "max-w-xs",
-        medium: "max-w-md",
-        large: "max-w-2xl",
-        featured: "max-w-full",
-      };
-      const alignmentClasses = {
-        left: "float-left mr-4 mb-4",
-        right: "float-right ml-4 mb-4",
-        center: "mx-auto my-6",
-      };
+      try {
+        const imageUrl = urlFor(value.asset).width(1200).url();
+        
+        // If URL generation fails or returns empty, don't render
+        if (!imageUrl || imageUrl.trim() === "") {
+          console.warn("Failed to generate image URL for reviewImage:", value);
+          return null;
+        }
 
-      const sizeClass = sizeClasses[value.size || "medium"];
-      const alignmentClass = alignmentClasses[value.alignment || "center"];
+        const sizeClasses = {
+          small: "max-w-xs",
+          medium: "max-w-md",
+          large: "max-w-2xl",
+          featured: "max-w-full",
+        };
+        const alignmentClasses = {
+          left: "float-left mr-4 mb-4",
+          right: "float-right ml-4 mb-4",
+          center: "mx-auto my-6",
+        };
 
-      return (
-        <figure
-          className={`review-image review-image-${value.size || "medium"} review-image-${value.alignment || "center"} surface-chamfer border border-[var(--border-accent-strong)] ${sizeClass} ${alignmentClass}`}
-        >
-          <Image
-            src={imageUrl}
-            alt={value.alt || ""}
-            width={value.size === "featured" ? 1200 : 800}
-            height={value.size === "featured" ? 600 : 800}
-            className="w-full h-auto object-cover"
-            sizes={
-              value.size === "featured"
-                ? "100vw"
-                : value.size === "large"
-                  ? "(max-width: 768px) 100vw, 672px"
-                  : value.size === "medium"
-                    ? "(max-width: 768px) 100vw, 448px"
-                    : "(max-width: 768px) 100vw, 320px"
-            }
-          />
-          {value.alt && (
-            <figcaption className="text-sm text-[var(--text-muted)] mt-2">
-              {value.alt}
-            </figcaption>
-          )}
-        </figure>
-      );
+        const sizeClass = sizeClasses[value.size || "medium"];
+        const alignmentClass = alignmentClasses[value.alignment || "center"];
+
+        return (
+          <figure
+            className={`review-image review-image-${value.size || "medium"} review-image-${value.alignment || "center"} surface-chamfer border border-[var(--border-accent-strong)] ${sizeClass} ${alignmentClass}`}
+          >
+            <Image
+              src={imageUrl}
+              alt={value.alt || ""}
+              width={value.size === "featured" ? 1200 : 800}
+              height={value.size === "featured" ? 600 : 800}
+              className="w-full h-auto object-cover"
+              sizes={
+                value.size === "featured"
+                  ? "100vw"
+                  : value.size === "large"
+                    ? "(max-width: 768px) 100vw, 672px"
+                    : value.size === "medium"
+                      ? "(max-width: 768px) 100vw, 448px"
+                      : "(max-width: 768px) 100vw, 320px"
+              }
+            />
+            {value.alt && (
+              <figcaption className="text-sm text-[var(--text-muted)] mt-2">
+                {value.alt}
+              </figcaption>
+            )}
+          </figure>
+        );
+      } catch (error) {
+        console.error("Error rendering reviewImage:", error, value);
+        return null;
+      }
     },
   },
   block: {

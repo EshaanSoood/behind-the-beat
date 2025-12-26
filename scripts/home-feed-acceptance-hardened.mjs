@@ -218,7 +218,9 @@ async function captureBaseMetrics(page) {
       const heroSection = document.querySelector(".home-hero-section");
       const headingContainer = document.querySelector(".home-section-heading");
       const sectionHeading = headingContainer?.querySelector("h2") ?? null;
-      const grid = document.querySelector(".home-card-grid");
+      const grid = document.querySelector('[data-card-grid="true"]') || 
+                   document.querySelector(".home-card-grid") ||
+                   document.querySelector('[role="list"]');
       const container = document.querySelector(".container-page.home-feed-section");
       const cards = Array.from(document.querySelectorAll(".home-card"));
       const header = document.querySelector(".site-header");
@@ -1297,7 +1299,7 @@ async function main() {
       await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "no-preference" }]);
 
       await page.goto(TARGET_URL, { waitUntil: "networkidle0" });
-      await page.waitForSelector(".home-card-grid");
+      await page.waitForSelector('[data-card-grid="true"], .home-card-grid, [role="list"]', { timeout: 10000 });
 
       const baseMetrics = await captureBaseMetrics(page);
       const interactions = await runInteractiveChecks(page, baseMetrics.cards, browser, viewport);
