@@ -17,13 +17,13 @@ export function MissionProse() {
               A quiet corner of the internet, far from algorithmic noise.
             </p>
             <p>
-              We&apos;re an independent art-journalism platform run by people who care deeply about music, not metrics. Our goal is simple, to bring you artists and albums the way a friend would, with warmth and excitement.
+              We&apos;re an independent music commentary platform run by people who care deeply about music, not metrics. Our goal is simple, to bring you artists and albums the way a friend would, with warmth and excitement.
             </p>
             <p>
-              We believe that looking behind the curtain doesn&apos;t break the magic - it deepens it. Through thoughtful conversations with artists and reviews written after many deep listens, we hope to capture that spark and share it with you.
+              We believe that looking behind the curtain doesn&apos;t break the magic, it deepens it. Through thoughtful conversations with artists and reviews written after many deep listens, we hope to capture that spark and share it with you.
             </p>
             <p>
-              You won&apos;t find takedowns or trend-chasing here. In 2025, there&apos;s no reason to punch down on any genre or sound. We only write about music we love - every feature, every review, every story is a heartfelt recommendation from us to you.
+              We strongly believe that every piece of art captures a little bit of the artist&apos;s essence and our mission at Behind The Beat is to bring that to the forefront. Every interview, every deep dive, every review is written with love and curiosity.
             </p>
             <p>
               Come on in.

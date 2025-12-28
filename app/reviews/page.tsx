@@ -5,7 +5,7 @@ import { allReviewsSorted } from "../../lib/content";
 import { ReviewList } from "./components/ReviewList";
 
 export const metadata = genMeta({
-  title: "Reviews",
+  title: "Deep Dives",
   description: "Deep-dive album reviews with tracklists, streaming links, and pull quotes.",
   path: "/reviews",
 });

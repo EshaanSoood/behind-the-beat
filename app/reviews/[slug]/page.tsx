@@ -72,7 +72,7 @@ export default async function ReviewEntryPage({ params }: ReviewEntryPageProps) 
         <Breadcrumbs
           items={[
             { label: "Home", href: "/" },
-            { label: "Reviews", href: "/reviews" },
+            { label: "Deep Dives", href: "/reviews" },
             { label: review.title },
           ]}
         />

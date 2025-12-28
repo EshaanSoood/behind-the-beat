@@ -50,11 +50,7 @@ export function ReviewList({ initialReviews }: ReviewListProps) {
   if (initialReviews.length === 0) {
     return (
       <section className="flex flex-col gap-6">
-        <SpecialH1>Reviews</SpecialH1>
-        <p className="text-base text-neutral-ui-textMuted">
-          Deep-dive album reviews with tracklists, streaming links, and pull
-          quotes. Explore the stories behind the music.
-        </p>
+        <SpecialH1>Deep Dives</SpecialH1>
         <EmptyState
           title="Nothing here yet"
           description="We haven't published any reviews yet. Check back soon for album reviews, tracklists, and streaming links."
@@ -65,11 +61,7 @@ export function ReviewList({ initialReviews }: ReviewListProps) {
 
   return (
     <section className="flex flex-col gap-6">
-      <SpecialH1>Reviews</SpecialH1>
-      <p className="text-base text-neutral-ui-textMuted">
-        Deep-dive album reviews with tracklists, streaming links, and pull
-        quotes. Explore the stories behind the music.
-      </p>
+      <SpecialH1>Deep Dives</SpecialH1>
       <ul
         id="review-grid"
         className="flex flex-col gap-6"

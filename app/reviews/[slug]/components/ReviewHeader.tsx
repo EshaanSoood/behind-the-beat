@@ -1,7 +1,6 @@
 import Image from "next/image";
 import type { Review } from "../../../../lib/content";
 import { formatDate } from "../../../../lib/format";
-import { SpecialH1 } from "../../../../components/SpecialH1";
 import { ShareChips } from "../../../../components/ShareChips";
 import { siteDefaults } from "../../../../lib/seo";
 
@@ -19,7 +18,7 @@ export function ReviewHeader({ review }: ReviewHeaderProps) {
       <div className="entry-header-left flex-1 flex flex-col gap-4 md:min-h-[240px] md:justify-between">
         <div className="flex flex-col items-center gap-4">
           <div data-role="headline">
-            <SpecialH1>{review.title}</SpecialH1>
+            <h1 className="font-display text-[clamp(2rem,2vw+1.2rem,2.75rem)] leading-tight text-[var(--text-deep-purple)]">{review.title}</h1>
           </div>
           <p className="text-base text-center text-[var(--text-muted)]" data-role="meta">
             {review.artist} · {review.author} · {formattedDate}

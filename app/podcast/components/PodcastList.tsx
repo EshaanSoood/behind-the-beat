@@ -51,10 +51,6 @@ export function PodcastList({ initialEpisodes }: PodcastListProps) {
     return (
       <section className="flex flex-col gap-6">
         <SpecialH1>Podcasts</SpecialH1>
-        <p className="text-base text-neutral-ui-textMuted">
-          Intimate conversations with artists about their creative process, the
-          stories behind their music, and life in the studio.
-        </p>
         <EmptyState
           title="Nothing here yet"
           description="We haven't published any podcast episodes yet. Check back soon for interviews and conversations with artists."
@@ -66,10 +62,6 @@ export function PodcastList({ initialEpisodes }: PodcastListProps) {
   return (
     <section className="flex flex-col gap-6">
       <SpecialH1>Podcasts</SpecialH1>
-      <p className="text-base text-neutral-ui-textMuted">
-        Intimate conversations with artists about their creative process, the
-        stories behind their music, and life in the studio.
-      </p>
       <ul
         id="podcast-grid"
         className="flex flex-col gap-6"

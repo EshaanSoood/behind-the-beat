@@ -18,8 +18,8 @@ const ANGLE_CLASSES = ["nav-angle-1", "", "nav-angle-2", "nav-angle-1", "nav-ang
 
 const SOCIAL_LINKS = [
   { href: "https://youtube.com/@behindthebeat", label: "YouTube", icon: YouTubeIcon },
-  { href: "/podcast", label: "Podcast", icon: PodcastIcon },
-  { href: "https://instagram.com/behindthebeat", label: "Instagram", icon: InstagramIcon },
+  { href: null, label: "Podcast", icon: PodcastIcon, disabled: true },
+  { href: "https://www.instagram.com/behindthe.beat", label: "Instagram", icon: InstagramIcon },
 ];
 
 export function Footer() {
@@ -30,18 +30,32 @@ export function Footer() {
       <div className="site-footer__bar bg-brand-pink500 w-full py-6">
         <div className="container-page site-footer__inner flex items-center gap-6 flex-wrap">
           <div className="site-footer__social flex items-center gap-4">
-            {SOCIAL_LINKS.map(({ href, label, icon: Icon }) => (
-              <a
-                key={href}
-                href={href}
-                className="site-footer__social-link inline-flex items-center justify-center text-brand-purple800 transition-opacity hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-purple800 focus-visible:outline-offset-2 focus-visible:rounded-sm"
-                aria-label={label}
-                target={href.startsWith("http") ? "_blank" : undefined}
-                rel={href.startsWith("http") ? "noreferrer noopener" : undefined}
-              >
-                <Icon className="h-5 w-5" />
-              </a>
-            ))}
+            {SOCIAL_LINKS.map(({ href, label, icon: Icon, disabled }) => {
+              if (disabled || !href) {
+                return (
+                  <span
+                    key={label}
+                    className="site-footer__social-link inline-flex items-center justify-center text-brand-purple800 opacity-50 cursor-not-allowed"
+                    aria-label={label}
+                    aria-disabled="true"
+                  >
+                    <Icon className="h-5 w-5" />
+                  </span>
+                );
+              }
+              return (
+                <a
+                  key={href}
+                  href={href}
+                  className="site-footer__social-link inline-flex items-center justify-center text-brand-purple800 transition-opacity hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-purple800 focus-visible:outline-offset-2 focus-visible:rounded-sm"
+                  aria-label={label}
+                  target={href.startsWith("http") ? "_blank" : undefined}
+                  rel={href.startsWith("http") ? "noreferrer noopener" : undefined}
+                >
+                  <Icon className="h-5 w-5" />
+                </a>
+              );
+            })}
           </div>
 
           <nav className="site-footer__nav flex-1" aria-label="Footer navigation">

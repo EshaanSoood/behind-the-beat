@@ -8,7 +8,7 @@ import { SubscribeModal } from "./SubscribeModal";
 
 const NAV_ITEMS = [
   { href: "/mission", label: "Mission" },
-  { href: "/reviews", label: "Reviews" },
+  { href: "/reviews", label: "Deep Dives" },
   { href: "/podcast", label: "Podcasts" },
   { href: "/contact", label: "Contact" },
 ];
