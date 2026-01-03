@@ -41,6 +41,16 @@ export function MissionProse() {
           {/* Left column: Eshaan Sood */}
           <div className="mission-editor" data-section="mission-editor" data-role="mission-editor">
             <div className="flex max-w-prose flex-col gap-4 text-base leading-relaxed text-[var(--text)]">
+              <div className="mb-4">
+                <Image
+                  src="/images/eshaanbtb.jpg"
+                  alt="Eshaan Sood"
+                  width={200}
+                  height={200}
+                  className="w-full max-w-[200px] h-auto object-cover"
+                  sizes="(min-width: 768px) 200px, 100vw"
+                />
+              </div>
               <p>
                 Eshaan Sood is a musician and fellow traveller of the human experience. Originally from New Delhi, India, he currently lives in New York.
               </p>
