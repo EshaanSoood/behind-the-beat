@@ -17,7 +17,7 @@ const NAV_ITEMS = [
 const ANGLE_CLASSES = ["nav-angle-1", "", "nav-angle-2", "nav-angle-1", "nav-angle-2"] as const;
 
 const SOCIAL_LINKS = [
-  { href: "https://youtube.com/@behindthebeat", label: "YouTube", icon: YouTubeIcon },
+  { href: "https://youtube.com/@behind-beats", label: "YouTube", icon: YouTubeIcon },
   { href: null, label: "Podcast", icon: PodcastIcon, disabled: true },
   { href: "https://www.instagram.com/behindthe.beat", label: "Instagram", icon: InstagramIcon },
 ];
