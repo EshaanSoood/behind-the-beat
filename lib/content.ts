@@ -5,7 +5,7 @@ export type Review = {
   title: string;
   artist: string;
   author: string;
-  reviewType: "Album review" | "Live review";
+  reviewType: "Album review" | "Live review" | "Deep Dive";
   date: string;
   pullQuote: string;
   cover: string;
@@ -69,27 +69,35 @@ function extractSummaryFromPortableText(body: PortableTextBlock[]): string {
   if (!body || body.length === 0) return "";
 
   const MAX_WORDS = 20;
+  const textParts: string[] = [];
 
+  // Collect text from all blocks until we have enough words
   for (const block of body) {
     if (block._type === "block" && block.children) {
-
       const text = block.children
         .filter((child: any) => child._type === "span")
         .map((child: any) => child.text)
         .join(" ")
         .trim();
 
-      if (!text) continue;
-
-      const words = text.split(/\s+/);
-
-      if (words.length <= MAX_WORDS) {
-        return text; // No ellipsis needed
+      if (text) {
+        textParts.push(text);
+        
+        // Check if we have enough words across all collected text
+        const combinedText = textParts.join(" ");
+        const words = combinedText.split(/\s+/).filter(w => w.length > 0);
+        
+        if (words.length >= MAX_WORDS) {
+          // We have enough words, truncate and return
+          return words.slice(0, MAX_WORDS).join(" ") + "…";
+        }
       }
-
-      const summary = words.slice(0, MAX_WORDS).join(" ") + "…";
-      return summary;
     }
+  }
+
+  // If we collected text but didn't reach MAX_WORDS, return what we have
+  if (textParts.length > 0) {
+    return textParts.join(" ");
   }
 
   return "";
